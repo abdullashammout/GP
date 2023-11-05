@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MEDID",
-    "slug": "MEDID",
+    "name": "E_HEALTH",
+    "slug": "E_HEALTH",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
