@@ -16,7 +16,6 @@ export default function App() {
           component={Home}
           options={{
             headerShown: false,
-            h,
           }}
         />
       </Stack.Navigator>
