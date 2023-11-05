@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
     top: 30,
   },
   patient: {
+    justifyContent: "center",
+    height: 60,
     width: 280,
     borderColor: "white",
     padding: 10,
@@ -19,9 +21,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowRadius: 10,
     position: "absolute",
-    bottom: 160,
+    bottom: 270,
   },
   MedicalUnit: {
+    justifyContent: "center",
+    height: 60,
     width: 280,
     borderColor: "white",
     padding: 10,
@@ -30,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowRadius: 10,
     position: "absolute",
-    bottom: 100,
+    bottom: 180,
   },
 });
 export default styles;
