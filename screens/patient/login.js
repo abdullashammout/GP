@@ -33,6 +33,8 @@ const LoginForm = ({ navigation }) => {
             placeholder="Enter your ID"
             value={id}
             onChangeText={(text) => setId(text)}
+            maxLength={10}
+            keyboardType="numeric"
           />
         </View>
         <View>
