@@ -6,6 +6,9 @@ export default function Home({ navigation }) {
   const handlePatient = () => {
     navigation.navigate("patientHome");
   };
+  const handleMedicalUnit = () => {
+    navigation.navigate("login");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.Logo}>
@@ -15,7 +18,7 @@ export default function Home({ navigation }) {
         <Text style={{ textAlign: "center", color: "white" }}>Patient</Text>
       </TouchableOpacity>
       <Text style={{ position: "absolute", bottom: 245 }}>OR</Text>
-      <TouchableOpacity style={styles.MedicalUnit}>
+      <TouchableOpacity style={styles.MedicalUnit} onPress={handleMedicalUnit}>
         <Text style={{ textAlign: "center", color: "white" }}>
           Medical Unit
         </Text>
