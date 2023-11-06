@@ -5,11 +5,14 @@ import { Ionicons } from "@expo/vector-icons";
 export default function PatientHome({ navigation }) {
   //navigate to login page
   const hangleLogin = () => {
-    navigation.navigate("login");
+    navigation.navigate("Login");
   };
   //navigate back to home
   const back = () => {
     navigation.navigate("home");
+  };
+  const handleSignUp = () => {
+    navigation.navigate("SignUp");
   };
   return (
     <View style={styles.container}>
@@ -19,7 +22,7 @@ export default function PatientHome({ navigation }) {
       <Text style={{ position: "absolute", left: 70, bottom: 210 }}>
         Don't Have Account? Sign Up
       </Text>
-      <TouchableOpacity style={styles.signUp}>
+      <TouchableOpacity style={styles.signUp} onPress={handleSignUp}>
         <Text style={{ textAlign: "center", color: "white" }}>Sign Up</Text>
       </TouchableOpacity>
       <Text style={{ position: "absolute", left: 70, bottom: 140 }}>
