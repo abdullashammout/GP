@@ -2,6 +2,9 @@ import { View, Image, TouchableOpacity, Text } from "react-native";
 import styles from "../../styles/patientStyles/HomeStyle";
 
 export default function PatientHome({ navigation }) {
+  const hangleLogin = () => {
+    navigation.navigate("login");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.Logo}>
@@ -16,7 +19,7 @@ export default function PatientHome({ navigation }) {
       <Text style={{ position: "absolute", left: 70, bottom: 140 }}>
         Already Have Account? Login
       </Text>
-      <TouchableOpacity style={styles.login}>
+      <TouchableOpacity style={styles.login} onPress={hangleLogin}>
         <Text style={{ textAlign: "center", color: "white" }}>Login</Text>
       </TouchableOpacity>
     </View>
