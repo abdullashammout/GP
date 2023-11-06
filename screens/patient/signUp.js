@@ -8,12 +8,40 @@ import {
   Keyboard,
 } from "react-native";
 import styles from "../../styles/patientStyles/signUpStyle";
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "../../firebase";
+import { ref, set } from "firebase/database";
 
 const SignUPForm = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+
+  const handleSignUp = async () => {
+    if (password === confirmPassword) {
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          set(ref(db, "users/" + id), {
+            id: id,
+            email: email,
+            password: password,
+          });
+          setEmail("");
+          setId("");
+          setPassword("");
+          setConfirmPassword("");
+          alert("registration done successfully");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    } else {
+      alert("Password and confirmPassword do not match.");
+    }
+  };
 
   return (
     <TouchableWithoutFeedback
@@ -43,6 +71,8 @@ const SignUPForm = () => {
             placeholder="Enter your ID"
             value={id}
             onChangeText={(text) => setId(text)}
+            maxLength={10}
+            keyboardType="numeric"
           />
         </View>
         <View>
@@ -81,7 +111,7 @@ const SignUPForm = () => {
             onChangeText={(text) => setEmail(text)}
           />
         </View>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
           <Text style={{ textAlign: "center", color: "white" }}>Sign Up</Text>
         </TouchableOpacity>
       </View>
