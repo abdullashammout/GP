@@ -7,7 +7,7 @@ export default function Home({ navigation }) {
     navigation.navigate("patientHome");
   };
   const handleMedicalUnit = () => {
-    navigation.navigate("login");
+    navigation.navigate("Login");
   };
   return (
     <View style={styles.container}>
