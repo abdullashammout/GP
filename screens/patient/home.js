@@ -1,9 +1,15 @@
 import { View, Image, TouchableOpacity, Text } from "react-native";
 import styles from "../../styles/patientStyles/HomeStyle";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function PatientHome({ navigation }) {
+  //navigate to login page
   const hangleLogin = () => {
     navigation.navigate("login");
+  };
+  //navigate back to home
+  const back = () => {
+    navigation.navigate("home");
   };
   return (
     <View style={styles.container}>
@@ -22,6 +28,13 @@ export default function PatientHome({ navigation }) {
       <TouchableOpacity style={styles.login} onPress={hangleLogin}>
         <Text style={{ textAlign: "center", color: "white" }}>Login</Text>
       </TouchableOpacity>
+      <Ionicons
+        style={{ position: "absolute", left: 25, top: 55 }}
+        name="arrow-back"
+        size={24}
+        color="black"
+        onPress={back}
+      />
     </View>
   );
 }
