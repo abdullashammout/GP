@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
+import LoginForm from "./screens/patient/login";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,14 @@ export default function App() {
           component={PaitentHome}
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="login"
+          component={LoginForm}
+          options={{
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
           }}
         />
       </Stack.Navigator>
