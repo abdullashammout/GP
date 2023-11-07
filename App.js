@@ -7,6 +7,7 @@ import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
 import LoginForm from "./screens/patient/login";
 import SignUPForm from "./screens/patient/signUp";
+import Search from "./screens/pharmacy/search";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,13 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="pharmacy"
+          component={Search}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
