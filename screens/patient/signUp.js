@@ -6,40 +6,91 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import styles from "../../styles/patientStyles/signUpStyle";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db } from "../../firebase";
-import { ref, set } from "firebase/database";
+import { ref, get, update } from "firebase/database";
 
 const SignUPForm = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isPasswordMatching, setIsPasswordMatching] = useState(null);
+  const [idError, setIdError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
 
   const handleSignUp = async () => {
-    if (password === confirmPassword) {
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          set(ref(db, "users/" + id), {
-            id: id,
-            email: email,
-            password: password,
-          });
-          setEmail("");
-          setId("");
-          setPassword("");
-          setConfirmPassword("");
-          alert("registration done successfully");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+    if (
+      id === "" ||
+      password === "" ||
+      confirmPassword === "" ||
+      email === ""
+    ) {
+      setIdError("This Field Required");
+      setPasswordError("This Field Required");
+      setConfirmPasswordError("This Field Required");
+      setEmailError("This Field Required");
+      return;
     } else {
-      alert("Password and confirmPassword do not match.");
+      setIdError(null);
+      setPasswordError(null);
+      setConfirmPasswordError(null);
+      setEmailError(null);
+    }
+
+    if (password === confirmPassword) {
+      setIsPasswordMatching(null);
+      try {
+        // Check if the user with the given ID exists in the database
+        const idRef = ref(db, "users/" + id);
+        const idSnapshot = await get(idRef);
+        const emailRef = ref(db, "users/" + id + "/email");
+        const emailSnapshot = await get(emailRef);
+
+        if (idSnapshot.exists()) {
+          if (emailSnapshot.exists()) {
+            Alert.alert("Account Exist", "User already has an account.");
+          } else {
+            await createUserWithEmailAndPassword(auth, email, password).then(
+              (userCredential) => {
+                const user = userCredential.user;
+                update(idRef, {
+                  email: email,
+                  password: password,
+                });
+                setEmail("");
+                setId("");
+                setPassword("");
+                setConfirmPassword("");
+                alert("Registration successfully");
+              }
+            );
+          }
+        } else {
+          Alert.alert(
+            "ID not found ",
+            " Please enter the ID from your ID card."
+          );
+        }
+      } catch (error) {
+        // console.log(error.message);
+        // alert(error.message);
+        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          setEmail("");
+          setEmailError("email already used");
+        }
+      }
+    } else {
+      setPassword("");
+      setConfirmPassword("");
+      setIsPasswordMatching("Password and confirm Password do not match.");
+      return;
     }
   };
 
@@ -68,7 +119,8 @@ const SignUPForm = () => {
             returnKeyType="next"
             autoCapitalize="none"
             style={styles.input}
-            placeholder="Enter your ID"
+            placeholderTextColor={idError ? "red" : "gray"}
+            placeholder={idError ? idError : "Enter your ID"}
             value={id}
             onChangeText={(text) => setId(text)}
             maxLength={10}
@@ -80,7 +132,14 @@ const SignUPForm = () => {
           <TextInput
             returnKeyType="next"
             style={styles.input}
-            placeholder="Enter your password"
+            placeholderTextColor={
+              isPasswordMatching || passwordError ? "red" : "gray"
+            }
+            placeholder={
+              isPasswordMatching || passwordError
+                ? passwordError || isPasswordMatching
+                : "Enter Your Password"
+            }
             autoCapitalize="none"
             secureTextEntry={true}
             value={password}
@@ -94,7 +153,14 @@ const SignUPForm = () => {
           <TextInput
             returnKeyType="next"
             style={styles.input}
-            placeholder="Confirm Password"
+            placeholderTextColor={
+              isPasswordMatching || confirmPasswordError ? "red" : "gray"
+            }
+            placeholder={
+              isPasswordMatching || confirmPasswordError
+                ? confirmPasswordError || isPasswordMatching
+                : "Enter Your Password"
+            }
             autoCapitalize="none"
             secureTextEntry={true}
             value={confirmPassword}
@@ -105,7 +171,8 @@ const SignUPForm = () => {
           <Text style={{ fontSize: 16, marginBottom: 5 }}>Email:</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter your email"
+            placeholder={emailError ? emailError : "Enter your email"}
+            placeholderTextColor={emailError ? "red" : "gray"}
             value={email}
             autoCapitalize="none"
             onChangeText={(text) => setEmail(text)}
