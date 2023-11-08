@@ -68,7 +68,7 @@ const SignUPForm = () => {
                 setId("");
                 setPassword("");
                 setConfirmPassword("");
-                alert("Registration successfully");
+                alert("Registration Done successfully");
               }
             );
           }
