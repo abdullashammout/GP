@@ -14,21 +14,28 @@ import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const LoginForm = ({ navigation }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
+  const [idError, setIdError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
   const signIn = async () => {
     if (id === "") {
-      Alert.alert("Login Failed", "ID field is required");
-
+      setIdError("ID Field Required");
       return;
+    } else {
+      setIdError(null);
     }
+
     if (password === "") {
-      Alert.alert("Login Failed", "Password field is required");
+      setPasswordError("Password Field Required");
       return;
+    } else {
+      setPasswordError(null);
     }
 
     try {
@@ -85,7 +92,8 @@ const LoginForm = ({ navigation }) => {
             returnKeyType="next"
             autoCapitalize="none"
             style={styles.input}
-            placeholder="Enter your ID"
+            placeholder={idError ? idError : "Enter your ID"}
+            placeholderTextColor={idError ? "red" : "gray"}
             value={id}
             onChangeText={(text) => setId(text)}
             maxLength={10}
@@ -96,7 +104,8 @@ const LoginForm = ({ navigation }) => {
           <Text style={{ fontSize: 16, marginBottom: 5 }}>Password:</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter your password"
+            placeholder={passwordError ? passwordError : "Enter your password"}
+            placeholderTextColor={passwordError ? "red" : "gray"}
             secureTextEntry={true}
             autoCapitalize="none"
             value={password}
