@@ -47,7 +47,6 @@ const SignUPForm = () => {
     if (password === confirmPassword) {
       setIsPasswordMatching(null);
       try {
-        // Check if the user with the given ID exists in the database
         const idRef = ref(db, "users/" + id);
         const idSnapshot = await get(idRef);
         const emailRef = ref(db, "users/" + id + "/email");
@@ -57,20 +56,30 @@ const SignUPForm = () => {
           if (emailSnapshot.exists()) {
             Alert.alert("Account Exist", "User already has an account.");
           } else {
-            await createUserWithEmailAndPassword(auth, email, password).then(
-              (userCredential) => {
-                const user = userCredential.user;
-                update(idRef, {
-                  email: email,
-                  password: password,
-                });
+            try {
+              const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+              );
+
+              const user = userCredential.user;
+              update(idRef, {
+                email: email,
+                password: password,
+              });
+              setEmail("");
+              setId("");
+              setPassword("");
+              setConfirmPassword("");
+              alert("Registration Done successfully");
+            } catch (error) {
+              alert(error.message);
+              if (error.message === "Firebase: Error (auth/invalid-email).") {
                 setEmail("");
-                setId("");
-                setPassword("");
-                setConfirmPassword("");
-                alert("Registration Done successfully");
+                setEmailError("invalid email");
               }
-            );
+            }
           }
         } else {
           Alert.alert(
@@ -79,8 +88,8 @@ const SignUPForm = () => {
           );
         }
       } catch (error) {
-        // console.log(error.message);
-        // alert(error.message);
+        console.log(error.message);
+        alert(error.message);
         if (error.message === "Firebase: Error (auth/email-already-in-use).") {
           setEmail("");
           setEmailError("email already used");

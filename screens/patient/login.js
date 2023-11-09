@@ -24,17 +24,12 @@ const LoginForm = ({ navigation }) => {
   const [passwordError, setPasswordError] = useState(null);
 
   const signIn = async () => {
-    if (id === "") {
+    if (id === "" || password === "") {
       setIdError("ID Field Required");
-      return;
-    } else {
-      setIdError(null);
-    }
-
-    if (password === "") {
       setPasswordError("Password Field Required");
       return;
     } else {
+      setIdError(null);
       setPasswordError(null);
     }
 
