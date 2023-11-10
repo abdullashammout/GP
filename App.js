@@ -7,7 +7,10 @@ import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
 import LoginForm from "./screens/patient/login";
 import SignUPForm from "./screens/patient/signUp";
-import Search from "./screens/pharmacy/search";
+import SearchPh from "./screens/pharmacy/search";
+import SearchLabor from "./screens/laboratory/search";
+import PatientPage from "./screens/patient/patientPage";
+import SearchHos from "./screens/hospital/main";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,11 +50,26 @@ export default function App() {
         />
         <Stack.Screen
           name="pharmacy"
-          component={Search}
+          component={SearchPh}
           options={{
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="laboratory"
+          component={SearchLabor}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="patientPage"
+          component={PatientPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="hospital" component={SearchHos} />
       </Stack.Navigator>
     </NavigationContainer>
   );

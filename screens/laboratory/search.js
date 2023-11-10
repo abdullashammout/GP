@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 
-export default function SearchPh() {
+export default function SearchLabor() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>hiii pharmacy</Text>
+      <Text>hiii labratory</Text>
     </View>
   );
 }
