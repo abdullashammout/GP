@@ -124,9 +124,9 @@ const SignUPForm = () => {
       }
       setIsPasswordMatching(null);
       try {
-        const idRef = ref(db, "users/" + id);
+        const idRef = ref(db, "users/" + "patients/" + id);
         const idSnapshot = await get(idRef);
-        const emailRef = ref(db, "users/" + id + "/email");
+        const emailRef = ref(db, "users/" + "patients/" + id + "/email");
         const emailSnapshot = await get(emailRef);
 
         if (idSnapshot.exists()) {
