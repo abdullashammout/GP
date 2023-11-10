@@ -25,6 +25,39 @@ const SignUPForm = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
 
+  const isEmailValid = (email) => {
+    const famousDomains = [
+      "hotmail.com",
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "icloud.com",
+      "aol.com",
+      "mail.ru",
+      "yandex.ru",
+      "qq.com",
+      "live.com",
+      "protonmail.com",
+    ];
+
+    // Check if email contains '@'
+    if (!email.includes("@")) {
+      return false;
+    }
+
+    // Split the email into username and domain
+    const [username, domain] = email.split("@");
+
+    // Check if the domain is in the famous domains list
+    if (!famousDomains.includes(domain)) {
+      return false;
+    }
+
+    // Use a regular expression to validate the email format
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+  };
+
   const handleSignUp = async () => {
     if (
       id === "" ||
@@ -32,10 +65,10 @@ const SignUPForm = () => {
       confirmPassword === "" ||
       email === ""
     ) {
-      setIdError("This Field Required");
-      setPasswordError("This Field Required");
-      setConfirmPasswordError("This Field Required");
-      setEmailError("This Field Required");
+      setIdError("This Field Is Required");
+      setPasswordError("This Field Is Required");
+      setConfirmPasswordError("This Field Is Required");
+      setEmailError("This Field Is Required");
       return;
     } else {
       setIdError(null);
@@ -43,8 +76,52 @@ const SignUPForm = () => {
       setConfirmPasswordError(null);
       setEmailError(null);
     }
+    if (!isEmailValid(email)) {
+      setEmail("");
+      setEmailError("Invalid email");
+      return;
+    }
 
     if (password === confirmPassword) {
+      if (password.length < 6) {
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError("Password must be at least 6 characters long.");
+        setConfirmPasswordError("Password must be at least 6 characters long.");
+        return;
+      }
+
+      if (!/[A-Z]/.test(password)) {
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError(
+          "Password must contain at least one uppercase letter."
+        );
+        setConfirmPasswordError(
+          "Password must contain at least one uppercase letter."
+        );
+        return;
+      }
+
+      if (!/[a-z]/.test(password)) {
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError(
+          "Password must contain at least one lowercase letter."
+        );
+        setConfirmPasswordError(
+          "Password must contain at least one lowercase letter."
+        );
+        return;
+      }
+
+      if (!/\d/.test(password)) {
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError("Password must contain at least one number.");
+        setConfirmPasswordError("Password must contain at least one number.");
+        return;
+      }
       setIsPasswordMatching(null);
       try {
         const idRef = ref(db, "users/" + id);
@@ -72,12 +149,29 @@ const SignUPForm = () => {
               setId("");
               setPassword("");
               setConfirmPassword("");
-              alert("Registration Done successfully");
+              Alert.alert(
+                "Registration Successful",
+                "Thank you for registering!"
+              );
             } catch (error) {
               alert(error.message);
               if (error.message === "Firebase: Error (auth/invalid-email).") {
                 setEmail("");
                 setEmailError("invalid email");
+              }
+              if (
+                error.message === "Firebase: Error (auth/email-already-in-use)."
+              ) {
+                setEmail("");
+                setEmailError("Email Already in Use");
+              }
+              if (
+                error.message === "Firebase: Error (auth/too-many-requests)."
+              ) {
+                Alert.alert(
+                  "Warning",
+                  "Too many requests from your IP address. Please wait a moment and try again."
+                );
               }
             }
           }
@@ -90,10 +184,6 @@ const SignUPForm = () => {
       } catch (error) {
         console.log(error.message);
         alert(error.message);
-        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-          setEmail("");
-          setEmailError("email already used");
-        }
       }
     } else {
       setPassword("");

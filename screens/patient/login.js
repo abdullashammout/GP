@@ -25,8 +25,8 @@ const LoginForm = ({ navigation }) => {
 
   const signIn = async () => {
     if (id === "" || password === "") {
-      setIdError("ID Field Required");
-      setPasswordError("Password Field Required");
+      setIdError("This Field Is Required");
+      setPasswordError("This Field Is Required");
       return;
     } else {
       setIdError(null);
@@ -53,13 +53,14 @@ const LoginForm = ({ navigation }) => {
 
             navigation.navigate("pharmacy");
           } catch (error) {
+            console.log(error.code);
             Alert.alert("Login Failed", "Invalid ID or Password");
           }
         } else {
           Alert.alert("Login Failed", "Invalid ID or Password");
         }
       } else {
-        alert("User not found");
+        Alert.alert("User Not Found", "invalid ID");
       }
     } catch (error) {
       console.error("Error signing in:", error);
