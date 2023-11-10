@@ -23,6 +23,56 @@ const LoginForm = ({ navigation }) => {
   const [idError, setIdError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
+  // const signIn = async () => {
+  //   if (id === "" || password === "") {
+  //     setIdError("This Field Is Required");
+  //     setPasswordError("This Field Is Required");
+  //     return;
+  //   } else {
+  //     setIdError(null);
+  //     setPasswordError(null);
+  //   }
+
+  //   try {
+  //     const patientIdQuery = ref(db, "users/" + "patients");
+  //     const idSnapshot = await get(patientIdQuery);
+
+  //     if (idSnapshot.exists()) {
+  //       const idData = idSnapshot.val();
+
+  //       if (idData && idData[id] && idData[id].email) {
+  //         const email = idData[id].email;
+
+  //         try {
+  //           const userCredential = await signInWithEmailAndPassword(
+  //             auth,
+  //             email,
+  //             password
+  //           );
+  //           const user = userCredential.user;
+
+  //           navigation.navigate("patientPage");
+  //         } catch (error) {
+  //           console.log(error.code);
+  //           Alert.alert("Login Failed", "Invalid ID or Password");
+  //         }
+  //       } else {
+  //         Alert.alert("Login Failed", "Invalid ID or Password");
+  //       }
+  //     } else {
+  //       Alert.alert("User Not Found", "invalid ID");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error signing in:", error);
+
+  //     if (error.code === "auth/user-not-found") {
+  //       alert("User not found. Please check your ID.");
+  //     } else {
+  //       // Handle other errors with a generic message
+  //       alert("An error occurred during sign-in. Please try again later.");
+  //     }
+  //   }
+  // };
   const signIn = async () => {
     if (id === "" || password === "") {
       setIdError("This Field Is Required");
@@ -34,15 +84,15 @@ const LoginForm = ({ navigation }) => {
     }
 
     try {
-      const idQuery = ref(db, "users");
-      const idSnapshot = await get(idQuery);
+      const patientQuery = ref(db, "users/patients");
+      const patientSnapshot = await get(patientQuery);
 
-      if (idSnapshot.exists()) {
-        const idData = idSnapshot.val();
+      if (patientSnapshot.exists()) {
+        const patientData = patientSnapshot.val();
 
-        if (idData && idData[id] && idData[id].email) {
-          const email = idData[id].email;
-
+        // Check if the user ID exists in the patients node
+        if (patientData && patientData[id] && patientData[id].email) {
+          const email = patientData[id].email;
           try {
             const userCredential = await signInWithEmailAndPassword(
               auth,
@@ -50,18 +100,106 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
-
-            navigation.navigate("pharmacy");
+            // Navigate to the patient page
+            navigation.navigate("patientPage");
+            return;
           } catch (error) {
             console.log(error.code);
-            Alert.alert("Login Failed", "Invalid ID or Password");
+            setId("");
+            setPassword("");
+            setIdError("Invalid ID or Password");
+            setPasswordError("Invalid ID or Password");
           }
-        } else {
-          Alert.alert("Login Failed", "Invalid ID or Password");
         }
-      } else {
-        Alert.alert("User Not Found", "invalid ID");
       }
+      const hospitalQuery = ref(db, "users/medical_units/hospital");
+      const hospitalSnapshot = await get(hospitalQuery);
+
+      if (hospitalSnapshot.exists()) {
+        const hospitalData = hospitalSnapshot.val();
+
+        // Check if the user ID exists in the hospital node
+        if (hospitalData && hospitalData[id] && hospitalData[id].email) {
+          const email = hospitalData[id].email;
+          try {
+            const userCredential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+            const user = userCredential.user;
+            // Navigate to the hospital page
+            navigation.navigate("hospital");
+            return;
+          } catch (error) {
+            console.log(error.code);
+            setId("");
+            setPassword("");
+            setIdError("Invalid ID or Password");
+            setPasswordError("Invalid ID or Password");
+          }
+        }
+      }
+      const pharmacyQuery = ref(db, "users/medical_units/pharmacy");
+      const pharmacySnapshot = await get(pharmacyQuery);
+
+      if (pharmacySnapshot.exists()) {
+        const pharmacyData = pharmacySnapshot.val();
+
+        // Check if the user ID exists in the pharmacy node
+        if (pharmacyData && pharmacyData[id] && pharmacyData[id].email) {
+          const email = pharmacyData[id].email;
+          try {
+            const userCredential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+            const user = userCredential.user;
+            // Navigate to the pharmacy page
+            navigation.navigate("pharmacy");
+            return;
+          } catch (error) {
+            console.log(error.code);
+            setId("");
+            setPassword("");
+            setIdError("Invalid ID or Password");
+            setPasswordError("Invalid ID or Password");
+          }
+        }
+      }
+      const laboratoryQuery = ref(db, "users/medical_units/laboratory");
+      const laboratorySnapshot = await get(laboratoryQuery);
+
+      if (laboratorySnapshot.exists()) {
+        const laboratoryData = laboratorySnapshot.val();
+
+        // Check if the user ID exists in the laboratory node
+        if (laboratoryData && laboratoryData[id] && laboratoryData[id].email) {
+          const email = laboratoryData[id].email;
+          try {
+            const userCredential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+            const user = userCredential.user;
+            // Navigate to the laboratory page
+            navigation.navigate("laboratory");
+            return;
+          } catch (error) {
+            console.log(error.code);
+            setId("");
+            setPassword("");
+            setIdError("Invalid ID or Password");
+            setPasswordError("Invalid ID or Password");
+          }
+        }
+      }
+      setId("");
+      setPassword("");
+      setIdError("Invalid ID or Password");
+      setPasswordError("Invalid ID or Password");
     } catch (error) {
       console.error("Error signing in:", error);
 
@@ -73,6 +211,7 @@ const LoginForm = ({ navigation }) => {
       }
     }
   };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
