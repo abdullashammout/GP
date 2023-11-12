@@ -7,7 +7,7 @@ import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
 import LoginForm from "./screens/patient/login";
 import SignUPForm from "./screens/patient/signUp";
-import SearchPh from "./screens/pharmacy/search";
+import SearchPh from "./screens/pharmacy/searchPharmacy";
 import SearchLabor from "./screens/laboratory/search";
 import PatientPage from "./screens/patient/patientPage";
 import SearchHos from "./screens/hospital/main";

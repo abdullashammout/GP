@@ -19,6 +19,7 @@ const SignUPForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [isPasswordMatching, setIsPasswordMatching] = useState(null);
   const [idError, setIdError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
@@ -124,6 +125,7 @@ const SignUPForm = () => {
       }
       setIsPasswordMatching(null);
       try {
+        setIsLoading(true);
         const idRef = ref(db, "users/" + "patients/" + id);
         const idSnapshot = await get(idRef);
         const emailRef = ref(db, "users/" + "patients/" + id + "/email");
@@ -155,19 +157,23 @@ const SignUPForm = () => {
               );
             } catch (error) {
               alert(error.message);
+              setIsLoading(false);
               if (error.message === "Firebase: Error (auth/invalid-email).") {
+                setIsLoading(false);
                 setEmail("");
                 setEmailError("invalid email");
               }
               if (
                 error.message === "Firebase: Error (auth/email-already-in-use)."
               ) {
+                setIsLoading(false);
                 setEmail("");
                 setEmailError("Email Already in Use");
               }
               if (
                 error.message === "Firebase: Error (auth/too-many-requests)."
               ) {
+                setIsLoading(false);
                 Alert.alert(
                   "Warning",
                   "Too many requests from your IP address. Please wait a moment and try again."
@@ -176,6 +182,7 @@ const SignUPForm = () => {
             }
           }
         } else {
+          setIsLoading(false);
           Alert.alert(
             "ID not found ",
             " Please enter the ID from your ID card."
@@ -183,6 +190,7 @@ const SignUPForm = () => {
         }
       } catch (error) {
         console.log(error.message);
+        setIsLoading(false);
         alert(error.message);
       }
     } else {
@@ -278,7 +286,9 @@ const SignUPForm = () => {
           />
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
-          <Text style={{ textAlign: "center", color: "white" }}>Sign Up</Text>
+          <Text style={{ textAlign: "center", color: "white" }}>
+            {isLoading ? "Signing Up" : "Sign Up"}
+          </Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>

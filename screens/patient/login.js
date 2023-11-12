@@ -19,60 +19,11 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 const LoginForm = ({ navigation }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setChecked] = useState(false);
   const [idError, setIdError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  // const signIn = async () => {
-  //   if (id === "" || password === "") {
-  //     setIdError("This Field Is Required");
-  //     setPasswordError("This Field Is Required");
-  //     return;
-  //   } else {
-  //     setIdError(null);
-  //     setPasswordError(null);
-  //   }
-
-  //   try {
-  //     const patientIdQuery = ref(db, "users/" + "patients");
-  //     const idSnapshot = await get(patientIdQuery);
-
-  //     if (idSnapshot.exists()) {
-  //       const idData = idSnapshot.val();
-
-  //       if (idData && idData[id] && idData[id].email) {
-  //         const email = idData[id].email;
-
-  //         try {
-  //           const userCredential = await signInWithEmailAndPassword(
-  //             auth,
-  //             email,
-  //             password
-  //           );
-  //           const user = userCredential.user;
-
-  //           navigation.navigate("patientPage");
-  //         } catch (error) {
-  //           console.log(error.code);
-  //           Alert.alert("Login Failed", "Invalid ID or Password");
-  //         }
-  //       } else {
-  //         Alert.alert("Login Failed", "Invalid ID or Password");
-  //       }
-  //     } else {
-  //       Alert.alert("User Not Found", "invalid ID");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error signing in:", error);
-
-  //     if (error.code === "auth/user-not-found") {
-  //       alert("User not found. Please check your ID.");
-  //     } else {
-  //       // Handle other errors with a generic message
-  //       alert("An error occurred during sign-in. Please try again later.");
-  //     }
-  //   }
-  // };
   const signIn = async () => {
     if (id === "" || password === "") {
       setIdError("This Field Is Required");
@@ -84,6 +35,7 @@ const LoginForm = ({ navigation }) => {
     }
 
     try {
+      setIsLoading(true);
       const patientQuery = ref(db, "users/patients");
       const patientSnapshot = await get(patientQuery);
 
@@ -100,11 +52,13 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
+
             // Navigate to the patient page
             navigation.navigate("patientPage");
             return;
           } catch (error) {
             console.log(error.code);
+            setIsLoading(false);
             setId("");
             setPassword("");
             setIdError("Invalid ID or Password");
@@ -128,11 +82,13 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
+
             // Navigate to the hospital page
             navigation.navigate("hospital");
             return;
           } catch (error) {
             console.log(error.code);
+            setIsLoading(false);
             setId("");
             setPassword("");
             setIdError("Invalid ID or Password");
@@ -156,11 +112,13 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
+
             // Navigate to the pharmacy page
             navigation.navigate("pharmacy");
             return;
           } catch (error) {
             console.log(error.code);
+            setIsLoading(false);
             setId("");
             setPassword("");
             setIdError("Invalid ID or Password");
@@ -184,11 +142,13 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
+
             // Navigate to the laboratory page
             navigation.navigate("laboratory");
             return;
           } catch (error) {
             console.log(error.code);
+            setIsLoading(false);
             setId("");
             setPassword("");
             setIdError("Invalid ID or Password");
@@ -204,9 +164,11 @@ const LoginForm = ({ navigation }) => {
       console.error("Error signing in:", error);
 
       if (error.code === "auth/user-not-found") {
+        setIsLoading(false);
         alert("User not found. Please check your ID.");
       } else {
         // Handle other errors with a generic message
+        setIsLoading(false);
         alert("An error occurred during sign-in. Please try again later.");
       }
     }
@@ -265,7 +227,9 @@ const LoginForm = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={signIn}>
-          <Text style={{ textAlign: "center", color: "white" }}>Login</Text>
+          <Text style={{ textAlign: "center", color: "white" }}>
+            {isLoading ? "Logging in" : "Login"}
+          </Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
