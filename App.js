@@ -29,6 +29,15 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+          name="hospitalMain"
+          component={MainScreen}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            title: "hospital",
+          }}
+        />
+        <Stack.Screen
           name="home"
           component={Home}
           options={{
@@ -100,24 +109,85 @@ export default function App() {
         />
 
         <Stack.Screen
-          name="hospitalMain"
-          component={MainScreen}
+          name="Prescription"
+          component={Prescription}
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
-            title: "hospital",
           }}
         />
-        <Stack.Screen name="Prescription" component={Prescription} />
-        <Stack.Screen name="diagnosis" component={Diagnosis} />
-        <Stack.Screen name="treatments" component={Treatments} />
-        <Stack.Screen name="allergies" component={Allergies} />
-        <Stack.Screen name="lab" component={Lab} />
-        <Stack.Screen name="BloodDonation" component={BloodDonation} />
-        <Stack.Screen name="hospitalStay" component={HospitalStay} />
-        <Stack.Screen name="vaccine" component={Vaccine} />
-        <Stack.Screen name="presList" component={PresList} />
-        <Stack.Screen name="StayList" component={StayList} />
+        <Stack.Screen
+          name="diagnosis"
+          component={Diagnosis}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="treatments"
+          component={Treatments}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="allergies"
+          component={Allergies}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="lab"
+          component={Lab}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="BloodDonation"
+          component={BloodDonation}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="hospitalStay"
+          component={HospitalStay}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="vaccine"
+          component={Vaccine}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="presList"
+          component={PresList}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="StayList"
+          component={StayList}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
