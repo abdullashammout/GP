@@ -14,7 +14,7 @@ import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { AntDesign } from "@expo/vector-icons";
 
 const LoginForm = ({ navigation }) => {
   const [id, setId] = useState("");
@@ -23,6 +23,7 @@ const LoginForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   const [idError, setIdError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [passwordSecure, setPasswordSecure] = useState(true);
 
   const signIn = async () => {
     if (id === "" || password === "") {
@@ -34,17 +35,23 @@ const LoginForm = ({ navigation }) => {
       setPasswordError(null);
     }
 
-    try {
-      setIsLoading(true);
-      const patientQuery = ref(db, "users/patients");
-      const patientSnapshot = await get(patientQuery);
+    const roles = [
+      "patients",
+      "medical_units/hospital",
+      "medical_units/pharmacy",
+      "medical_units/laboratory",
+    ];
 
-      if (patientSnapshot.exists()) {
-        const patientData = patientSnapshot.val();
+    for (const role of roles) {
+      const roleQuery = ref(db, `users/${role}`);
+      const roleSnapshot = await get(roleQuery);
 
-        // Check if the user ID exists in the patients node
-        if (patientData && patientData[id] && patientData[id].email) {
-          const email = patientData[id].email;
+      if (roleSnapshot.exists()) {
+        const roleData = roleSnapshot.val();
+
+        if (roleData && roleData[id] && roleData[id].email) {
+          const email = roleData[id].email;
+
           try {
             const userCredential = await signInWithEmailAndPassword(
               auth,
@@ -52,126 +59,48 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
-
-            // Navigate to the patient page
-            navigation.navigate("patientPage");
-            return;
-          } catch (error) {
-            console.log(error.code);
-            setIsLoading(false);
             setId("");
             setPassword("");
-            setIdError("Invalid ID or Password");
-            setPasswordError("Invalid ID or Password");
-          }
-        }
-      }
-      const hospitalQuery = ref(db, "users/medical_units/hospital");
-      const hospitalSnapshot = await get(hospitalQuery);
+            // Navigate to the appropriate page based on the role
+            const rolePage = getRolePage(role);
+            navigation.navigate(rolePage);
 
-      if (hospitalSnapshot.exists()) {
-        const hospitalData = hospitalSnapshot.val();
-
-        // Check if the user ID exists in the hospital node
-        if (hospitalData && hospitalData[id] && hospitalData[id].email) {
-          const email = hospitalData[id].email;
-          try {
-            const userCredential = await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
-            const user = userCredential.user;
-
-            // Navigate to the hospital page
-            navigation.navigate("hospital");
             return;
           } catch (error) {
-            console.log(error.code);
-            setIsLoading(false);
-            setId("");
-            setPassword("");
-            setIdError("Invalid ID or Password");
-            setPasswordError("Invalid ID or Password");
+            alert(error.code);
+            handleSignInError();
           }
         }
-      }
-      const pharmacyQuery = ref(db, "users/medical_units/pharmacy");
-      const pharmacySnapshot = await get(pharmacyQuery);
-
-      if (pharmacySnapshot.exists()) {
-        const pharmacyData = pharmacySnapshot.val();
-
-        // Check if the user ID exists in the pharmacy node
-        if (pharmacyData && pharmacyData[id] && pharmacyData[id].email) {
-          const email = pharmacyData[id].email;
-          try {
-            const userCredential = await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
-            const user = userCredential.user;
-
-            // Navigate to the pharmacy page
-            navigation.navigate("pharmacy");
-            return;
-          } catch (error) {
-            console.log(error.code);
-            setIsLoading(false);
-            setId("");
-            setPassword("");
-            setIdError("Invalid ID or Password");
-            setPasswordError("Invalid ID or Password");
-          }
-        }
-      }
-      const laboratoryQuery = ref(db, "users/medical_units/laboratory");
-      const laboratorySnapshot = await get(laboratoryQuery);
-
-      if (laboratorySnapshot.exists()) {
-        const laboratoryData = laboratorySnapshot.val();
-
-        // Check if the user ID exists in the laboratory node
-        if (laboratoryData && laboratoryData[id] && laboratoryData[id].email) {
-          const email = laboratoryData[id].email;
-          try {
-            const userCredential = await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
-            const user = userCredential.user;
-
-            // Navigate to the laboratory page
-            navigation.navigate("laboratory");
-            return;
-          } catch (error) {
-            console.log(error.code);
-            setIsLoading(false);
-            setId("");
-            setPassword("");
-            setIdError("Invalid ID or Password");
-            setPasswordError("Invalid ID or Password");
-          }
-        }
-      }
-      setId("");
-      setPassword("");
-      setIdError("Invalid ID or Password");
-      setPasswordError("Invalid ID or Password");
-    } catch (error) {
-      console.error("Error signing in:", error);
-
-      if (error.code === "auth/user-not-found") {
-        setIsLoading(false);
-        alert("User not found. Please check your ID.");
-      } else {
-        // Handle other errors with a generic message
-        setIsLoading(false);
-        alert("An error occurred during sign-in. Please try again later.");
       }
     }
+
+    handleSignInError();
+  };
+
+  const getRolePage = (role) => {
+    switch (role) {
+      case "patients":
+        return "patientPage";
+      case "medical_units/hospital":
+        return "hospital";
+      case "medical_units/pharmacy":
+        return "pharmacy";
+      case "medical_units/laboratory":
+        return "laboratory";
+      default:
+        return "";
+    }
+  };
+
+  const handleSignInError = () => {
+    setIsLoading(false);
+    setId("");
+    setPassword("");
+    setIdError("Invalid ID or Password");
+    setPasswordError("Invalid ID or Password");
+  };
+  const resetPassword = () => {
+    navigation.navigate("resetPasswordScreen");
   };
 
   return (
@@ -199,15 +128,28 @@ const LoginForm = ({ navigation }) => {
         </View>
         <View>
           <Text style={{ fontSize: 16, marginBottom: 5 }}>Password:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={passwordError ? passwordError : "Enter your password"}
-            placeholderTextColor={passwordError ? "red" : "gray"}
-            secureTextEntry={true}
-            autoCapitalize="none"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
+          <React.Fragment>
+            <TextInput
+              style={styles.input}
+              placeholder={
+                passwordError ? passwordError : "Enter your password"
+              }
+              placeholderTextColor={passwordError ? "red" : "gray"}
+              secureTextEntry={passwordSecure}
+              autoCapitalize="none"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+            <AntDesign
+              style={{ position: "absolute", right: 15, top: 45 }}
+              name={passwordSecure ? "eye" : "eyeo"}
+              size={24}
+              color="black"
+              onPress={() => {
+                setPasswordSecure((prev) => !prev);
+              }}
+            />
+          </React.Fragment>
         </View>
         <View style={styles.underInput}>
           <View style={styles.CheckRemember}>
@@ -220,7 +162,7 @@ const LoginForm = ({ navigation }) => {
 
             <Text style={{ top: 10, right: 5 }}>Remember Me</Text>
           </View>
-          <TouchableOpacity style={styles.forgetPass}>
+          <TouchableOpacity style={styles.forgetPass} onPress={resetPassword}>
             <Text style={{ color: "blue", top: 10, left: 10 }}>
               forget password?
             </Text>
