@@ -81,7 +81,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
-            title: "pharm",
+            title: "pharmc",
           }}
         />
         <Stack.Screen
