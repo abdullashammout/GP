@@ -13,6 +13,7 @@ import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db } from "../../firebase";
 import { ref, get, update } from "firebase/database";
+import { AntDesign } from "@expo/vector-icons";
 
 const SignUPForm = () => {
   const [id, setId] = useState("");
@@ -25,6 +26,7 @@ const SignUPForm = () => {
   const [passwordError, setPasswordError] = useState(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
+  const [passwordSecure, setPasswordSecure] = useState(true);
 
   const isEmailValid = (email) => {
     const famousDomains = [
@@ -56,7 +58,11 @@ const SignUPForm = () => {
 
     // Use a regular expression to validate the email format
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailPattern.test(email);
+    if (!emailPattern.test(email)) {
+      return false;
+    }
+
+    return true;
   };
 
   const handleSignUp = async () => {
@@ -218,6 +224,7 @@ const SignUPForm = () => {
             Create An Account To Get All Features
           </Text>
         </View>
+
         <View>
           <Text style={{ fontSize: 16, marginBottom: 5, marginTop: 250 }}>
             ID Number:
@@ -236,22 +243,33 @@ const SignUPForm = () => {
         </View>
         <View>
           <Text style={{ fontSize: 16, marginBottom: 5 }}>Password:</Text>
-          <TextInput
-            returnKeyType="next"
-            style={styles.input}
-            placeholderTextColor={
-              isPasswordMatching || passwordError ? "red" : "gray"
-            }
-            placeholder={
-              isPasswordMatching || passwordError
-                ? passwordError || isPasswordMatching
-                : "Enter Your Password"
-            }
-            autoCapitalize="none"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
+          <React.Fragment>
+            <TextInput
+              returnKeyType="next"
+              style={styles.input}
+              placeholderTextColor={
+                isPasswordMatching || passwordError ? "red" : "gray"
+              }
+              placeholder={
+                isPasswordMatching || passwordError
+                  ? passwordError || isPasswordMatching
+                  : "Enter Your Password"
+              }
+              autoCapitalize="none"
+              secureTextEntry={passwordSecure}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+            <AntDesign
+              style={{ position: "absolute", right: 15, top: 45 }}
+              name={passwordSecure ? "eye" : "eyeo"}
+              size={24}
+              color="black"
+              onPress={() => {
+                setPasswordSecure((prev) => !prev);
+              }}
+            />
+          </React.Fragment>
         </View>
         <View>
           <Text style={{ fontSize: 16, marginBottom: 5 }}>
@@ -269,7 +287,7 @@ const SignUPForm = () => {
                 : "Enter Your Password"
             }
             autoCapitalize="none"
-            secureTextEntry={true}
+            secureTextEntry={passwordSecure}
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
           />
@@ -280,7 +298,7 @@ const SignUPForm = () => {
             style={styles.input}
             placeholder={emailError ? emailError : "Enter your email"}
             placeholderTextColor={emailError ? "red" : "gray"}
-            value={email}
+            value={email.trim()}
             autoCapitalize="none"
             onChangeText={(text) => setEmail(text)}
           />
