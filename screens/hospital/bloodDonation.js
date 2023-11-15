@@ -20,7 +20,14 @@ const BloodDonation = () => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Text>Last Donation Date:</Text>
       <Button title="Select Date" onPress={() => setShowDatePicker(true)} />
       {showDatePicker && (
