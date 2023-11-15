@@ -29,19 +29,19 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+          name="home"
+          component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="hospitalMain"
           component={MainScreen}
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
-            title: "hospital",
-          }}
-        />
-        <Stack.Screen
-          name="home"
-          component={Home}
-          options={{
-            headerShown: false,
+            title: "",
           }}
         />
         <Stack.Screen
