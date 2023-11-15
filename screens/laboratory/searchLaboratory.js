@@ -27,18 +27,17 @@ export default function SearchPh() {
         }}
       >
         <Text style={{ fontWeight: "bold" }}>
-          Enter patient ID to view his prescription
+          Enter patient ID to view his lab results
         </Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Patient ID"
-          value={id}
           onChangeText={(text) => setId(text)}
           maxLength={10}
           keyboardType="numeric"
         />
         <TouchableOpacity style={styles.searchBtn}>
-          <Text style={{ color: "white", textAlign: "center" }}>Search</Text>
+          <Text style={styles.btnText}>Search</Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
@@ -62,5 +61,9 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderWidth: 1,
     borderRadius: 10,
+  },
+  btnText: {
+    color: "white",
+    textAlign: "center",
   },
 });
