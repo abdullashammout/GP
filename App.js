@@ -1,16 +1,15 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
 import LoginForm from "./screens/patient/login";
 import SignUPForm from "./screens/patient/signUp";
 import SearchPh from "./screens/pharmacy/searchPharmacy";
-import SearchLabor from "./screens/laboratory/search";
+import SearchLabor from "./screens/laboratory/searchLaboratory";
 import PatientPage from "./screens/patient/patientPage";
 import SearchHos from "./screens/hospital/main";
+import ResetPasswordScreen from "./screens/patient/ResetPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,14 +51,18 @@ export default function App() {
           name="pharmacy"
           component={SearchPh}
           options={{
-            headerShown: false,
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            title: "phar",
           }}
         />
         <Stack.Screen
           name="laboratory"
           component={SearchLabor}
           options={{
-            headerShown: false,
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            title: "lab",
           }}
         />
         <Stack.Screen
@@ -70,6 +73,13 @@ export default function App() {
           }}
         />
         <Stack.Screen name="hospital" component={SearchHos} />
+        <Stack.Screen
+          name="resetPasswordScreen"
+          component={ResetPasswordScreen}
+          options={{
+            headerTitleAlign: "center",
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
