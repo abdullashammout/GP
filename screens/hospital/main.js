@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   FlatList,
@@ -7,8 +7,39 @@ import {
   Text,
   Image,
 } from "react-native";
+import { ref, get } from "firebase/database";
+import { db } from "../../firebase";
 
-export default function MainScreen({ navigation }) {
+export default function MainScreen({ route, navigation }) {
+  const { patientId } = route.params;
+  const [patientName, setPatientName] = useState("");
+  const [patientAge, setPatientAge] = useState(null);
+  const [patientGender, setPatientGender] = useState(null);
+  const [pId, setPId] = useState(null);
+  useEffect(() => {
+    // Fetch patient information from the database using the patientId
+    const userRef = ref(db, `users/patients/${patientId}`);
+    get(userRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // Set the patient name to state
+          const { name } = snapshot.val();
+          setPatientName(name);
+          const { age } = snapshot.val();
+          setPatientAge(age);
+          const { gender } = snapshot.val();
+          setPatientGender(gender);
+          const { id } = snapshot.val();
+          setPId(id);
+        } else {
+          console.log("Patient not found");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching patient data: ", error);
+      });
+  }, [patientId]);
+
   const data = [
     {
       index: "1",
@@ -80,6 +111,44 @@ export default function MainScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.patientInfo}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontWeight: "bold",
+            paddingTop: 10,
+            fontSize: 18,
+          }}
+        >
+          Patient name : {patientName}
+        </Text>
+      </View>
+      <View style={styles.patientInfo}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            paddingHorizontal: 20,
+          }}
+        >
+          age: {patientAge}
+        </Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            paddingHorizontal: 20,
+          }}
+        >
+          Gender: {patientGender}
+        </Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            paddingHorizontal: 20,
+          }}
+        >
+          ID: {pId}
+        </Text>
+      </View>
       <View style={styles.flatcontainer}>
         <FlatList
           key={"?"}
@@ -99,7 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   flatcontainer: {
-    top: 50,
+    top: 20,
   },
   item: {
     backgroundColor: "lightblue",
@@ -119,5 +188,12 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     marginBottom: 10,
+  },
+  patientInfo: {
+    flex: 0.3,
+    backgroundColor: "#f0f0f0",
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    justifyContent: "center",
   },
 });
