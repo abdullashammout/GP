@@ -111,43 +111,25 @@ export default function MainScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.patientInfo}>
-        <Text
-          style={{
-            textAlign: "center",
-            fontWeight: "bold",
-            paddingTop: 10,
-            fontSize: 18,
-          }}
-        >
-          Patient name : {patientName}
-        </Text>
-      </View>
-      <View style={styles.patientInfo}>
-        <Text
-          style={{
-            fontWeight: "bold",
-            paddingHorizontal: 20,
-          }}
-        >
-          age: {patientAge}
-        </Text>
-        <Text
-          style={{
-            fontWeight: "bold",
-            paddingHorizontal: 20,
-          }}
-        >
-          Gender: {patientGender}
-        </Text>
-        <Text
-          style={{
-            fontWeight: "bold",
-            paddingHorizontal: 20,
-          }}
-        >
-          ID: {pId}
-        </Text>
+      <View style={styles.patientInfoContainer}>
+        <View style={styles.infoContainer}>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Name:</Text>
+            <Text style={styles.info}>{patientName}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Age:</Text>
+            <Text style={styles.info}>{patientAge}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Gender:</Text>
+            <Text style={styles.info}>{patientGender}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>ID:</Text>
+            <Text style={styles.info}>{pId}</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.flatcontainer}>
         <FlatList
@@ -168,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   flatcontainer: {
-    top: 20,
+    top: 10,
   },
   item: {
     backgroundColor: "lightblue",
@@ -177,8 +159,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 5,
-    height: 150,
+    borderRadius: 20,
+    height: 140,
     width: 45,
   },
   title: {
@@ -189,11 +171,26 @@ const styles = StyleSheet.create({
     width: 100,
     marginBottom: 10,
   },
-  patientInfo: {
-    flex: 0.3,
-    backgroundColor: "#f0f0f0",
+  patientInfoContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    elevation: 3,
+    margin: 10,
+    marginVertical: 2,
+    padding: 15,
+  },
+
+  infoContainer: {},
+  infoRow: {
     flexDirection: "row",
-    paddingHorizontal: 20,
-    justifyContent: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  label: {
+    fontWeight: "bold",
+    color: "#333",
+  },
+  info: {
+    color: "#555",
   },
 });
