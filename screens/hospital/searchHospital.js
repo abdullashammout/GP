@@ -50,14 +50,13 @@ export default function SearchHospital() {
     const userHasAccount = await checkUserAccount();
 
     if (!userHasAccount) {
-      setIdError(
-        "Account not found",
-        "The patient with this ID does not have an account."
-      );
+      setId("");
+      setIdError("The patient with this ID does not have an account.");
       return;
     }
 
     navigation.navigate("hospitalMain", { patientId: id });
+    setId("");
   };
   // Function to check if the ID exists in the database
   const checkIdInDatabase = async () => {
