@@ -41,7 +41,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
-            title: "",
+            title: "Patient Information",
           }}
         />
         <Stack.Screen
