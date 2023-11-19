@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { auth } from "./firebase";
 import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
 import LoginForm from "./screens/patient/login";
@@ -25,16 +26,101 @@ import StayList from "./screens/hospital/stay/stayList";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      // onAuthStateChanged is called when the user's login status changes
+      setUserLoggedIn(!!user); // Update the userLoggedIn state based on the user's login status
+    });
+
+    // Cleanup function to unsubscribe the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="home"
-          component={Home}
-          options={{
-            headerShown: false,
-          }}
-        />
+        {userLoggedIn ? (
+          <>
+            <Stack.Screen
+              name="hospital"
+              component={SearchHospital}
+              options={{
+                headerShown: false,
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="pharmacy"
+              component={SearchPh}
+              options={{
+                headerShadowVisible: false,
+                headerTitleAlign: "center",
+                title: "phar",
+              }}
+            />
+            <Stack.Screen
+              name="laboratory"
+              component={SearchLabor}
+              options={{
+                headerShadowVisible: false,
+                headerTitleAlign: "center",
+                title: "lab",
+              }}
+            />
+
+            <Stack.Screen
+              name="patientPage"
+              component={PatientPage}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="home"
+              component={Home}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginForm}
+              options={{
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+              }}
+            />
+            <Stack.Screen
+              name="patientHome"
+              component={PaitentHome}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUPForm}
+              options={{
+                headerShadowVisible: false,
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="resetPasswordScreen"
+              component={ResetPasswordScreen}
+              options={{
+                headerTitleAlign: "center",
+                title: "Password Reset",
+              }}
+            />
+          </>
+        )}
+
         <Stack.Screen
           name="hospitalMain"
           component={MainScreen}
@@ -42,69 +128,6 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             title: "Patient Information",
-          }}
-        />
-        <Stack.Screen
-          name="patientHome"
-          component={PaitentHome}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginForm}
-          options={{
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-          }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUPForm}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-          }}
-        />
-        <Stack.Screen
-          name="hospital"
-          component={SearchHospital}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-          }}
-        />
-        <Stack.Screen
-          name="pharmacy"
-          component={SearchPh}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            title: "phar",
-          }}
-        />
-        <Stack.Screen
-          name="laboratory"
-          component={SearchLabor}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            title: "lab",
-          }}
-        />
-        <Stack.Screen
-          name="patientPage"
-          component={PatientPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="resetPasswordScreen"
-          component={ResetPasswordScreen}
-          options={{
-            headerTitleAlign: "center",
           }}
         />
 
