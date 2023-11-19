@@ -51,6 +51,11 @@ const ResetPasswordScreen = () => {
   };
 
   const handleResetPassword = async () => {
+    if (email === "") {
+      setEmail("");
+      setEmailError("This Field is Required");
+      return;
+    }
     if (!isEmailValid(email)) {
       setEmail("");
       setEmailError(

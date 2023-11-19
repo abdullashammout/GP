@@ -63,7 +63,7 @@ const LoginForm = ({ navigation }) => {
             setPassword("");
             // Navigate to the appropriate page based on the role
             const rolePage = getRolePage(role);
-            navigation.navigate(rolePage);
+            navigation.navigate(rolePage, { userId: id });
 
             return;
           } catch (error) {
