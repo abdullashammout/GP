@@ -28,6 +28,17 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
   },
+  logout: {
+    position: "absolute",
+    top: 60,
+    right: 40,
+  },
+  hospitalName: {
+    position: "absolute",
+    top: 60,
+    fontWeight: "bold",
+    fontSize: 22,
+  },
 });
 
 export default styles;

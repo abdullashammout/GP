@@ -9,15 +9,58 @@ import {
   Alert,
 } from "react-native";
 import { ref, get } from "firebase/database";
-import { db } from "../../firebase";
-import react, { useState } from "react";
+import { db, auth } from "../../firebase";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/hospitalStyles/searchHospitalStyle";
-import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function SearchHospital() {
+export default function SearchHospital({ navigation, route }) {
+  const { userId } = route.params || {};
+  const [hospitalName, setHospitalname] = useState("");
   const [id, setId] = useState("");
   const [idError, setIdError] = useState(null);
-  const navigation = useNavigation();
+
+  useEffect(() => {
+    // Fetch patient information from the database using the patientId
+    const userRef = ref(db, `users/medical_units/hospital/${userId}`);
+    get(userRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // Set the patient name to state
+          const { name } = snapshot.val();
+          setHospitalname(name);
+          console.log("Patient found:", name);
+        } else {
+          console.log("Patient not found");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching patient data: ", error);
+      });
+  }, [userId]);
+  const logout = async () => {
+    Alert.alert("Logout Confirmation", "Are you sure you want to logout?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Logout",
+        onPress: async () => {
+          try {
+            await auth.signOut(); // Sign out the user
+          } catch (error) {
+            console.error("Error during logout:", error.message);
+            // Show an error alert if there is an issue during logout
+            Alert.alert(
+              "Logout Error",
+              "An error occurred during logout. Please try again."
+            );
+          }
+        },
+      },
+    ]);
+  };
 
   const handleSearch = async () => {
     if (id === "") {
@@ -90,7 +133,8 @@ export default function SearchHospital() {
       }}
     >
       <View style={styles.container}>
-        <Text style={{ fontWeight: "bold" }}>
+        <Text style={styles.hospitalName}>{hospitalName}</Text>
+        <Text style={{ fontWeight: "normal" }}>
           Enter patient ID to Update his record
         </Text>
         <TextInput
@@ -104,6 +148,9 @@ export default function SearchHospital() {
         />
         <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
           <Text style={styles.searchBtnText}>Search</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.logout} onPress={logout}>
+          <MaterialCommunityIcons name="logout" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
