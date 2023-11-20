@@ -34,6 +34,7 @@ const LoginForm = ({ navigation }) => {
       setIdError(null);
       setPasswordError(null);
     }
+    setIsLoading(true);
 
     const roles = [
       "patients",
@@ -61,20 +62,24 @@ const LoginForm = ({ navigation }) => {
             const user = userCredential.user;
             setId("");
             setPassword("");
+
             // Navigate to the appropriate page based on the role
             const rolePage = getRolePage(role);
             navigation.navigate(rolePage, { userId: id });
+            setIsLoading(false);
 
             return;
           } catch (error) {
             alert(error.code);
             handleSignInError();
+            setIsLoading(false);
           }
         }
       }
     }
 
     handleSignInError();
+    setIsLoading(false);
   };
 
   const getRolePage = (role) => {

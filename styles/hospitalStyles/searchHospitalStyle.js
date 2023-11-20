@@ -29,9 +29,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   logout: {
+    backgroundColor: "#DC143C",
+    padding: 3,
+    borderRadius: 5,
+    flexDirection: "row",
     position: "absolute",
     top: 60,
-    right: 40,
+    left: 20,
   },
   hospitalName: {
     position: "absolute",
