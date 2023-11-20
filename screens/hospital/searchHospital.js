@@ -19,25 +19,30 @@ export default function SearchHospital({ navigation, route }) {
   const [hospitalName, setHospitalname] = useState("");
   const [id, setId] = useState("");
   const [idError, setIdError] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
-    // Fetch patient information from the database using the patientId
-    const userRef = ref(db, `users/medical_units/hospital/${userId}`);
-    get(userRef)
-      .then((snapshot) => {
+    const fetchHospitalName = async () => {
+      try {
+        const userRef = ref(db, `users/medical_units/hospital/${userId}`);
+        const snapshot = await get(userRef);
+
         if (snapshot.exists()) {
-          // Set the patient name to state
           const { name } = snapshot.val();
           setHospitalname(name);
-          console.log("Patient found:", name);
         } else {
-          console.log("Patient not found");
+          console.log("Hospital not found");
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching patient data: ", error);
-      });
+      } catch (error) {
+        console.error("Error fetching hospital data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when data is fetched or an error occurs
+      }
+    };
+
+    fetchHospitalName();
   }, [userId]);
+
   const logout = async () => {
     Alert.alert("Logout Confirmation", "Are you sure you want to logout?", [
       {
@@ -48,7 +53,8 @@ export default function SearchHospital({ navigation, route }) {
         text: "Logout",
         onPress: async () => {
           try {
-            await auth.signOut(); // Sign out the user
+            await auth.signOut();
+            // Sign out the user
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
@@ -150,6 +156,7 @@ export default function SearchHospital({ navigation, route }) {
           <Text style={styles.searchBtnText}>Search</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.logout} onPress={logout}>
+          <Text>Logout</Text>
           <MaterialCommunityIcons name="logout" size={24} color="black" />
         </TouchableOpacity>
       </View>
