@@ -48,35 +48,30 @@ export default function App() {
   const navigationRef = useRef(null);
 
   useEffect(() => {
+    console.log("Initial userLoggedIn state:", userLoggedIn);
+
     const checkUserLoggedIn = async () => {
       const user = await auth.currentUser;
       setUserLoggedIn(!!user);
 
       if (user) {
         const storedUserRole = await AsyncStorage.getItem("userRole");
+        console.log("Stored User Role:", storedUserRole);
+
         if (storedUserRole) {
           const rolePage = getRolePage(storedUserRole);
-          navigationRef.current?.navigate(rolePage, { userId: user.uid }); // Use optional chaining
+          console.log("Navigating to:", rolePage);
+          navigationRef.current?.navigate(rolePage, { userId: user.uid });
         } else {
-          navigationRef.current?.navigate("home"); // Use optional chaining
+          console.log("No stored role found, navigating to home");
+          navigationRef.current?.navigate("home");
         }
       } else {
-        navigationRef.current?.navigate("home"); // Use optional chaining
+        console.log("User not logged in, navigating to home");
+        navigationRef.current?.navigate("home");
       }
     };
-    const setUserRole = async () => {
-      const UserRole = await AsyncStorage.getItem("userRole");
-      const role = getRolePage(UserRole);
-      if (role === "hospital") {
-        setIsHospital(true);
-      } else if (role === "patientPage") {
-        setIsPatient(true);
-      } else if (role === "pharmacy") {
-        setIsPharmacy(true);
-      } else if (role === "laboratory") {
-        setIsLaboratory(true);
-      }
-    };
+
     const unsubscribe = auth.onAuthStateChanged(checkUserLoggedIn);
 
     const backHandler = BackHandler.addEventListener(
@@ -124,7 +119,6 @@ export default function App() {
     );
 
     return () => {
-      setUserRole();
       unsubscribe();
       backHandler.remove(); // Remove the event listener when the component unmounts
     };
