@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { auth } from "./firebase";
 import { Alert, BackHandler } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Home from "./screens/home";
 import PaitentHome from "./screens/patient/home";
@@ -27,18 +28,56 @@ import StayList from "./screens/hospital/stay/stayList";
 
 const Stack = createNativeStackNavigator();
 
+const getRolePage = (role) => {
+  switch (role) {
+    case "patients":
+      return "patientPage";
+    case "medical_units/hospital":
+      return "hospital";
+    case "medical_units/pharmacy":
+      return "pharmacy";
+    case "medical_units/laboratory":
+      return "laboratory";
+    default:
+      return "home"; // Default to the home page if the role is unknown
+  }
+};
+
 export default function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const navigationRef = useRef();
+  const navigationRef = useRef(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const checkUserLoggedIn = async () => {
+      const user = await auth.currentUser;
       setUserLoggedIn(!!user);
 
-      if (!user) {
-        navigationRef.current.navigate("home");
+      if (user) {
+        const storedUserRole = await AsyncStorage.getItem("userRole");
+        if (storedUserRole) {
+          const rolePage = getRolePage(storedUserRole);
+          navigationRef.current?.navigate(rolePage, { userId: user.uid }); // Use optional chaining
+        } else {
+          navigationRef.current?.navigate("home"); // Use optional chaining
+        }
+      } else {
+        navigationRef.current?.navigate("home"); // Use optional chaining
       }
-    });
+    };
+    const setUserRole = async () => {
+      const UserRole = await AsyncStorage.getItem("userRole");
+      const role = getRolePage(UserRole);
+      if (role === "hospital") {
+        setIsHospital(true);
+      } else if (role === "patientPage") {
+        setIsPatient(true);
+      } else if (role === "pharmacy") {
+        setIsPharmacy(true);
+      } else if (role === "laboratory") {
+        setIsLaboratory(true);
+      }
+    };
+    const unsubscribe = auth.onAuthStateChanged(checkUserLoggedIn);
 
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -85,6 +124,7 @@ export default function App() {
     );
 
     return () => {
+      setUserRole();
       unsubscribe();
       backHandler.remove(); // Remove the event listener when the component unmounts
     };
@@ -117,7 +157,6 @@ export default function App() {
                 headerShown: false,
               }}
             />
-
             <Stack.Screen
               name="patientPage"
               component={PatientPage}

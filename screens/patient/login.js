@@ -15,6 +15,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
 import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginForm = ({ navigation }) => {
   const [id, setId] = useState("");
@@ -60,10 +61,12 @@ const LoginForm = ({ navigation }) => {
               password
             );
             const user = userCredential.user;
+
+            // Navigate to the appropriate page based on the role
+            await AsyncStorage.setItem("userRole", role);
             setId("");
             setPassword("");
 
-            // Navigate to the appropriate page based on the role
             const rolePage = getRolePage(role);
             navigation.navigate(rolePage, { userId: id });
             setIsLoading(false);
