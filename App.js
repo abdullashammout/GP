@@ -42,16 +42,28 @@ const getRolePage = (role) => {
       return "home"; // Default to the home page if the role is unknown
   }
 };
+const getRoleComponent = (role) => {
+  switch (role) {
+    case "patients":
+      return PatientPage;
+    case "medical_units/hospital":
+      return SearchHospital;
+    case "medical_units/pharmacy":
+      return SearchPh;
+    case "medical_units/laboratory":
+      return SearchLabor;
+    default:
+      return Home; // Default to the home component if the role is unknown
+  }
+};
 
 export default function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const navigationRef = useRef(null);
 
   useEffect(() => {
-    console.log("Initial userLoggedIn state:", userLoggedIn);
-
     const checkUserLoggedIn = async () => {
-      const user = await auth.currentUser;
+      const user = auth.currentUser;
       setUserLoggedIn(!!user);
 
       if (user) {
@@ -61,19 +73,22 @@ export default function App() {
         if (storedUserRole) {
           const rolePage = getRolePage(storedUserRole);
           console.log("Navigating to:", rolePage);
-          navigationRef.current?.navigate(rolePage, { userId: user.uid });
+
+          navigationRef.current?.reset({
+            index: 0,
+            routes: [{ name: rolePage, params: { userId: user.uid } }],
+          });
         } else {
           console.log("No stored role found, navigating to home");
-          navigationRef.current?.navigate("home");
         }
-      } else {
-        console.log("User not logged in, navigating to home");
-        navigationRef.current?.navigate("home");
       }
     };
 
-    const unsubscribe = auth.onAuthStateChanged(checkUserLoggedIn);
-
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (userLoggedIn !== !!user) {
+        checkUserLoggedIn();
+      }
+    });
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
@@ -99,6 +114,7 @@ export default function App() {
                 onPress: async () => {
                   try {
                     await auth.signOut(); // Sign out the user
+                    await AsyncStorage.removeItem("userRole");
                   } catch (error) {
                     console.error("Error during logout:", error.message);
                     // Show an error alert if there is an issue during logout
@@ -119,8 +135,8 @@ export default function App() {
     );
 
     return () => {
-      unsubscribe();
       backHandler.remove(); // Remove the event listener when the component unmounts
+      unsubscribe();
     };
   }, [userLoggedIn]);
 
@@ -145,6 +161,13 @@ export default function App() {
               }}
             />
             <Stack.Screen
+              name="patientPage"
+              component={PatientPage}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
               name="laboratory"
               component={SearchLabor}
               options={{
@@ -152,8 +175,8 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="patientPage"
-              component={PatientPage}
+              name={getRolePage("userRole")}
+              component={getRoleComponent("userRole")}
               options={{
                 headerShown: false,
               }}
@@ -163,45 +186,45 @@ export default function App() {
           <>
             <Stack.Screen
               name="home"
-              component={Home}
+              component={React.lazy(() => import("./screens/home"))}
               options={{
                 headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginForm}
-              options={{
-                headerTitleAlign: "center",
-                headerShadowVisible: false,
-              }}
-            />
-            <Stack.Screen
-              name="patientHome"
-              component={PaitentHome}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUPForm}
-              options={{
-                headerShadowVisible: false,
-                headerTitleAlign: "center",
-              }}
-            />
-            <Stack.Screen
-              name="resetPasswordScreen"
-              component={ResetPasswordScreen}
-              options={{
-                headerTitleAlign: "center",
-                title: "Password Reset",
               }}
             />
           </>
         )}
 
+        <Stack.Screen
+          name="Login"
+          component={LoginForm}
+          options={{
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="patientHome"
+          component={PaitentHome}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUPForm}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="resetPasswordScreen"
+          component={ResetPasswordScreen}
+          options={{
+            headerTitleAlign: "center",
+            title: "Password Reset",
+          }}
+        />
         <Stack.Screen
           name="hospitalMain"
           component={MainScreen}
