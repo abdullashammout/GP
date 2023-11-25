@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { auth } from "../../firebase";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PatientPage() {
   const logout = async () => {
@@ -14,6 +15,7 @@ export default function PatientPage() {
         onPress: async () => {
           try {
             await auth.signOut(); // Sign out the user
+            await AsyncStorage.removeItem("userRole");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout

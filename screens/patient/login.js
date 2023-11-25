@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import styles from "../../styles/patientStyles/loginStyle";
@@ -178,7 +179,7 @@ const LoginForm = ({ navigation }) => {
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={signIn}>
           <Text style={{ textAlign: "center", color: "white" }}>
-            {isLoading ? "Logging in" : "Login"}
+            {isLoading ? <ActivityIndicator size="small" /> : "Login"}
           </Text>
         </TouchableOpacity>
       </View>
