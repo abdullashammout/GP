@@ -13,6 +13,7 @@ import { db, auth } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/hospitalStyles/searchHospitalStyle";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SearchHospital({ navigation, route }) {
   const { userId } = route.params || {};
@@ -54,7 +55,7 @@ export default function SearchHospital({ navigation, route }) {
         onPress: async () => {
           try {
             await auth.signOut();
-            // Sign out the user
+            await AsyncStorage.removeItem("userRole");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
