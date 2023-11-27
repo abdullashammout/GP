@@ -6,6 +6,7 @@ import { Alert, BackHandler } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Home from "./screens/home";
+import LoadingScreen from "./screens/Loading";
 import PaitentHome from "./screens/patient/home";
 import LoginForm from "./screens/patient/login";
 import SignUPForm from "./screens/patient/signUp";
@@ -186,7 +187,7 @@ export default function App() {
           <>
             <Stack.Screen
               name="home"
-              component={React.lazy(() => import("./screens/home"))}
+              component={Home}
               options={{
                 headerShown: false,
               }}
