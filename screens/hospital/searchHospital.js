@@ -30,7 +30,7 @@ export default function SearchHospital({ navigation, route }) {
 
         if (snapshot.exists()) {
           const { name } = snapshot.val();
-          setHospitalname(name);
+          await AsyncStorage.setItem("HospitalName", name);
         } else {
           console.log("Hospital not found");
         }
@@ -43,6 +43,11 @@ export default function SearchHospital({ navigation, route }) {
 
     fetchHospitalName();
   }, [userId]);
+  const getHospitalName = async () => {
+    const hosName = await AsyncStorage.getItem("HospitalName");
+    setHospitalname(hosName);
+  };
+  getHospitalName();
 
   const logout = async () => {
     Alert.alert("Logout Confirmation", "Are you sure you want to logout?", [
@@ -56,6 +61,7 @@ export default function SearchHospital({ navigation, route }) {
           try {
             await auth.signOut();
             await AsyncStorage.removeItem("userRole");
+            await AsyncStorage.removeItem("HospitalName");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
