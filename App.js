@@ -26,6 +26,10 @@ import HospitalStay from "./screens/hospital/stay/hospitalStay";
 import Vaccine from "./screens/hospital/vaccine";
 import PresList from "./screens/hospital/prescr/presList";
 import StayList from "./screens/hospital/stay/stayList";
+import SettingsScreen from "./screens/drawerScreens/settings";
+import AccountInfoScreen from "./screens/drawerScreens/accountInfo";
+import AboutUsScreen from "./screens/drawerScreens/aboutUs";
+import PrivacyScreen from "./screens/drawerScreens/privacy";
 
 const Stack = createNativeStackNavigator();
 
@@ -316,6 +320,10 @@ export default function App() {
             headerTitleAlign: "center",
           }}
         />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="AccountInfo" component={AccountInfoScreen} />
+        <Stack.Screen name="AboutUs" component={AboutUsScreen} />
+        <Stack.Screen name="Privacy" component={PrivacyScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
