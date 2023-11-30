@@ -241,7 +241,7 @@ export default function PatientPage({ navigation, route }) {
               <TouchableOpacity
                 style={{ flexDirection: "row", paddingBottom: 15 }}
                 onPress={() => {
-                  navigation.navigate("Settings");
+                  navigation.navigate("Settings", { userId });
                 }}
               >
                 <SimpleLineIcons name="settings" size={17} color="white" />

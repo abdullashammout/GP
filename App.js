@@ -30,6 +30,8 @@ import SettingsScreen from "./screens/drawerScreens/settings";
 import AccountInfoScreen from "./screens/drawerScreens/accountInfo";
 import AboutUsScreen from "./screens/drawerScreens/aboutUs";
 import PrivacyScreen from "./screens/drawerScreens/privacy";
+import ChangeEmailScreen from "./screens/drawerScreens/settingsScreens/changeEmail";
+import ChangePassScreen from "./screens/drawerScreens/settingsScreens/changePassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -194,6 +196,7 @@ export default function App() {
               component={Home}
               options={{
                 headerShown: false,
+                statusBarStyle: "dark",
               }}
             />
           </>
@@ -205,6 +208,7 @@ export default function App() {
           options={{
             headerTitleAlign: "center",
             headerShadowVisible: false,
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -212,6 +216,7 @@ export default function App() {
           component={PaitentHome}
           options={{
             headerShown: false,
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -220,6 +225,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -228,6 +234,7 @@ export default function App() {
           options={{
             headerTitleAlign: "center",
             title: "Password Reset",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -237,6 +244,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             title: "Patient Information",
+            statusBarStyle: "dark",
           }}
         />
 
@@ -246,6 +254,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -254,6 +263,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -262,6 +272,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -270,6 +281,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -278,6 +290,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -286,6 +299,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -294,6 +308,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -302,6 +317,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -310,6 +326,7 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
         <Stack.Screen
@@ -318,12 +335,35 @@ export default function App() {
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#34495e",
+            },
+          }}
+        />
         <Stack.Screen name="AccountInfo" component={AccountInfoScreen} />
         <Stack.Screen name="AboutUs" component={AboutUsScreen} />
         <Stack.Screen name="Privacy" component={PrivacyScreen} />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassScreen}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#34495e",
+            },
+          }}
+        />
+        <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
