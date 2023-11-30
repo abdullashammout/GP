@@ -226,7 +226,7 @@ const SignUPForm = () => {
         </View>
 
         <View>
-          <Text style={{ fontSize: 16, marginBottom: 5, marginTop: 250 }}>
+          <Text style={{ fontSize: 16, marginBottom: 5, marginTop: 100 }}>
             ID Number:
           </Text>
           <TextInput

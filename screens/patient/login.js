@@ -9,7 +9,6 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import Checkbox from "expo-checkbox";
 import styles from "../../styles/patientStyles/loginStyle";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -120,7 +119,7 @@ const LoginForm = ({ navigation }) => {
     >
       <View style={styles.container}>
         <View>
-          <Text style={{ fontSize: 16, marginBottom: 5, marginTop: 150 }}>
+          <Text style={{ fontSize: 16, marginBottom: 5, marginTop: 0 }}>
             ID Number:
           </Text>
           <TextInput
@@ -161,20 +160,8 @@ const LoginForm = ({ navigation }) => {
           </React.Fragment>
         </View>
         <View style={styles.underInput}>
-          <View style={styles.CheckRemember}>
-            <Checkbox
-              style={styles.checkbox}
-              value={isChecked}
-              onValueChange={setChecked}
-              color="black"
-            />
-
-            <Text style={{ top: 10, right: 5 }}>Remember Me</Text>
-          </View>
           <TouchableOpacity style={styles.forgetPass} onPress={resetPassword}>
-            <Text style={{ color: "blue", top: 10, left: 10 }}>
-              forget password?
-            </Text>
+            <Text style={{ color: "blue" }}>forget password?</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={signIn}>

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
 
   loginBtn: {
-    marginTop: 100,
+    marginTop: 50,
     width: 280,
     borderColor: "white",
     padding: 10,
@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
   checkbox: {
     margin: 8,
   },
-  CheckRemember: {
-    flexDirection: "row",
-    marginRight: 70,
+  forgetPass: {
+    marginTop: 40,
   },
 });
 
