@@ -64,7 +64,6 @@ const LoginForm = ({ navigation }) => {
 
             // Navigate to the appropriate page based on the role
             await AsyncStorage.setItem("userRole", role);
-            await AsyncStorage.setItem("pass", password);
             setId("");
             setPassword("");
 

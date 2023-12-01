@@ -27,7 +27,6 @@ export default function SettingsScreen({ navigation, route }) {
             await auth.signOut(); // Sign out the user
             await AsyncStorage.removeItem("userRole");
             await AsyncStorage.removeItem("PatientName");
-            await AsyncStorage.removeItem("pass");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout

@@ -122,7 +122,6 @@ export default function App() {
                   try {
                     await auth.signOut(); // Sign out the user
                     await AsyncStorage.removeItem("userRole");
-                    await AsyncStorage.removeItem("pass");
                   } catch (error) {
                     console.error("Error during logout:", error.message);
                     // Show an error alert if there is an issue during logout
@@ -159,6 +158,8 @@ export default function App() {
               options={{
                 headerShown: false,
                 headerTitleAlign: "center",
+                statusBarColor: "white",
+                statusBarStyle: "dark",
               }}
             />
             <Stack.Screen

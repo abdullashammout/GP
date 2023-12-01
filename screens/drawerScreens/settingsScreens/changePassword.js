@@ -87,7 +87,6 @@ export default function ChangePassScreen() {
 
       // Change the password
       await updatePassword(user, newPassword);
-      await AsyncStorage.setItem("pass", newPassword);
 
       Alert.alert("Success", "Password changed successfully.");
       setOldPassword("");
