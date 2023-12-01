@@ -64,58 +64,57 @@ export default function ChangeEmailScreen({ navigation, route }) {
     return true;
   };
 
-  const handleChangeEmail = async () => {
-    if (currentEmail === "" || newEmail === "") {
-      setCurrentEmailError("This Field Is Required");
-      setNewEmailError("This Field Is Required");
-      return;
-    } else {
-      setCurrentEmailError(null);
-      setNewEmailError(null);
-    }
-    if (!isEmailValid(newEmail)) {
-      setNewEmail("");
-      setNewEmailError("Invalid email");
-      return;
-    }
-    const password = await AsyncStorage.getItem("pass");
+  // const handleChangeEmail = async () => {
+  //   if (currentEmail === "" || newEmail === "") {
+  //     setCurrentEmailError("This Field Is Required");
+  //     setNewEmailError("This Field Is Required");
+  //     return;
+  //   } else {
+  //     setCurrentEmailError(null);
+  //     setNewEmailError(null);
+  //   }
+  //   if (!isEmailValid(newEmail)) {
+  //     setNewEmail("");
+  //     setNewEmailError("Invalid email");
+  //     return;
+  //   }
 
-    try {
-      const user = auth.currentUser;
+  //   try {
+  //     const user = auth.currentUser;
 
-      // Reauthenticate user before changing email
-      const credential = EmailAuthProvider.credential(
-        currentEmail,
-        // You might need to ask the user to input their password for reauthentication
-        password
-      );
+  //     // Reauthenticate user before changing email
+  //     const credential = EmailAuthProvider.credential(
+  //       currentEmail,
+  //       // You might need to ask the user to input their password for reauthentication
+  //       password
+  //     );
 
-      await reauthenticateWithCredential(user, credential);
-      await verifyBeforeUpdateEmail(user, newEmail);
-      Alert.alert("verify", "please verify your new email for security  ");
-      const userData = ref(db, `users/patients/${userId}`);
-      update(userData, {
-        email: newEmail,
-      });
-      await updateEmail(user, newEmail);
+  //     await reauthenticateWithCredential(user, credential);
+  //     await verifyBeforeUpdateEmail(user, newEmail);
+  //     Alert.alert("verify", "please verify your new email for security  ");
+  //     const userData = ref(db, `users/patients/${userId}`);
+  //     update(userData, {
+  //       email: newEmail,
+  //     });
+  //     await updateEmail(user, newEmail);
 
-      setCurrentEmail("");
-      setNewEmail("");
-    } catch (error) {
-      console.log(error.code);
-      // Handle errors here
-      if (
-        error.code === "auth/invalid-email" ||
-        error.code === "auth/user-not-found" ||
-        error.code === "auth/invalid-login-credentials"
-      ) {
-        setCurrentEmail("");
-        setCurrentEmailError(
-          "Invalid current email. Please check your email address."
-        );
-      }
-    }
-  };
+  //     setCurrentEmail("");
+  //     setNewEmail("");
+  //   } catch (error) {
+  //     console.log(error.code);
+  //     // Handle errors here
+  //     if (
+  //       error.code === "auth/invalid-email" ||
+  //       error.code === "auth/user-not-found" ||
+  //       error.code === "auth/invalid-login-credentials"
+  //     ) {
+  //       setCurrentEmail("");
+  //       setCurrentEmailError(
+  //         "Invalid current email. Please check your email address."
+  //       );
+  //     }
+  //   }
+  // };
 
   return (
     <TouchableWithoutFeedback
