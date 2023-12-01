@@ -89,6 +89,7 @@ export default function PatientPage({ navigation, route }) {
             await auth.signOut(); // Sign out the user
             await AsyncStorage.removeItem("userRole");
             await AsyncStorage.removeItem("PatientName");
+            await AsyncStorage.removeItem("pass");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
@@ -189,7 +190,7 @@ export default function PatientPage({ navigation, route }) {
         <View
           style={{
             backgroundColor: "#3498db",
-            marginTop: 50,
+            marginTop: 20,
             marginBottom: 16,
             paddingLeft: 40,
             flexDirection: "row",
@@ -284,7 +285,7 @@ export default function PatientPage({ navigation, route }) {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  marginTop: 470,
+                  marginTop: 450,
                   flexDirection: "row",
                 }}
                 onPress={logout}

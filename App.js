@@ -122,6 +122,7 @@ export default function App() {
                   try {
                     await auth.signOut(); // Sign out the user
                     await AsyncStorage.removeItem("userRole");
+                    await AsyncStorage.removeItem("pass");
                   } catch (error) {
                     console.error("Error during logout:", error.message);
                     // Show an error alert if there is an issue during logout
@@ -172,6 +173,22 @@ export default function App() {
               component={PatientPage}
               options={{
                 headerShown: false,
+                statusBarStyle: "light",
+                statusBarColor: "#3498db",
+              }}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#34495e",
+                },
+                statusBarColor: "#34495e",
+                statusBarStyle: "light",
+                statusBarAnimation: "slide",
               }}
             />
             <Stack.Screen
@@ -338,32 +355,72 @@ export default function App() {
             statusBarStyle: "dark",
           }}
         />
+
         <Stack.Screen
-          name="Settings"
-          component={SettingsScreen}
+          name="AccountInfo"
+          component={AccountInfoScreen}
           options={{
             headerTitleAlign: "center",
             headerTintColor: "white",
+            statusBarColor: "#34495e",
+            statusBarStyle: "light",
             headerStyle: {
               backgroundColor: "#34495e",
             },
           }}
         />
-        <Stack.Screen name="AccountInfo" component={AccountInfoScreen} />
-        <Stack.Screen name="AboutUs" component={AboutUsScreen} />
-        <Stack.Screen name="Privacy" component={PrivacyScreen} />
+        <Stack.Screen
+          name="AboutUs"
+          component={AboutUsScreen}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            statusBarColor: "#34495e",
+            statusBarStyle: "light",
+            headerStyle: {
+              backgroundColor: "#34495e",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Privacy"
+          component={PrivacyScreen}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            statusBarColor: "#34495e",
+            statusBarStyle: "light",
+            headerStyle: {
+              backgroundColor: "#34495e",
+            },
+          }}
+        />
         <Stack.Screen
           name="ChangePassword"
           component={ChangePassScreen}
           options={{
             headerTitleAlign: "center",
             headerTintColor: "white",
+            statusBarColor: "#34495e",
+            statusBarStyle: "light",
             headerStyle: {
               backgroundColor: "#34495e",
             },
           }}
         />
-        <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
+        <Stack.Screen
+          name="ChangeEmail"
+          component={ChangeEmailScreen}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            statusBarColor: "#34495e",
+            statusBarStyle: "light",
+            headerStyle: {
+              backgroundColor: "#34495e",
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

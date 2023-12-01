@@ -14,6 +14,7 @@ import {
   Keyboard,
   Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ChangePassScreen() {
   const [oldPassword, setOldPassword] = useState("");
@@ -86,6 +87,7 @@ export default function ChangePassScreen() {
 
       // Change the password
       await updatePassword(user, newPassword);
+      await AsyncStorage.setItem("pass", newPassword);
 
       Alert.alert("Success", "Password changed successfully.");
       setOldPassword("");

@@ -27,7 +27,7 @@ export default function SettingsScreen({ navigation, route }) {
             await auth.signOut(); // Sign out the user
             await AsyncStorage.removeItem("userRole");
             await AsyncStorage.removeItem("PatientName");
-            navigation.navigate("Login");
+            await AsyncStorage.removeItem("pass");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
@@ -77,6 +77,7 @@ export default function SettingsScreen({ navigation, route }) {
 
                         await AsyncStorage.removeItem("userRole");
                         await AsyncStorage.removeItem("PatientName");
+                        await AsyncStorage.removeItem("pass");
                         setLoad(false);
                         navigation.navigate("home");
                       }
@@ -143,6 +144,9 @@ export default function SettingsScreen({ navigation, route }) {
           borderColor: "#f0f0f0",
           backgroundColor: "#34495e",
           borderWidth: 2,
+        }}
+        onPress={() => {
+          navigation.navigate("ChangeEmail", { userId });
         }}
       >
         <Text style={{ textAlign: "center", color: "white" }}>
