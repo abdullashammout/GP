@@ -61,7 +61,6 @@ export default function SearchHospital({ navigation, route }) {
           try {
             await auth.signOut();
             await AsyncStorage.removeItem("userRole");
-            await AsyncStorage.removeItem("HospitalName");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
