@@ -18,7 +18,8 @@ import MainScreen from "./screens/hospital/main";
 import ResetPasswordScreen from "./screens/patient/ResetPassword";
 import Prescription from "./screens/hospital/prescr/prescription";
 import Diagnosis from "./screens/hospital/diagnosis";
-import Treatments from "./screens/hospital/treatments";
+import Treatments from "./screens/hospital/treat/treatments";
+import TreatmentDetails from "./screens/hospital/treat/treatDetails";
 import Allergies from "./screens/hospital/allergies";
 import Lab from "./screens/hospital/labResults";
 import BloodDonation from "./screens/hospital/bloodDonation";
@@ -287,6 +288,15 @@ export default function App() {
         <Stack.Screen
           name="treatments"
           component={Treatments}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+          }}
+        />
+        <Stack.Screen
+          name="TreatmentDetails"
+          component={TreatmentDetails}
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",

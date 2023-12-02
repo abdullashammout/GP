@@ -17,7 +17,8 @@ const Prescription = ({ navigation }) => {
   const [data, setData] = useState([
     { id: "1", title: "prescription 1", createdBy: "sara", medName: "panadol" },
   ]);
-  const [modalVisible, setModalVisibile] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.itemContainer}
@@ -31,7 +32,7 @@ const Prescription = ({ navigation }) => {
     >
       <View>
         <Text style={styles.itemText}>Prescription {item.id}</Text>
-        <Text>Doctor name:{item.createdBy}</Text>
+        <Text>Doctor name: {item.createdBy}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -49,8 +50,9 @@ const Prescription = ({ navigation }) => {
     setNewItem("");
     setUserName("");
     setMedName("");
-    setModalVisibile(false);
+    setModalVisible(false);
   };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -63,27 +65,22 @@ const Prescription = ({ navigation }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          setModalVisibile(!modalVisible);
+          setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {/* <TextInput style={styles.input} placeholder=' new item' value='enter doctor name' onChangeText={text => setNewItem(text)}/> */}
-            <Text onChangeText={(text) => setNewItem(text)}>
-              enter doctor name
-            </Text>
+            <Text>Enter doctor name</Text>
             <TextInput
               style={styles.input}
-              placeholder="your name"
+              placeholder="Your name"
               value={userName}
               onChangeText={(text) => setUserName(text)}
             />
-            <Text onChangeText={(text) => setMedicineName(text)}>
-              enter medicine name
-            </Text>
+            <Text>Enter medicine name</Text>
             <TextInput
               style={styles.input}
-              placeholder="med"
+              placeholder="Med"
               value={medName}
               onChangeText={(text) => setMedName(text)}
             />
@@ -91,7 +88,7 @@ const Prescription = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-      <Button title="add new item" onPress={() => setModalVisibile(true)} />
+      <Button title="Add new item" onPress={() => setModalVisible(true)} />
     </View>
   );
 };
@@ -100,7 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "white",
   },
   itemContainer: {
     backgroundColor: "#ADD8E6",
