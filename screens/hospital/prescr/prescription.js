@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,47 +9,110 @@ import {
   TextInput,
   Modal,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { set, child, ref, get } from "firebase/database";
+import { db } from "../../../firebase";
 
-const Prescription = ({ navigation }) => {
-  const [newItem, setNewItem] = useState("");
+const Prescription = ({ navigation, route }) => {
+  const { patientId } = route.params;
+  const [nextId, setNextId] = useState(1);
   const [userName, setUserName] = useState("");
-  const [medName, setMedName] = useState("");
-  const [data, setData] = useState([
-    { id: "1", title: "prescription 1", createdBy: "sara", medName: "panadol" },
-  ]);
+  const [medicalUnitName, setMedicalUnitName] = useState("");
+  const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const renderItem = ({ item }) => (
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const presDataRef = ref(db, `users/patients/${patientId}/prescription`);
+        const snapshot = await get(presDataRef);
+        const loadedData = [];
+
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            const itemData = childSnapshot.val();
+            loadedData.push(itemData);
+            setNextId(loadedData.length + 1); // Set nextId based on the length
+          });
+          setData(loadedData);
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
+
+    loadData();
+  }, [patientId]);
+
+  const getMedicalUnitName = async () => {
+    const Name = await AsyncStorage.getItem("HospitalName");
+    setMedicalUnitName(Name);
+  };
+  getMedicalUnitName();
+
+  const renderItem = ({ item, index = 0 }) => (
     <TouchableOpacity
       style={styles.itemContainer}
       onPress={() =>
         navigation.navigate("presList", {
-          itemId: item.id,
+          itemId: index + 1,
           itemName: item.createdBy,
-          medName: item.medName,
+          medicalUnitName: item.medicalUnitName,
+          patientId: patientId,
         })
       }
     >
       <View>
-        <Text style={styles.itemText}>Prescription {item.id}</Text>
+        <Text style={styles.itemText}>Prescription {index + 1}</Text>
         <Text>Doctor name: {item.createdBy}</Text>
+        <Text
+          style={{
+            position: "absolute",
+            alignSelf: "flex-end",
+            marginTop: 10,
+          }}
+        >
+          Date: {item.date}
+        </Text>
+        <Text
+          style={{
+            position: "absolute",
+            alignSelf: "flex-end",
+            marginTop: 30,
+          }}
+        >
+          Time: {item.time}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 
-  const handleAddItem = () => {
-    setData((prevData) => [
-      ...prevData,
-      {
-        id: Math.random().toString(),
-        title: newItem,
-        createdBy: userName,
-        medName: medName,
-      },
-    ]);
-    setNewItem("");
+  const handleAddItem = async () => {
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()}/${
+      currentDate.getMonth() + 1
+    }/${currentDate.getFullYear()}`;
+    const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+
+    const newItemData = {
+      // ide: nextId.toString(),
+      createdBy: userName,
+      medicalUnitName: medicalUnitName,
+      date: formattedDate,
+      time: formattedTime,
+    };
+
+    const presDataRef = ref(db, `users/patients/${patientId}/prescription`);
+
+    const newPrescriptionRef = child(presDataRef, nextId.toString());
+
+    set(newPrescriptionRef, newItemData);
+
+    setData((prevData) => [...prevData, newItemData]);
+    setNextId((prevId) => prevId + 1);
+
     setUserName("");
-    setMedName("");
+    setMedicalUnitName("");
     setModalVisible(false);
   };
 
@@ -58,10 +121,10 @@ const Prescription = ({ navigation }) => {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
       />
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -77,14 +140,13 @@ const Prescription = ({ navigation }) => {
               value={userName}
               onChangeText={(text) => setUserName(text)}
             />
-            <Text>Enter medicine name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Med"
-              value={medName}
-              onChangeText={(text) => setMedName(text)}
-            />
             <Button title="Add" onPress={handleAddItem} />
+            <Button
+              title="Cancel"
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            />
           </View>
         </View>
       </Modal>

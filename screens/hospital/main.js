@@ -77,7 +77,7 @@ export default function MainScreen({ route, navigation }) {
 
   const toPresc = (index) => {
     if (index === "1") {
-      navigation.navigate("Prescription");
+      navigation.navigate("Prescription", { patientId });
     }
     if (index === "2") {
       navigation.navigate("diagnosis");
