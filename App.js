@@ -67,6 +67,7 @@ const getRoleComponent = (role) => {
 
 export default function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true); // New loading state
   const navigationRef = useRef(null);
 
   useEffect(() => {
@@ -90,6 +91,7 @@ export default function App() {
           console.log("No stored role found, navigating to home");
         }
       }
+      setLoading(false);
     };
 
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -147,292 +149,296 @@ export default function App() {
       unsubscribe();
     };
   }, [userLoggedIn]);
+  if (loading) {
+    // Display an activity indicator while loading
+    return <LoadingScreen />;
+  } else {
+    return (
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator>
+          {userLoggedIn ? (
+            <>
+              <Stack.Screen
+                name="hospital"
+                component={SearchHospital}
+                options={{
+                  headerShown: false,
+                  headerTitleAlign: "center",
+                  statusBarColor: "white",
+                  statusBarStyle: "dark",
+                }}
+              />
+              <Stack.Screen
+                name="pharmacy"
+                component={SearchPh}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="patientPage"
+                component={PatientPage}
+                options={{
+                  headerShown: false,
+                  statusBarStyle: "light",
+                  statusBarColor: "#3498db",
+                }}
+              />
+              <Stack.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{
+                  headerTitleAlign: "center",
+                  headerTintColor: "white",
+                  headerStyle: {
+                    backgroundColor: "#34495e",
+                  },
+                  statusBarColor: "#34495e",
+                  statusBarStyle: "light",
+                  statusBarAnimation: "slide",
+                }}
+              />
+              <Stack.Screen
+                name="laboratory"
+                component={SearchLabor}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name={getRolePage("userRole")}
+                component={getRoleComponent("userRole")}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="home"
+                component={Home}
+                options={{
+                  headerShown: false,
+                  statusBarStyle: "dark",
+                }}
+              />
+            </>
+          )}
 
-  return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator>
-        {userLoggedIn ? (
-          <>
-            <Stack.Screen
-              name="hospital"
-              component={SearchHospital}
-              options={{
-                headerShown: false,
-                headerTitleAlign: "center",
-                statusBarColor: "white",
-                statusBarStyle: "dark",
-              }}
-            />
-            <Stack.Screen
-              name="pharmacy"
-              component={SearchPh}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="patientPage"
-              component={PatientPage}
-              options={{
-                headerShown: false,
-                statusBarStyle: "light",
-                statusBarColor: "#3498db",
-              }}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                headerTitleAlign: "center",
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#34495e",
-                },
-                statusBarColor: "#34495e",
-                statusBarStyle: "light",
-                statusBarAnimation: "slide",
-              }}
-            />
-            <Stack.Screen
-              name="laboratory"
-              component={SearchLabor}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name={getRolePage("userRole")}
-              component={getRoleComponent("userRole")}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen
-              name="home"
-              component={Home}
-              options={{
-                headerShown: false,
-                statusBarStyle: "dark",
-              }}
-            />
-          </>
-        )}
+          <Stack.Screen
+            name="Login"
+            component={LoginForm}
+            options={{
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="patientHome"
+            component={PaitentHome}
+            options={{
+              headerShown: false,
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUPForm}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="resetPasswordScreen"
+            component={ResetPasswordScreen}
+            options={{
+              headerTitleAlign: "center",
+              title: "Password Reset",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="hospitalMain"
+            component={MainScreen}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              title: "Patient Information",
+              statusBarStyle: "dark",
+            }}
+          />
 
-        <Stack.Screen
-          name="Login"
-          component={LoginForm}
-          options={{
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="patientHome"
-          component={PaitentHome}
-          options={{
-            headerShown: false,
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUPForm}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="resetPasswordScreen"
-          component={ResetPasswordScreen}
-          options={{
-            headerTitleAlign: "center",
-            title: "Password Reset",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="hospitalMain"
-          component={MainScreen}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            title: "Patient Information",
-            statusBarStyle: "dark",
-          }}
-        />
+          <Stack.Screen
+            name="Prescription"
+            component={Prescription}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="diagnosis"
+            component={Diagnosis}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="treatments"
+            component={Treatments}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="TreatmentDetails"
+            component={TreatmentDetails}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="allergies"
+            component={Allergies}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="lab"
+            component={Lab}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="BloodDonation"
+            component={BloodDonation}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="hospitalStay"
+            component={HospitalStay}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="vaccine"
+            component={Vaccine}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="presList"
+            component={PresList}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
+          <Stack.Screen
+            name="StayList"
+            component={StayList}
+            options={{
+              headerShadowVisible: false,
+              headerTitleAlign: "center",
+              statusBarStyle: "dark",
+            }}
+          />
 
-        <Stack.Screen
-          name="Prescription"
-          component={Prescription}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="diagnosis"
-          component={Diagnosis}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="treatments"
-          component={Treatments}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="TreatmentDetails"
-          component={TreatmentDetails}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="allergies"
-          component={Allergies}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="lab"
-          component={Lab}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="BloodDonation"
-          component={BloodDonation}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="hospitalStay"
-          component={HospitalStay}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="vaccine"
-          component={Vaccine}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="presList"
-          component={PresList}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-        <Stack.Screen
-          name="StayList"
-          component={StayList}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-          }}
-        />
-
-        <Stack.Screen
-          name="AccountInfo"
-          component={AccountInfoScreen}
-          options={{
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            statusBarColor: "#34495e",
-            statusBarStyle: "light",
-            headerStyle: {
-              backgroundColor: "#34495e",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="AboutUs"
-          component={AboutUsScreen}
-          options={{
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            statusBarColor: "#34495e",
-            statusBarStyle: "light",
-            headerStyle: {
-              backgroundColor: "#34495e",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="Privacy"
-          component={PrivacyScreen}
-          options={{
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            statusBarColor: "#34495e",
-            statusBarStyle: "light",
-            headerStyle: {
-              backgroundColor: "#34495e",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="ChangePassword"
-          component={ChangePassScreen}
-          options={{
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            statusBarColor: "#34495e",
-            statusBarStyle: "light",
-            headerStyle: {
-              backgroundColor: "#34495e",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="ChangeEmail"
-          component={ChangeEmailScreen}
-          options={{
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            statusBarColor: "#34495e",
-            statusBarStyle: "light",
-            headerStyle: {
-              backgroundColor: "#34495e",
-            },
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+          <Stack.Screen
+            name="AccountInfo"
+            component={AccountInfoScreen}
+            options={{
+              headerTitleAlign: "center",
+              headerTintColor: "white",
+              statusBarColor: "#34495e",
+              statusBarStyle: "light",
+              headerStyle: {
+                backgroundColor: "#34495e",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="AboutUs"
+            component={AboutUsScreen}
+            options={{
+              headerTitleAlign: "center",
+              headerTintColor: "white",
+              statusBarColor: "#34495e",
+              statusBarStyle: "light",
+              headerStyle: {
+                backgroundColor: "#34495e",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Privacy"
+            component={PrivacyScreen}
+            options={{
+              headerTitleAlign: "center",
+              headerTintColor: "white",
+              statusBarColor: "#34495e",
+              statusBarStyle: "light",
+              headerStyle: {
+                backgroundColor: "#34495e",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ChangePassword"
+            component={ChangePassScreen}
+            options={{
+              headerTitleAlign: "center",
+              headerTintColor: "white",
+              statusBarColor: "#34495e",
+              statusBarStyle: "light",
+              headerStyle: {
+                backgroundColor: "#34495e",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ChangeEmail"
+            component={ChangeEmailScreen}
+            options={{
+              headerTitleAlign: "center",
+              headerTintColor: "white",
+              statusBarColor: "#34495e",
+              statusBarStyle: "light",
+              headerStyle: {
+                backgroundColor: "#34495e",
+              },
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }

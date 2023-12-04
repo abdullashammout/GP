@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,22 +7,67 @@ import {
   Button,
   FlatList,
 } from "react-native";
+import { set, child, ref, get } from "firebase/database";
+import { db } from "../../../firebase";
 
 const PresList = ({ route }) => {
-  const { itemId, itemName } = route.params;
-
+  const { itemId, itemName, medicalUnitName, patientId } = route.params;
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState("");
+  const [prescriptions, setPrescriptions] = useState([]);
 
-  const handleAddMedication = () => {
-    if (medication && dosage) {
-      setMedications((prevMedications) => [
-        ...prevMedications,
-        { medication, dosage },
-      ]);
-      setMedication("");
-      setDosage("");
+  const fetchMedications = async () => {
+    try {
+      // Reference to the medications under the specific prescription ID
+      const medicationsRef = ref(
+        db,
+        `users/patients/${patientId}/prescription/${itemId}/medications`
+      );
+
+      // Fetch medications from Firebase
+      const snapshot = await get(medicationsRef);
+
+      if (snapshot.exists()) {
+        // Convert medications to an array and set the state
+        const medicationsArray = Object.values(snapshot.val());
+        setMedications(medicationsArray);
+        setPrescriptions(medicationsArray);
+      }
+    } catch (error) {
+      console.error("Error loading medications:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedications();
+  }, [itemId, patientId]);
+
+  const handleAddMedication = async () => {
+    try {
+      if (medication && dosage) {
+        // Create a new medication object
+        const newMedication = { medication, dosage };
+
+        // Update Firebase with the new medication data under the specific prescription ID
+        const prescriptionRef = ref(
+          db,
+          `users/patients/${patientId}/prescription/${itemId}/medications`
+        );
+
+        const newMedNo = medications.length + 1;
+
+        // Push the new medication data to the medications list
+        const newMedicationRef = child(prescriptionRef, newMedNo.toString());
+        await set(newMedicationRef, newMedication);
+        fetchMedications();
+
+        // Clear input fields
+        setMedication("");
+        setDosage("");
+      }
+    } catch (error) {
+      console.error("Error adding medication:", error);
     }
   };
 
@@ -49,6 +94,10 @@ const PresList = ({ route }) => {
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Doctor Name:</Text>
         <Text style={styles.value}>{itemName}</Text>
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.label}>Medical unit Name:</Text>
+        <Text style={styles.value}>{medicalUnitName}</Text>
       </View>
 
       <View style={styles.formContainer}>
