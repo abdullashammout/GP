@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,28 +10,6 @@ const AccountInfoScreen = ({ navigation, route }) => {
   const [patientId, setPatientId] = useState("");
   const [patientGender, setPatientGender] = useState("");
   const [patientAge, setPatientAge] = useState("");
-
-  useEffect(() => {
-    const fetchPatientInfo = async () => {
-      try {
-        const userInfo = ref(db, `users/patients/${userId}`);
-        const snapshot = await get(userInfo);
-
-        if (snapshot.exists()) {
-          const { email, gender, age } = snapshot.val();
-
-          await AsyncStorage.setItem("PatientEmail", email);
-          await AsyncStorage.setItem("PatientId", userId);
-          await AsyncStorage.setItem("PatientGender", gender);
-          await AsyncStorage.setItem("PatientAge", age.toString());
-        }
-      } catch (error) {
-        console.error("Error fetching Patient data:", error);
-      }
-    };
-
-    fetchPatientInfo();
-  }, [userId]);
 
   const getPatientInfo = async () => {
     const pEmail = await AsyncStorage.getItem("PatientEmail");

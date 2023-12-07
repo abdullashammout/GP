@@ -20,7 +20,7 @@ export default function SearchHospital({ navigation, route }) {
   const [hospitalName, setHospitalname] = useState("");
   const [id, setId] = useState("");
   const [idError, setIdError] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(false); // Add loading state
 
   useEffect(() => {
     const fetchHospitalName = async () => {
@@ -37,7 +37,6 @@ export default function SearchHospital({ navigation, route }) {
       } catch (error) {
         console.error("Error fetching hospital data:", error);
       } finally {
-        setLoading(false); // Set loading to false when data is fetched or an error occurs
       }
     };
 
@@ -75,6 +74,7 @@ export default function SearchHospital({ navigation, route }) {
   };
 
   const handleSearch = async () => {
+    setLoading(true);
     if (id === "") {
       setIdError("This Field Is Required");
       return;
@@ -109,7 +109,7 @@ export default function SearchHospital({ navigation, route }) {
       setIdError("The patient with this ID does not have an account.");
       return;
     }
-
+    setLoading(false);
     navigation.navigate("hospitalMain", { patientId: id });
     setId("");
   };
@@ -159,7 +159,9 @@ export default function SearchHospital({ navigation, route }) {
           keyboardType="numeric"
         />
         <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
-          <Text style={styles.searchBtnText}>Search</Text>
+          <Text style={styles.searchBtnText}>
+            {loading ? "Searching..." : "Search"}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.logout} onPress={logout}>
           <Text>Logout</Text>
