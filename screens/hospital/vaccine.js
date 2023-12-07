@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,17 +7,60 @@ import {
   FlatList,
   StyleSheet,
 } from "react-native";
+import { set, ref, push, get } from "firebase/database";
+import { db } from "../../firebase";
 
-const Vaccine = () => {
+const Vaccine = ({ navigation, route }) => {
+  const { patientId } = route.params;
   const [vaccines, setVaccines] = useState([]);
   const [vaccineName, setVaccineName] = useState("");
-  const [vaccineDate, setVaccineDate] = useState("");
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()}`;
 
-  const addVaccine = () => {
-    if (vaccineName && vaccineDate) {
-      setVaccines([...vaccines, { name: vaccineName, date: vaccineDate }]);
-      setVaccineName("");
-      setVaccineDate("");
+  const loadData = async () => {
+    try {
+      const presDataRef = ref(db, `users/patients/${patientId}/Vaccine`);
+      const snapshot = await get(presDataRef);
+      const loadedData = [];
+
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const itemData = childSnapshot.val();
+          itemData.id = childSnapshot.key;
+          loadedData.push(itemData);
+        });
+        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
+        setVaccines(sortedData);
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, [patientId, vaccines]);
+
+  const addVaccine = async () => {
+    try {
+      if (vaccineName) {
+        const newVaccine = { vaccineName, formattedDate };
+
+        const presDataRef = ref(db, `users/patients/${patientId}/Vaccine`);
+
+        const newPrescriptionRef = push(presDataRef, newVaccine);
+
+        const newItemId = newPrescriptionRef.key;
+        newVaccine.id = newItemId;
+
+        set(newPrescriptionRef, newVaccine);
+        setVaccines((prevData) => [...prevData, newVaccine]);
+
+        setVaccineName("");
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
     }
   };
 
@@ -31,12 +74,7 @@ const Vaccine = () => {
         value={vaccineName}
         onChangeText={(text) => setVaccineName(text)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Vaccination Date (MM/DD/YYYY)"
-        value={vaccineDate}
-        onChangeText={(text) => setVaccineDate(text)}
-      />
+
       <Button title="Add Vaccine" onPress={addVaccine} />
 
       <Text style={styles.historyHeader}>Vaccine History</Text>
@@ -46,7 +84,7 @@ const Vaccine = () => {
         renderItem={({ item }) => (
           <View style={styles.vaccineItem}>
             <Text>Vaccine: {item.name}</Text>
-            <Text>Date: {item.date}</Text>
+            <Text>Date: {formattedDate}</Text>
           </View>
         )}
       />
