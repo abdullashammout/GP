@@ -25,7 +25,7 @@ export default function SettingsScreen({ navigation, route }) {
         onPress: async () => {
           try {
             await auth.signOut(); // Sign out the user
-            await AsyncStorage.removeItem("userRole");
+            await AsyncStorage.setItem("userRole", "home");
           } catch (error) {
             console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout

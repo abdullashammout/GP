@@ -26,6 +26,27 @@ export default function PatientPage({ navigation, route }) {
   const [patientName, setPatientName] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [animation] = useState(new Animated.Value(0));
+  useEffect(() => {
+    const fetchPatientInfo = async () => {
+      try {
+        const userInfo = ref(db, `users/patients/${userId}`);
+        const snapshot = await get(userInfo);
+
+        if (snapshot.exists()) {
+          const { email, gender, age } = snapshot.val();
+
+          await AsyncStorage.setItem("PatientEmail", email);
+          await AsyncStorage.setItem("PatientId", userId);
+          await AsyncStorage.setItem("PatientGender", gender);
+          await AsyncStorage.setItem("PatientAge", age.toString());
+        }
+      } catch (error) {
+        console.error("Error fetching Patient data:", error);
+      }
+    };
+
+    fetchPatientInfo();
+  }, [userId]);
 
   useEffect(() => {
     const fetchPatientName = async () => {

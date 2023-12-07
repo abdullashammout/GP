@@ -6,33 +6,30 @@ import {
   TextInput,
   Button,
   FlatList,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
-import { set, child, ref, get } from "firebase/database";
+import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
 
 const PresList = ({ route }) => {
-  const { itemId, itemName, medicalUnitName, patientId } = route.params;
+  const { itemId, idd, itemName, medicalUnitName, patientId } = route.params;
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState("");
-  const [prescriptions, setPrescriptions] = useState([]);
 
   const fetchMedications = async () => {
     try {
-      // Reference to the medications under the specific prescription ID
       const medicationsRef = ref(
         db,
         `users/patients/${patientId}/prescription/${itemId}/medications`
       );
-
-      // Fetch medications from Firebase
       const snapshot = await get(medicationsRef);
 
       if (snapshot.exists()) {
-        // Convert medications to an array and set the state
         const medicationsArray = Object.values(snapshot.val());
         setMedications(medicationsArray);
-        setPrescriptions(medicationsArray);
       }
     } catch (error) {
       console.error("Error loading medications:", error);
@@ -46,23 +43,19 @@ const PresList = ({ route }) => {
   const handleAddMedication = async () => {
     try {
       if (medication && dosage) {
-        // Create a new medication object
         const newMedication = { medication, dosage };
-
-        // Update Firebase with the new medication data under the specific prescription ID
         const prescriptionRef = ref(
           db,
           `users/patients/${patientId}/prescription/${itemId}/medications`
         );
 
-        const newMedNo = medications.length + 1;
-
-        // Push the new medication data to the medications list
-        const newMedicationRef = child(prescriptionRef, newMedNo.toString());
-        await set(newMedicationRef, newMedication);
+        const newMedicationRef = push(prescriptionRef, newMedication);
+        const newItemId = newMedicationRef.key;
+        newMedication.id = newItemId;
+        set(newMedicationRef, newMedication);
+        setMedications((prevData) => [...prevData, newMedication]);
         fetchMedications();
 
-        // Clear input fields
         setMedication("");
         setDosage("");
       }
@@ -71,61 +64,95 @@ const PresList = ({ route }) => {
     }
   };
 
+  const handleDeleteMedication = async (id) => {
+    try {
+      const newMedications = medications.filter((med) => med.id !== id);
+      const medDataRef = ref(
+        db,
+        `users/patients/${patientId}/prescription/${itemId}/medications/${id}`
+      );
+      await set(medDataRef, null);
+      setMedications(newMedications);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
+
   const renderMedicationItem = ({ item }) => (
     <View style={styles.medicationItem}>
-      <Text style={styles.label}>Medication:</Text>
-      <Text style={[styles.value, styles.medication]}>{item.medication}</Text>
-      <Text style={styles.label}>Dosage:</Text>
-      <Text style={styles.value}>{item.dosage}</Text>
+      <View style={styles.row}>
+        <Text style={styles.label}>Medication:</Text>
+        <Text style={[styles.value, styles.medication]}>
+          {" "}
+          {item.medication}
+        </Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>Dosage:</Text>
+        <Text style={styles.value}> {item.dosage}</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => handleDeleteMedication(item.id)}
+      >
+        <Text style={{ color: "white" }}>Delete</Text>
+      </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Prescription Report</Text>
-      </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Prescription Report</Text>
+        </View>
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Prescription ID:</Text>
-        <Text style={styles.value}>{itemId}</Text>
-      </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Prescription ID:</Text>
+          <Text style={styles.value}>{idd}</Text>
+        </View>
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Doctor Name:</Text>
-        <Text style={styles.value}>{itemName}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Medical unit Name:</Text>
-        <Text style={styles.value}>{medicalUnitName}</Text>
-      </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Doctor Name:</Text>
+          <Text style={styles.value}>{itemName}</Text>
+        </View>
 
-      <View style={styles.formContainer}>
-        <Text style={styles.label}>Medication:</Text>
-        <TextInput
-          style={styles.input}
-          value={medication}
-          onChangeText={(text) => setMedication(text)}
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Medical unit Name:</Text>
+          <Text style={styles.value}>{medicalUnitName}</Text>
+        </View>
+
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Medication:</Text>
+          <TextInput
+            style={styles.input}
+            value={medication}
+            onChangeText={(text) => setMedication(text)}
+          />
+        </View>
+
+        <View style={styles.formContainer}>
+          <Text style={styles.label}> Dosage:{"     "}</Text>
+          <TextInput
+            style={styles.input}
+            value={dosage}
+            onChangeText={(text) => setDosage(text)}
+          />
+        </View>
+
+        <Button title="Add Medication" onPress={handleAddMedication} />
+
+        <FlatList
+          data={medications}
+          renderItem={renderMedicationItem}
+          keyExtractor={(item) => item.id.toString()}
         />
       </View>
-
-      <View style={styles.formContainer}>
-        <Text style={styles.label}>Dosage:</Text>
-        <TextInput
-          style={styles.input}
-          value={dosage}
-          onChangeText={(text) => setDosage(text)}
-        />
-      </View>
-
-      <Button title="Add Medication" onPress={handleAddMedication} />
-
-      <FlatList
-        data={medications}
-        renderItem={renderMedicationItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -133,6 +160,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#f5f5f5",
   },
   header: {
     alignItems: "center",
@@ -155,11 +183,11 @@ const styles = StyleSheet.create({
   },
   medicationItem: {
     justifyContent: "space-between",
-    flexDirection: "row",
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: "#f5f5f5",
+    marginVertical: 10,
+    padding: 15,
+    backgroundColor: "#ADD8E6",
     borderRadius: 8,
+    position: "relative",
   },
   label: {
     fontSize: 16,
@@ -182,6 +210,20 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     padding: 5,
     borderRadius: 8,
+    backgroundColor: "white",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
+    position: "absolute",
+    right: 10,
+    top: 50,
+    transform: [{ translateY: -25 }],
+  },
+  row: {
+    flexDirection: "row",
+    padding: 4,
   },
 });
 
