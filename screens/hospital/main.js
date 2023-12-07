@@ -86,7 +86,7 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("treatments");
     }
     if (index === "4") {
-      navigation.navigate("vaccine");
+      navigation.navigate("vaccine", { patientId });
     }
     if (index === "5") {
       navigation.navigate("allergies");
