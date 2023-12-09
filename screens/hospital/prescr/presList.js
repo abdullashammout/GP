@@ -117,13 +117,13 @@ const PresList = ({ route }) => {
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Doctor Name:</Text>
-          <Text style={styles.value}>{itemName}</Text>
+          <Text style={styles.label}>Medical unit Name:</Text>
+          <Text style={styles.value}>{medicalUnitName}</Text>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Medical unit Name:</Text>
-          <Text style={styles.value}>{medicalUnitName}</Text>
+          <Text style={styles.label}>Doctor Name:</Text>
+          <Text style={styles.value}>{itemName}</Text>
         </View>
 
         <View style={styles.formContainer}>

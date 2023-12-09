@@ -9,11 +9,13 @@ import {
 } from "react-native";
 import { set, ref, push, get } from "firebase/database";
 import { db } from "../../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Vaccine = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [vaccines, setVaccines] = useState([]);
   const [vaccineName, setVaccineName] = useState("");
+  const [medicalUnitName, setMedicalUnitName] = useState("");
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
@@ -41,20 +43,25 @@ const Vaccine = ({ navigation, route }) => {
   useEffect(() => {
     loadData();
   }, [patientId, vaccines]);
+  const getMedicalUnitName = async () => {
+    const Name = await AsyncStorage.getItem("HospitalName");
+    setMedicalUnitName(Name);
+  };
+  getMedicalUnitName();
 
   const addVaccine = async () => {
     try {
       if (vaccineName) {
-        const newVaccine = { vaccineName, formattedDate };
+        const newVaccine = { vaccineName, formattedDate, medicalUnitName };
 
         const presDataRef = ref(db, `users/patients/${patientId}/Vaccine`);
 
-        const newPrescriptionRef = push(presDataRef, newVaccine);
+        const newVaccineRef = push(presDataRef, newVaccine);
 
-        const newItemId = newPrescriptionRef.key;
+        const newItemId = newVaccineRef.key;
         newVaccine.id = newItemId;
 
-        set(newPrescriptionRef, newVaccine);
+        set(newVaccineRef, newVaccine);
         setVaccines((prevData) => [...prevData, newVaccine]);
 
         setVaccineName("");
@@ -83,8 +90,18 @@ const Vaccine = ({ navigation, route }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.vaccineItem}>
-            <Text>Vaccine: {item.name}</Text>
-            <Text>Date: {formattedDate}</Text>
+            <Text>
+              Medical Unit: {"  "}
+              {item.medicalUnitName}
+            </Text>
+            <Text>
+              Vaccine Name: {"  "}
+              {item.vaccineName}
+            </Text>
+            <Text>
+              Date: {"  "}
+              {item.formattedDate}
+            </Text>
           </View>
         )}
       />
@@ -96,7 +113,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,
@@ -119,7 +136,7 @@ const styles = StyleSheet.create({
   vaccineItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#ADD8E6",
+    backgroundColor: "#f1f1f1",
     borderRadius: 8,
   },
 });

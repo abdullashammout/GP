@@ -53,34 +53,6 @@ const Prescription = ({ navigation, route }) => {
   };
   getMedicalUnitName();
 
-  const renderItem = ({ item, index }) => (
-    <TouchableOpacity
-      style={styles.itemContainer}
-      onPress={() =>
-        navigation.navigate("presList", {
-          idd: index + 1,
-          itemId: item.id,
-          itemName: item.createdBy,
-          medicalUnitName: item.medicalUnitName,
-          patientId: patientId,
-        })
-      }
-    >
-      <View style={styles.itemInfo}>
-        <Text style={styles.itemText}>Prescription {index + 1}</Text>
-        <Text>Doctor name: {item.createdBy}</Text>
-        <Text style={styles.dateText}>Date: {item.date}</Text>
-        <Text style={styles.dateText}>Time: {item.time}</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleDeleteItem(item.id)}
-      >
-        <Text style={{ color: "white" }}>Delete</Text>
-      </TouchableOpacity>
-    </TouchableOpacity>
-  );
-
   const handleDeleteItem = async (id) => {
     try {
       const newData = data.filter((item) => item.id !== id);
@@ -129,6 +101,39 @@ const Prescription = ({ navigation, route }) => {
     }
   };
 
+  const renderItem = ({ item, index }) => (
+    <View style={styles.itemContainer}>
+      <View style={styles.itemInfo}>
+        <Text style={styles.itemText}>Prescription {index + 1}</Text>
+        <Text>Doctor name: {item.createdBy}</Text>
+        <Text style={styles.dateText}>Date: {item.date}</Text>
+        <Text style={styles.dateText}>Time: {item.time}</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: "#3498db" }}
+            onPress={() =>
+              navigation.navigate("presList", {
+                idd: index + 1,
+                itemId: item.id,
+                itemName: item.createdBy,
+                medicalUnitName: item.medicalUnitName,
+                patientId: patientId,
+              })
+            }
+          >
+            <Text style={{ color: "white" }}>Add Medications</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleDeleteItem(item.id)}
+          >
+            <Text style={{ color: "white" }}>Delete</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -160,8 +165,11 @@ const Prescription = ({ navigation, route }) => {
                 onChangeText={(text) => setUserName(text)}
               />
               <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.button} onPress={handleAddItem}>
-                  <Text style={styles.buttonText}>Add</Text>
+                <TouchableOpacity
+                  style={{ ...styles.button, backgroundColor: "#3498db" }}
+                  onPress={handleAddItem}
+                >
+                  <Text style={{ color: "white" }}>Add</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -177,13 +185,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
   },
   itemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#ADD8E6",
+    backgroundColor: "#f1f1f1",
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -195,23 +203,11 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "black", // black for text
   },
   dateText: {
     marginTop: 5,
-  },
-  deleteButton: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 8,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    backgroundColor: "white",
+    color: "black", // black for text
   },
   centeredView: {
     flex: 1,
@@ -235,19 +231,34 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    backgroundColor: "#007BFF",
+    alignSelf: "flex-end",
+    backgroundColor: "#e74c3c",
     padding: 10,
+    marginTop: 5,
     borderRadius: 5,
-    marginTop: 8,
-    paddingHorizontal: 15,
   },
-  buttonText: {
+  buttonContainer: {
+    position: "absolute",
+    right: 10,
+  },
+  textStyle: {
     color: "white",
-    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
-  buttonsContainer: {
-    flexDirection: "row",
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: "black", // black for text
+  },
+  input: {
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 5,
+    borderColor: "gray",
+    borderWidth: 1,
   },
 });
 

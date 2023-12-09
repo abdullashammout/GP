@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 
 const TreatmentDetails = ({ route }) => {
-  const { treatment } = route.params;
+  const { itemId, itemName, medicalUnitName, patientId } = route.params;
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Treatment Details</Text>
-      <Text>Name: {treatment.name}</Text>
+      <Text>Name: </Text>
     </View>
   );
 };
