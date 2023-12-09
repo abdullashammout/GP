@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,33 +7,84 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { set, ref, push, get } from "firebase/database";
+import { db } from "../../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PatientAllergiesPage = ({ allergies: initialAllergies = [] }) => {
-  const [allergies, setAllergies] = useState(initialAllergies);
-  const [newAllergy, setNewAllergy] = useState("");
-  const [newHospital, setNewHospital] = useState("");
-  const [newDate, setNewDate] = useState("");
+const PatientAllergiesPage = ({ navigation, route }) => {
+  const { patientId } = route.params;
+  const [allergies, setAllergies] = useState([]);
+  const [allergyName, setAllergyName] = useState("");
+  const [medicalUnitName, setMedicalUnitName] = useState("");
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()}`;
 
-  const addAllergy = () => {
-    if (
-      newAllergy.trim() !== "" &&
-      newHospital.trim() !== "" &&
-      newDate.trim() !== ""
-    ) {
-      setAllergies([
-        ...allergies,
-        { name: newAllergy, hospital: newHospital, date: newDate },
-      ]);
-      setNewAllergy("");
-      setNewHospital("");
-      setNewDate("");
+  const loadData = async () => {
+    try {
+      const AllergyDataRef = ref(db, `users/patients/${patientId}/Allergy`);
+      const snapshot = await get(AllergyDataRef);
+      const loadedData = [];
+
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const itemData = childSnapshot.val();
+          itemData.id = childSnapshot.key;
+          loadedData.push(itemData);
+        });
+        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
+        setAllergies(sortedData);
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
     }
   };
 
-  const deleteAllergy = (index) => {
-    const updatedAllergies = [...allergies];
-    updatedAllergies.splice(index, 1);
-    setAllergies(updatedAllergies);
+  useEffect(() => {
+    loadData();
+  }, [patientId, allergies]);
+
+  const getMedicalUnitName = async () => {
+    const Name = await AsyncStorage.getItem("HospitalName");
+    setMedicalUnitName(Name);
+  };
+  getMedicalUnitName();
+
+  const addAllergy = async () => {
+    try {
+      const newAllergy = { allergyName, formattedDate, medicalUnitName };
+      if (newAllergy !== "") {
+        const AllergyDataRef = ref(db, `users/patients/${patientId}/Allergy`);
+
+        const newAllergyRef = push(AllergyDataRef, newAllergy);
+
+        const newItemId = newAllergyRef.key;
+        newAllergy.id = newItemId;
+
+        await set(newAllergyRef, newAllergy);
+        setAllergies((prevData) => [...prevData, newAllergy]);
+
+        setAllergyName("");
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
+  };
+
+  const deleteAllergy = async (id) => {
+    try {
+      const newAllergies = allergies.filter((item) => item.id !== id);
+
+      const AllergyDataRef = ref(
+        db,
+        `users/patients/${patientId}/Allergy/${id}`
+      );
+      await set(AllergyDataRef, null);
+      setAllergies(newAllergies);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   return (
@@ -43,21 +94,10 @@ const PatientAllergiesPage = ({ allergies: initialAllergies = [] }) => {
         <TextInput
           style={styles.input}
           placeholder="Enter new allergy"
-          value={newAllergy}
-          onChangeText={(text) => setNewAllergy(text)}
+          value={allergyName.trim()}
+          onChangeText={(text) => setAllergyName(text)}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter hospital name"
-          value={newHospital}
-          onChangeText={(text) => setNewHospital(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter date"
-          value={newDate}
-          onChangeText={(text) => setNewDate(text)}
-        />
+
         <TouchableOpacity style={styles.addButton} onPress={addAllergy}>
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
@@ -71,20 +111,18 @@ const PatientAllergiesPage = ({ allergies: initialAllergies = [] }) => {
           renderItem={({ item, index }) => (
             <View style={styles.allergyItem}>
               <View style={styles.row}>
-                <Text style={styles.label}>Name:</Text>
-                <Text>{item.name}</Text>
-              </View>
-              <View style={styles.row}>
                 <Text style={styles.label}>Hospital:</Text>
-                <Text>{item.hospital}</Text>
+                <Text>{item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Date:</Text>
-                <Text>{item.date}</Text>
+                <Text style={styles.label}>Name:</Text>
+                <Text>{item.allergyName}</Text>
+                <Text style={styles.label}> Date:</Text>
+                <Text>{item.formattedDate}</Text>
               </View>
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => deleteAllergy(index)}
+                onPress={() => deleteAllergy(item.id)}
               >
                 <Text style={styles.buttonText}>Delete</Text>
               </TouchableOpacity>
@@ -98,20 +136,13 @@ const PatientAllergiesPage = ({ allergies: initialAllergies = [] }) => {
 
 const styles = StyleSheet.create({
   allergyItem: {
-    flexDirection: "row", // Display items in a column
-    justifyContent: "space-between",
-    alignItems: "flex-start", // Align items to the start of the container
-    padding: 10,
-
-    backgroundColor: "#ADD8E6",
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 5,
+    marginBottom: 8,
+    padding: 8,
+    backgroundColor: "#f1f1f1",
+    borderRadius: 8,
   },
   row: {
     flexDirection: "row",
-    alignItems: "center",
     marginBottom: 5,
   },
   label: {
@@ -122,7 +153,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    alignItems: "center",
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 20,
@@ -136,7 +167,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 40,
-    borderColor: "gray",
+    borderColor: "#eaeaea",
     borderWidth: 1,
     marginRight: 10,
     paddingLeft: 10,
@@ -147,28 +178,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   deleteButton: {
+    position: "absolute",
+    alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
-    padding: 5, // Adjust the padding to make the button fit better
+    padding: 5,
     borderRadius: 5,
-    marginLeft: 2,
-    alignSelf: "center", // Align the button vertically in the center
+    marginTop: 17,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
-  },
-  allergyItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-
-  inputContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
   },
 });
 

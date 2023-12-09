@@ -83,22 +83,22 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("diagnosis");
     }
     if (index === "3") {
-      navigation.navigate("treatments");
+      navigation.navigate("treatments", { patientId });
     }
     if (index === "4") {
       navigation.navigate("vaccine", { patientId });
     }
     if (index === "5") {
-      navigation.navigate("allergies");
+      navigation.navigate("allergies", { patientId });
     }
     if (index === "6") {
       navigation.navigate("lab");
     }
     if (index === "7") {
-      navigation.navigate("BloodDonation");
+      navigation.navigate("BloodDonation", { patientId });
     }
     if (index === "8") {
-      navigation.navigate("hospitalStay");
+      navigation.navigate("hospitalStay", { patientId });
     }
   };
 
