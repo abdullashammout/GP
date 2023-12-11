@@ -39,14 +39,14 @@ export default function SearchHospital({ navigation, route }) {
       } finally {
       }
     };
+    const getHospitalName = async () => {
+      const hosName = await AsyncStorage.getItem("HospitalName");
+      setHospitalname(hosName);
+    };
 
     fetchHospitalName();
+    getHospitalName();
   }, [userId]);
-  const getHospitalName = async () => {
-    const hosName = await AsyncStorage.getItem("HospitalName");
-    setHospitalname(hosName);
-  };
-  getHospitalName();
 
   const logout = async () => {
     Alert.alert("Logout Confirmation", "Are you sure you want to logout?", [

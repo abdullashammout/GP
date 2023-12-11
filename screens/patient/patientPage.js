@@ -22,7 +22,7 @@ import { ref, get } from "firebase/database";
 import { db, auth } from "../../firebase";
 
 export default function PatientPage({ navigation, route }) {
-  const { userId } = route.params || {};
+  const { userId } = route.params;
   const [patientName, setPatientName] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [animation] = useState(new Animated.Value(0));
@@ -157,7 +157,7 @@ export default function PatientPage({ navigation, route }) {
   ];
   const toPresc = (index) => {
     if (index === "1") {
-      navigation.navigate("Prescription");
+      navigation.navigate("patientPres", { userId });
     }
     if (index === "2") {
       navigation.navigate("diagnosis");
@@ -166,16 +166,16 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("treatments");
     }
     if (index === "4") {
-      navigation.navigate("vaccine");
+      navigation.navigate("patientVaccines", { userId });
     }
     if (index === "5") {
-      navigation.navigate("allergies");
+      navigation.navigate("patientAllergies");
     }
     if (index === "6") {
       navigation.navigate("lab");
     }
     if (index === "7") {
-      navigation.navigate("BloodDonation");
+      navigation.navigate("patientBloodDonations");
     }
     if (index === "8") {
       navigation.navigate("hospitalStay");
