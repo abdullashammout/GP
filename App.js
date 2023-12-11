@@ -33,6 +33,10 @@ import AboutUsScreen from "./screens/drawerScreens/aboutUs";
 import PrivacyScreen from "./screens/drawerScreens/privacy";
 import ChangeEmailScreen from "./screens/drawerScreens/settingsScreens/changeEmail";
 import ChangePassScreen from "./screens/drawerScreens/settingsScreens/changePassword";
+import PatientPrescription from "./screens/patient/prescriptions/patientPrescription";
+import Vaccines from "./screens/patient/vaccines";
+import BloodDonations from "./screens/patient/bloodDonations";
+import PatientAllergies from "./screens/patient/patientAllergies";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,10 +85,16 @@ export default function App() {
         if (storedUserRole) {
           const rolePage = getRolePage(storedUserRole);
           console.log("Navigating to:", rolePage);
+          const storedUserID = await AsyncStorage.getItem("userID");
 
           navigationRef.current?.reset({
             index: 0,
-            routes: [{ name: rolePage, params: { userId: user.uid } }],
+            routes: [
+              {
+                name: rolePage,
+                params: { userUid: user.uid, userId: storedUserID },
+              },
+            ],
           });
         } else {
           console.log("No stored role found, navigating to home");
@@ -430,6 +440,42 @@ export default function App() {
             headerStyle: {
               backgroundColor: "#34495e",
             },
+          }}
+        />
+        <Stack.Screen
+          name="patientPres"
+          component={PatientPrescription}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+          }}
+        />
+        <Stack.Screen
+          name="patientVaccines"
+          component={Vaccines}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+          }}
+        />
+        <Stack.Screen
+          name="patientBloodDonations"
+          component={BloodDonations}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+          }}
+        />
+        <Stack.Screen
+          name="patientAllergies"
+          component={PatientAllergies}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
           }}
         />
       </Stack.Navigator>

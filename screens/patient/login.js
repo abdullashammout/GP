@@ -18,7 +18,7 @@ import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginForm = ({ navigation }) => {
-  const [id, setId] = useState("");
+  const [id, setId] = useState();
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setChecked] = useState(false);
@@ -27,7 +27,7 @@ const LoginForm = ({ navigation }) => {
   const [passwordSecure, setPasswordSecure] = useState(true);
 
   const signIn = async () => {
-    if (id === "" || password === "") {
+    if (id === null || password === "") {
       setIdError("This Field Is Required");
       setPasswordError("This Field Is Required");
       return;
@@ -64,7 +64,8 @@ const LoginForm = ({ navigation }) => {
 
             // Navigate to the appropriate page based on the role
             await AsyncStorage.setItem("userRole", role);
-            setId("");
+            await AsyncStorage.setItem("userID", String(id));
+            setId(null);
             setPassword("");
 
             const rolePage = getRolePage(role);
@@ -102,7 +103,7 @@ const LoginForm = ({ navigation }) => {
 
   const handleSignInError = () => {
     setIsLoading(false);
-    setId("");
+    setId(null);
     setPassword("");
     setIdError("Invalid ID or Password");
     setPasswordError("Invalid ID or Password");
