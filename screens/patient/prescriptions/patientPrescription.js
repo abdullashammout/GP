@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { ref, get } from "firebase/database";
 import { db } from "../../../firebase";
 
@@ -46,12 +52,26 @@ const PatientPrescription = ({ navigation, route }) => {
       <Text>{`Doctor name: Dr.${item.createdBy}`}</Text>
       <Text>{`Date: ${item.date}`}</Text>
       <Text>{`Time: ${item.time}`}</Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={{ ...styles.button, backgroundColor: "#3498db" }}
+          onPress={() =>
+            navigation.navigate("patientMedications", {
+              itemId: item.id,
+              itemName: item.createdBy,
+              medicalUnitName: item.medicalUnitName,
+              patientId: userId,
+            })
+          }
+        >
+          <Text style={{ color: "white" }}>View Medications</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>My Prescriptions</Text>
       {prescriptions.length > 0 ? (
         <FlatList
           data={prescriptions}
@@ -59,7 +79,11 @@ const PatientPrescription = ({ navigation, route }) => {
           keyExtractor={(item) => item.id.toString()}
         />
       ) : (
-        <Text>No prescriptions available for this patient.</Text>
+        <View style={styles.noPrescriptionsContainer}>
+          <Text style={styles.noPrescriptionsText}>
+            You have no prescriptions yet.
+          </Text>
+        </View>
       )}
     </View>
   );
@@ -85,6 +109,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "black",
+  },
+  button: {
+    alignSelf: "flex-end",
+    backgroundColor: "#e74c3c",
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    position: "absolute",
+    right: 10,
+  },
+  noPrescriptionsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noPrescriptionsText: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "#555",
   },
 });
 

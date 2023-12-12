@@ -169,13 +169,13 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientVaccines", { userId });
     }
     if (index === "5") {
-      navigation.navigate("patientAllergies");
+      navigation.navigate("patientAllergies", { userId });
     }
     if (index === "6") {
       navigation.navigate("lab");
     }
     if (index === "7") {
-      navigation.navigate("patientBloodDonations");
+      navigation.navigate("patientBloodDonations", { userId });
     }
     if (index === "8") {
       navigation.navigate("hospitalStay");
@@ -226,7 +226,7 @@ export default function PatientPage({ navigation, route }) {
               color: "white",
             }}
           >
-            Medical Record
+            My Medical Record
           </Text>
         </View>
       </View>

@@ -37,6 +37,7 @@ import PatientPrescription from "./screens/patient/prescriptions/patientPrescrip
 import Vaccines from "./screens/patient/vaccines";
 import BloodDonations from "./screens/patient/bloodDonations";
 import PatientAllergies from "./screens/patient/patientAllergies";
+import PrescriptionDetails from "./screens/patient/prescriptions/prescriptionDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -230,7 +231,6 @@ export default function App() {
             />
           </>
         )}
-
         <Stack.Screen
           name="Login"
           component={LoginForm}
@@ -276,7 +276,6 @@ export default function App() {
             statusBarStyle: "dark",
           }}
         />
-
         <Stack.Screen
           name="Prescription"
           component={Prescription}
@@ -376,7 +375,6 @@ export default function App() {
             statusBarStyle: "dark",
           }}
         />
-
         <Stack.Screen
           name="AccountInfo"
           component={AccountInfoScreen}
@@ -449,6 +447,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Prescription History",
           }}
         />
         <Stack.Screen
@@ -458,6 +457,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Vaccine History",
           }}
         />
         <Stack.Screen
@@ -467,6 +467,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Blood Donation History",
           }}
         />
         <Stack.Screen
@@ -476,6 +477,17 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Allergy History",
+          }}
+        />
+        <Stack.Screen
+          name="patientMedications"
+          component={PrescriptionDetails}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Prescription Report",
           }}
         />
       </Stack.Navigator>
