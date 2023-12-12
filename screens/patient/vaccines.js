@@ -39,27 +39,32 @@ const Vaccines = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.historyHeader}>Vaccine History</Text>
-      <FlatList
-        data={Vaccines}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.vaccineItem}>
-            <Text>
-              Medical Unit: {"  "}
-              {item.medicalUnitName}
-            </Text>
-            <Text>
-              Vaccine Name: {"  "}
-              {item.vaccineName}
-            </Text>
-            <Text>
-              Date: {"  "}
-              {item.formattedDate}
-            </Text>
-          </View>
-        )}
-      />
+      {Vaccines.length > 0 ? (
+        <FlatList
+          data={Vaccines}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.vaccineItem}>
+              <Text>
+                Medical Unit: {"  "}
+                {item.medicalUnitName}
+              </Text>
+              <Text>
+                Vaccine Name: {"  "}
+                {item.vaccineName}
+              </Text>
+              <Text>
+                Date: {"  "}
+                {item.formattedDate}
+              </Text>
+            </View>
+          )}
+        />
+      ) : (
+        <View style={styles.noVaccinesContainer}>
+          <Text style={styles.noVaccinesText}>You have no Vaccines yet.</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -81,6 +86,16 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: "#f1f1f1",
     borderRadius: 8,
+  },
+  noVaccinesContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noVaccinesText: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "#555",
   },
 });
 
