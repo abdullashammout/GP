@@ -47,27 +47,24 @@ const PatientPrescription = ({ navigation, route }) => {
   }, [userId]);
 
   const renderItem = ({ item, index }) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{`Prescription ${index + 1}`}</Text>
-      <Text>{`Doctor name: Dr.${item.createdBy}`}</Text>
-      <Text>{`Date: ${item.date}`}</Text>
-      <Text>{`Time: ${item.time}`}</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={{ ...styles.button, backgroundColor: "#3498db" }}
-          onPress={() =>
-            navigation.navigate("patientMedications", {
-              itemId: item.id,
-              itemName: item.createdBy,
-              medicalUnitName: item.medicalUnitName,
-              patientId: userId,
-            })
-          }
-        >
-          <Text style={{ color: "white" }}>View Medications</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() =>
+        navigation.navigate("patientMedications", {
+          itemId: item.id,
+          itemName: item.createdBy,
+          medicalUnitName: item.medicalUnitName,
+          patientId: userId,
+        })
+      }
+    >
+      <Text style={styles.itemHeaderText}>{`Prescription ${index + 1}`}</Text>
+      <Text
+        style={styles.itemText}
+      >{`Medical Unit: ${item.medicalUnitName}`}</Text>
+      <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
+      <Text style={styles.itemText}>{`Time: ${item.time}`}</Text>
+    </TouchableOpacity>
   );
 
   return (
@@ -77,6 +74,7 @@ const PatientPrescription = ({ navigation, route }) => {
           data={prescriptions}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.flatlistContainer}
         />
       ) : (
         <View style={styles.noPrescriptionsContainer}>
@@ -95,31 +93,25 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
   },
-  headerText: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
   itemContainer: {
-    backgroundColor: "#f1f1f1",
-    padding: 10,
+    backgroundColor: "#3498db",
+    padding: 16,
     marginVertical: 8,
-    borderRadius: 5,
+    borderRadius: 10,
+  },
+  flatlistContainer: {
+    paddingBottom: 16,
+  },
+  itemHeaderText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 8,
   },
   itemText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-  button: {
-    alignSelf: "flex-end",
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    marginTop: 5,
-    borderRadius: 5,
-  },
-  buttonContainer: {
-    position: "absolute",
-    right: 10,
+    fontSize: 14,
+    color: "#fff",
+    marginBottom: 4,
   },
   noPrescriptionsContainer: {
     flex: 1,

@@ -3,14 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
-  Button,
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { set, ref, get, push } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { db } from "../../../firebase";
 
 const PrescriptionDetails = ({ route }) => {
@@ -41,15 +39,12 @@ const PrescriptionDetails = ({ route }) => {
   const renderMedicationItem = ({ item }) => (
     <View style={styles.medicationItem}>
       <View style={styles.row}>
-        <Text style={styles.label}>Medication:</Text>
-        <Text style={[styles.value, styles.medication]}>
-          {" "}
-          {item.medication}
-        </Text>
+        <Text style={styles.label}>Medication: </Text>
+        <Text style={[styles.value, styles.medication]}>{item.medication}</Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.label}>Dosage:</Text>
-        <Text style={styles.value}> {item.dosage}</Text>
+        <Text style={styles.label}>Dosage: </Text>
+        <Text style={styles.value}>{item.dosage}</Text>
       </View>
     </View>
   );
@@ -61,24 +56,27 @@ const PrescriptionDetails = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Medical unit Name:</Text>
-          <Text style={styles.value}>{medicalUnitName}</Text>
+        <View style={styles.header}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Doctor Name:</Text>
+            <Text style={styles.value}>Dr. {itemName}</Text>
+          </View>
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Doctor Name:</Text>
-          <Text style={styles.value}>{itemName}</Text>
-        </View>
-        <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 22 }}>
-          Medications
-        </Text>
+        <Text style={styles.sectionHeader}>Medications</Text>
 
-        <FlatList
-          data={medications}
-          renderItem={renderMedicationItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        {medications.length > 0 ? (
+          <FlatList
+            data={medications}
+            renderItem={renderMedicationItem}
+            keyExtractor={(item) => item.id.toString()}
+            style={styles.flatlist}
+          />
+        ) : (
+          <Text style={styles.noMedicationsText}>
+            No medications prescribed.
+          </Text>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -88,46 +86,59 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
   },
   header: {
-    alignItems: "center",
     marginBottom: 20,
   },
   headerText: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
+    textAlign: "center",
   },
   infoContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  sectionHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
   },
   medicationItem: {
-    justifyContent: "space-between",
     marginVertical: 10,
     padding: 15,
-    backgroundColor: "#ADD8E6",
+    backgroundColor: "#B3E8CA",
     borderRadius: 8,
-    position: "relative",
   },
   label: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
+    marginBottom: 5,
   },
   value: {
     fontSize: 16,
     color: "#555",
+    marginBottom: 10,
   },
   medication: {
     fontStyle: "italic",
     color: "#777",
   },
+  flatlist: {
+    flexGrow: 0,
+  },
+  noMedicationsText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+  },
   row: {
     flexDirection: "row",
-    padding: 4,
   },
 });
 
