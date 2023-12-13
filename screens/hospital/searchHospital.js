@@ -77,6 +77,7 @@ export default function SearchHospital({ navigation, route }) {
     setLoading(true);
     if (id === "") {
       setIdError("This Field Is Required");
+      setLoading(false);
       return;
     } else {
       setIdError(null);
@@ -84,6 +85,7 @@ export default function SearchHospital({ navigation, route }) {
     if (id.length < 10) {
       setId("");
       setIdError("ID must be 10 digits");
+      setLoading(false);
       return;
     } else {
       setIdError(null);
@@ -98,6 +100,7 @@ export default function SearchHospital({ navigation, route }) {
         "ID not found",
         "The entered patient ID does not exist in the database."
       );
+      setLoading(false);
       return;
     }
 
@@ -107,6 +110,7 @@ export default function SearchHospital({ navigation, route }) {
     if (!userHasAccount) {
       setId("");
       setIdError("The patient with this ID does not have an account.");
+      setLoading(false);
       return;
     }
     setLoading(false);

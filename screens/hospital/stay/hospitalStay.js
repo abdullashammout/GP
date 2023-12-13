@@ -112,11 +112,19 @@ export default function HospitalStay({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      {data.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No hospital entries recorded for this patient.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
       <Modal
         animationType="fade"
         transparent={true}
@@ -145,7 +153,12 @@ export default function HospitalStay({ navigation, route }) {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-      <Button title="add new item" onPress={() => setModalVisibile(true)} />
+      <TouchableOpacity
+        style={styles.addItem}
+        onPress={() => setModalVisibile(true)}
+      >
+        <Text style={{ color: "white" }}>add new Hospital Entry</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -195,5 +208,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  addItem: {
+    backgroundColor: "#3498db",
+    position: "absolute",
+    bottom: 20,
+    alignSelf: "center",
+    padding: 10,
+    paddingHorizontal: 90,
+    borderRadius: 10,
   },
 });

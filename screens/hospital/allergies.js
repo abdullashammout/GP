@@ -103,7 +103,11 @@ const PatientAllergiesPage = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
       {allergies.length === 0 ? (
-        <Text>No allergies recorded for this patient.</Text>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No Allergies recorded for this patient.</Text>
+        </View>
       ) : (
         <FlatList
           data={allergies}

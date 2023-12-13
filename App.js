@@ -111,6 +111,7 @@ export default function App() {
     };
 
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoading(false);
       if (userLoggedIn !== !!user) {
         checkUserLoggedIn();
       }

@@ -85,26 +85,34 @@ const Vaccine = ({ navigation, route }) => {
       <Button title="Add Vaccine" onPress={addVaccine} />
 
       <Text style={styles.historyHeader}>Vaccine History</Text>
-      <FlatList
-        data={vaccines}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.vaccineItem}>
-            <Text>
-              Medical Unit: {"  "}
-              {item.medicalUnitName}
-            </Text>
-            <Text>
-              Vaccine Name: {"  "}
-              {item.vaccineName}
-            </Text>
-            <Text>
-              Date: {"  "}
-              {item.formattedDate}
-            </Text>
-          </View>
-        )}
-      />
+      {vaccines.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No Vaccines recorded for this patient.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={vaccines}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.vaccineItem}>
+              <Text>
+                Medical Unit: {"  "}
+                {item.medicalUnitName}
+              </Text>
+              <Text>
+                Vaccine Name: {"  "}
+                {item.vaccineName}
+              </Text>
+              <Text>
+                Date: {"  "}
+                {item.formattedDate}
+              </Text>
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 };
