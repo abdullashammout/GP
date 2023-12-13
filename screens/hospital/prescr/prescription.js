@@ -136,11 +136,19 @@ const Prescription = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      {data.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No Prescriptions recorded for this patient.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      )}
       <Modal
         animationType="fade"
         transparent={true}
@@ -176,7 +184,12 @@ const Prescription = ({ navigation, route }) => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-      <Button title="Add new item" onPress={() => setModalVisible(true)} />
+      <TouchableOpacity
+        style={styles.addItem}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={{ color: "white" }}>Add new Prescription</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -259,6 +272,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "gray",
     borderWidth: 1,
+  },
+  addItem: {
+    backgroundColor: "#3498db",
+    position: "absolute",
+    bottom: 20,
+    alignSelf: "center",
+    padding: 10,
+    paddingHorizontal: 90,
+    borderRadius: 10,
   },
 });
 

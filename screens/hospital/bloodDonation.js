@@ -132,7 +132,10 @@ const BloodDonation = ({ navigation, route }) => {
             style={{
               padding: 10,
               textAlign: "center",
-              backgroundColor: eligible ? "green" : "red",
+              backgroundColor: eligible ? "#4CAF50" : "#f44336",
+              color: "#fff",
+              borderRadius: 8,
+              marginBottom: 10,
             }}
           >
             {eligible
@@ -143,20 +146,24 @@ const BloodDonation = ({ navigation, route }) => {
         <Button title="Check Eligibility" onPress={checkEligibility} />
       </View>
       <Text style={styles.historyHeader}>Blood Donation History</Text>
-      {donationData.length > 0 && (
-        <>
-          <FlatList
-            data={donationData}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.bloodDonationItem}>
-                <Text> Location: {item.medicalUnitName}</Text>
-                <Text> Date: {item.formattedDate}</Text>
-                <Text> type: {item.donationType}</Text>
-              </View>
-            )}
-          />
-        </>
+      {donationData.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No Donations recorded for this patient.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={donationData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.bloodDonationItem}>
+              <Text> Location: {item.medicalUnitName}</Text>
+              <Text> Date: {item.formattedDate}</Text>
+              <Text> type: {item.donationType}</Text>
+            </View>
+          )}
+        />
       )}
     </View>
   );

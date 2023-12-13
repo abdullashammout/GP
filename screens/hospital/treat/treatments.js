@@ -118,44 +118,52 @@ const TreatmentList = ({ navigation, route }) => {
       <Button title="Add Treatment" onPress={handleAddItem} />
 
       <Text style={styles.listHeader}>Treatments</Text>
-      <FlatList
-        data={treatments}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.treatmentItem}>
-            <View>
-              <Text style={{ fontWeight: "bold" }}>
-                Medical Unit: {item.medicalUnitName}{" "}
-              </Text>
+      {treatments.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No Treatments recorded for this patient.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={treatments}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.treatmentItem}>
+              <View>
+                <Text style={{ fontWeight: "bold" }}>
+                  Medical Unit: {item.medicalUnitName}{" "}
+                </Text>
+              </View>
+              <Text>Treatment: {item.treatmentName}</Text>
+              <Text>Doctor: {item.createdBy}</Text>
+              <Text>Date : {item.date} </Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={{ ...styles.button, backgroundColor: "#3498db" }}
+                  onPress={() =>
+                    navigation.navigate("TreatmentDetails", {
+                      name: item.treatmentName,
+                      itemId: item.id,
+                      itemName: item.createdBy,
+                      medicalUnitName: item.medicalUnitName,
+                      patientId: patientId,
+                    })
+                  }
+                >
+                  <Text style={{ color: "white" }}>View Details</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => handleDeleteItem(item.id)}
+                >
+                  <Text style={{ color: "white" }}>Delete</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <Text>Treatment: {item.treatmentName}</Text>
-            <Text>Doctor: {item.createdBy}</Text>
-            <Text>Date : {item.date} </Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={{ ...styles.button, backgroundColor: "#3498db" }}
-                onPress={() =>
-                  navigation.navigate("TreatmentDetails", {
-                    name: item.treatmentName,
-                    itemId: item.id,
-                    itemName: item.createdBy,
-                    medicalUnitName: item.medicalUnitName,
-                    patientId: patientId,
-                  })
-                }
-              >
-                <Text style={{ color: "white" }}>View Details</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleDeleteItem(item.id)}
-              >
-                <Text style={{ color: "white" }}>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      )}
     </View>
   );
 };
