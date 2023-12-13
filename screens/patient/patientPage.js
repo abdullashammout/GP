@@ -163,7 +163,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("diagnosis");
     }
     if (index === "3") {
-      navigation.navigate("treatments");
+      navigation.navigate("pTreat", { userId });
     }
     if (index === "4") {
       navigation.navigate("patientVaccines", { userId });

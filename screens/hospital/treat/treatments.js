@@ -136,6 +136,7 @@ const TreatmentList = ({ navigation, route }) => {
                 style={{ ...styles.button, backgroundColor: "#3498db" }}
                 onPress={() =>
                   navigation.navigate("TreatmentDetails", {
+                    name: item.treatmentName,
                     itemId: item.id,
                     itemName: item.createdBy,
                     medicalUnitName: item.medicalUnitName,

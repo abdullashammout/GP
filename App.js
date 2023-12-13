@@ -38,6 +38,8 @@ import Vaccines from "./screens/patient/vaccines";
 import BloodDonations from "./screens/patient/bloodDonations";
 import PatientAllergies from "./screens/patient/patientAllergies";
 import PrescriptionDetails from "./screens/patient/prescriptions/prescriptionDetails";
+import PatientTreatments from "./screens/patient/Treatments/pTreatments";
+import PatientTreatDetails from "./screens/patient/Treatments/treatmentDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -490,6 +492,8 @@ export default function App() {
             title: "Prescription Report",
           }}
         />
+        <Stack.Screen name="pTreat" component={PatientTreatments} />
+        <Stack.Screen name="pTreatDetails" component={PatientTreatDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

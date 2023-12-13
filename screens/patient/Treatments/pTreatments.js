@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const PatinetTreatments = () => {
+const PatientTreatments = ({ navigation }) => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>patient treatments</Text>
@@ -9,4 +9,4 @@ const PatinetTreatments = () => {
   );
 };
 
-export default PatinetTreatments;
+export default PatientTreatments;
