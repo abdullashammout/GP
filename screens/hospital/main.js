@@ -154,21 +154,21 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: "lightblue",
-    padding: 20,
-    margin: 5,
+    padding: 10,
+    margin: 10,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-    height: 140,
-    width: 45,
+    height: 130,
+    width: 40,
   },
   title: {
     fontSize: 10,
   },
   image: {
-    height: 100,
-    width: 100,
+    height: 90,
+    width: 90,
     marginBottom: 10,
   },
   patientInfoContainer: {
