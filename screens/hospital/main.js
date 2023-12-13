@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-    height: 130,
+    height: 129,
     width: 40,
   },
   title: {
