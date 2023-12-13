@@ -3,14 +3,11 @@ import {
   View,
   Text,
   FlatList,
-  Button,
-  TextInput,
+  TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { ref, set, get, push } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BloodDonations = ({ route }) => {
   const { userId } = route.params;
@@ -44,6 +41,7 @@ const BloodDonations = ({ route }) => {
       console.error("Error loading data:", error);
     }
   };
+
   const checkEligibility = () => {
     if (donationData.length === 0) {
       setEligible(true);
@@ -73,13 +71,16 @@ const BloodDonations = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 15 }}>
+      <View style={styles.eligibilityContainer}>
         {eligible !== null && (
           <Text
             style={{
               padding: 10,
               textAlign: "center",
-              backgroundColor: eligible ? "green" : "red",
+              backgroundColor: eligible ? "#4CAF50" : "#f44336",
+              color: "#fff",
+              borderRadius: 8,
+              marginBottom: 10,
             }}
           >
             {eligible
@@ -87,58 +88,78 @@ const BloodDonations = ({ route }) => {
               : "You are not eligible to donate blood yet."}
           </Text>
         )}
-        <Button title="Check Eligibility" onPress={checkEligibility} />
+        <TouchableOpacity
+          style={styles.checkEligibilityButton}
+          onPress={checkEligibility}
+        >
+          <Text style={styles.checkEligibilityButtonText}>
+            Check Eligibility
+          </Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.historyHeader}>
-        ___________________________________________
-      </Text>
+      <View style={styles.separator} />
+      <Text style={styles.historyHeader}>Blood Donation History</Text>
       {donationData.length > 0 ? (
         <FlatList
           data={donationData}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
-              <Text> Location: {item.medicalUnitName}</Text>
-              <Text> Date: {item.formattedDate}</Text>
-              <Text> type: {item.donationType}</Text>
+              <Text>Location: {item.medicalUnitName}</Text>
+              <Text>Date: {item.formattedDate}</Text>
+              <Text>Type: {item.donationType}</Text>
             </View>
           )}
         />
       ) : (
-        <Text style={{ textAlign: "center" }}>You Have no Donations yet.</Text>
+        <Text style={styles.noDonationsText}>You have no donations yet.</Text>
       )}
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
     backgroundColor: "#fff",
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
+  eligibilityContainer: {
+    marginTop: 15,
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+  separator: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    marginBottom: 16,
   },
   historyHeader: {
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 16,
     marginBottom: 8,
+    color: "#333",
   },
   bloodDonationItem: {
     marginBottom: 8,
     padding: 8,
     backgroundColor: "#f1f1f1",
     borderRadius: 8,
+  },
+  noDonationsText: {
+    textAlign: "center",
+    color: "#555",
+    marginTop: 20,
+  },
+  checkEligibilityButton: {
+    backgroundColor: "#3498db",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  checkEligibilityButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

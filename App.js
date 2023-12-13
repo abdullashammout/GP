@@ -54,7 +54,7 @@ const getRolePage = (role) => {
     case "medical_units/laboratory":
       return "laboratory";
     default:
-      return "home"; // Default to the home page if the role is unknown
+      return "load"; // Default to the home page if the role is unknown
   }
 };
 const getRoleComponent = (role) => {
@@ -68,12 +68,13 @@ const getRoleComponent = (role) => {
     case "medical_units/laboratory":
       return SearchLabor;
     default:
-      return Home; // Default to the home component if the role is unknown
+      return LoadingScreen; // Default to the home component if the role is unknown
   }
 };
 
 export default function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigationRef = useRef(null);
 
   useEffect(() => {
@@ -82,25 +83,29 @@ export default function App() {
       setUserLoggedIn(!!user);
 
       if (user) {
-        const storedUserRole = await AsyncStorage.getItem("userRole");
-        console.log("Stored User Role:", storedUserRole);
+        try {
+          const storedUserRole = await AsyncStorage.getItem("userRole");
 
-        if (storedUserRole) {
-          const rolePage = getRolePage(storedUserRole);
-          console.log("Navigating to:", rolePage);
-          const storedUserID = await AsyncStorage.getItem("userID");
+          if (storedUserRole) {
+            const rolePage = getRolePage(storedUserRole);
+            const storedUserID = await AsyncStorage.getItem("userID");
 
-          navigationRef.current?.reset({
-            index: 0,
-            routes: [
-              {
-                name: rolePage,
-                params: { userUid: user.uid, userId: storedUserID },
-              },
-            ],
-          });
-        } else {
-          console.log("No stored role found, navigating to home");
+            navigationRef.current?.reset({
+              index: 0,
+              routes: [
+                {
+                  name: rolePage,
+                  params: { userUid: user.uid, userId: storedUserID },
+                },
+              ],
+            });
+          } else {
+            console.log("No stored role found, navigating to home");
+          }
+        } catch (error) {
+          console.error("Error during fetching user role:", error.message);
+        } finally {
+          setLoading(false); // Set loading to false after fetching user role
         }
       }
     };
@@ -167,6 +172,13 @@ export default function App() {
         {userLoggedIn ? (
           <>
             <Stack.Screen
+              name={getRolePage("userRole")}
+              component={getRoleComponent("userRole")}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
               name="hospital"
               component={SearchHospital}
               options={{
@@ -213,25 +225,25 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen
-              name={getRolePage("userRole")}
-              component={getRoleComponent("userRole")}
-              options={{
-                headerShown: false,
-              }}
-            />
           </>
+        ) : loading ? (
+          <Stack.Screen
+            name="Load"
+            component={LoadingScreen}
+            options={{
+              headerShown: false,
+              statusBarStyle: "dark",
+            }}
+          />
         ) : (
-          <>
-            <Stack.Screen
-              name="home"
-              component={Home}
-              options={{
-                headerShown: false,
-                statusBarStyle: "dark",
-              }}
-            />
-          </>
+          <Stack.Screen
+            name="home"
+            component={Home}
+            options={{
+              headerShown: false,
+              statusBarStyle: "dark",
+            }}
+          />
         )}
         <Stack.Screen
           name="Login"
@@ -469,7 +481,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Blood Donation History",
+            title: "Blood Donation",
           }}
         />
         <Stack.Screen
@@ -489,11 +501,29 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Prescription Report",
+            title: "Prescription Details",
           }}
         />
-        <Stack.Screen name="pTreat" component={PatientTreatments} />
-        <Stack.Screen name="pTreatDetails" component={PatientTreatDetails} />
+        <Stack.Screen
+          name="pTreat"
+          component={PatientTreatments}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Treatments",
+          }}
+        />
+        <Stack.Screen
+          name="pTreatDetails"
+          component={PatientTreatDetails}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Treatment Details ",
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
