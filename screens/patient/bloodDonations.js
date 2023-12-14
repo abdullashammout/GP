@@ -34,8 +34,7 @@ const BloodDonations = ({ route }) => {
           itemData.id = childSnapshot.key;
           loadedData.push(itemData);
         });
-        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
-        setDonationData(sortedData);
+        setDonationData(loadedData);
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
   bloodDonationItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "lightblue",
     borderRadius: 8,
   },
   noDonationsText: {

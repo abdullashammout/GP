@@ -17,6 +17,7 @@ const TreatmentDetails = ({ route }) => {
   const { name, itemId, itemName, medicalUnitName, patientId } = route.params;
   const [details, setDetails] = useState([]);
   const [treatmentDetails, setTreatmentDetails] = useState(``);
+  const [treatmentDetailsError, setTreatmentDetailsError] = useState(null);
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
@@ -45,27 +46,31 @@ const TreatmentDetails = ({ route }) => {
   }, [itemId, patientId]);
 
   const handleAddTreatmentDetails = async () => {
+    if (treatmentDetails === "") {
+      setTreatmentDetails("");
+      setTreatmentDetailsError("Required");
+      return;
+    }
     try {
-      if (treatmentDetails) {
-        const newTreatmentDetails = {
-          treatmentDetails,
-          formattedDate,
-          formattedTime,
-        };
-        const DetailsRef = ref(
-          db,
-          `users/patients/${patientId}/Treatments/${itemId}/TreatmentDetails`
-        );
+      const newTreatmentDetails = {
+        treatmentDetails,
+        formattedDate,
+        formattedTime,
+      };
+      const DetailsRef = ref(
+        db,
+        `users/patients/${patientId}/Treatments/${itemId}/TreatmentDetails`
+      );
 
-        const newDetailsRef = push(DetailsRef, newTreatmentDetails);
-        const newItemId = newDetailsRef.key;
-        newTreatmentDetails.id = newItemId;
-        set(newDetailsRef, newTreatmentDetails);
-        setDetails((prevData) => [...prevData, newTreatmentDetails]);
-        fetchTreatmentDetails();
+      const newDetailsRef = push(DetailsRef, newTreatmentDetails);
+      const newItemId = newDetailsRef.key;
+      newTreatmentDetails.id = newItemId;
+      set(newDetailsRef, newTreatmentDetails);
+      setDetails((prevData) => [...prevData, newTreatmentDetails]);
+      fetchTreatmentDetails();
 
-        setTreatmentDetails(``);
-      }
+      setTreatmentDetails(``);
+      setTreatmentDetailsError("");
     } catch (error) {
       console.error("Error adding medication:", error);
     }
@@ -130,6 +135,8 @@ const TreatmentDetails = ({ route }) => {
             value={treatmentDetails}
             multiline
             onChangeText={(text) => setTreatmentDetails(text)}
+            placeholder={treatmentDetailsError ? treatmentDetailsError : ""}
+            placeholderTextColor={treatmentDetailsError ? "red" : "white"}
           />
         </View>
 

@@ -19,8 +19,7 @@ const PatientAllergies = ({ route }) => {
           itemData.id = childSnapshot.key;
           loadedData.push(itemData);
         });
-        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
-        setAllergies(sortedData);
+        setAllergies(loadedData);
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
   allergyItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#F8D7DA", // Light Pastel Red
+    backgroundColor: "lightblue", // Light Pastel Red
     borderRadius: 8,
   },
   row: {

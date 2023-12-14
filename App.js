@@ -370,6 +370,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Vaccine Tracker",
           }}
         />
         <Stack.Screen
@@ -379,6 +380,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Prescription Report",
           }}
         />
         <Stack.Screen
