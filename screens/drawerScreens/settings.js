@@ -172,7 +172,7 @@ export default function SettingsScreen({ navigation, route }) {
           width: 350,
           borderRadius: 10,
           borderColor: "#f0f0f0",
-          backgroundColor: "red",
+          backgroundColor: "#e74c3c",
           borderWidth: 2,
         }}
         onPress={deleteAccount}

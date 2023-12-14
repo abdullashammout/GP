@@ -104,9 +104,9 @@ const BloodDonations = ({ route }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
+              <Text style={styles.bold}>Type: {item.donationType}</Text>
               <Text>Location: {item.medicalUnitName}</Text>
               <Text>Date: {item.formattedDate}</Text>
-              <Text>Type: {item.donationType}</Text>
             </View>
           )}
         />
@@ -159,6 +159,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  bold: {
+    fontWeight: "bold",
   },
 });
 

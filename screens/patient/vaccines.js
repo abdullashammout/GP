@@ -45,13 +45,13 @@ const Vaccines = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.vaccineItem}>
+              <Text style={styles.bold}>
+                Vaccine Name: {"  "}
+                {item.vaccineName}
+              </Text>
               <Text>
                 Medical Unit: {"  "}
                 {item.medicalUnitName}
-              </Text>
-              <Text>
-                Vaccine Name: {"  "}
-                {item.vaccineName}
               </Text>
               <Text>
                 Date: {"  "}
@@ -96,6 +96,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     color: "#555",
+  },
+  bold: {
+    fontWeight: "bold",
   },
 });
 

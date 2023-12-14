@@ -32,7 +32,7 @@ export default function PatientHome({ navigation }) {
         <Text style={{ textAlign: "center", color: "white" }}>Login</Text>
       </TouchableOpacity>
       <Ionicons
-        style={{ position: "absolute", left: 25, top: 55 }}
+        style={{ position: "absolute", left: 20, top: 25 }}
         name="arrow-back"
         size={24}
         color="black"
