@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   vaccineItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "lightblue",
     borderRadius: 8,
   },
   noVaccinesContainer: {

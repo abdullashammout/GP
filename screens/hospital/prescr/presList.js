@@ -17,7 +17,9 @@ const PresList = ({ route }) => {
   const { itemId, idd, itemName, medicalUnitName, patientId } = route.params;
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
-  const [dosage, setDosage] = useState("");
+  const [dosage, setDosage] = useState(``);
+  const [medicationError, setMedicationError] = useState(null);
+  const [dosageError, setDosageError] = useState(null);
 
   const fetchMedications = async () => {
     try {
@@ -41,6 +43,12 @@ const PresList = ({ route }) => {
   }, [itemId, patientId]);
 
   const handleAddMedication = async () => {
+    if (medication === "" || dosage === "") {
+      setMedicationError("Required");
+      setDosageError("Required");
+      return;
+    }
+
     try {
       if (medication && dosage) {
         const newMedication = { medication, dosage };
@@ -57,7 +65,9 @@ const PresList = ({ route }) => {
         fetchMedications();
 
         setMedication("");
-        setDosage("");
+        setDosage(``);
+        setDosageError(null);
+        setMedicationError(null);
       }
     } catch (error) {
       console.error("Error adding medication:", error);
@@ -107,10 +117,6 @@ const PresList = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Prescription Report</Text>
-        </View>
-
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Prescription ID:</Text>
           <Text style={styles.value}>{idd}</Text>
@@ -132,6 +138,8 @@ const PresList = ({ route }) => {
             style={styles.input}
             value={medication}
             onChangeText={(text) => setMedication(text)}
+            placeholder={medicationError ? medicationError : ""}
+            placeholderTextColor={medicationError ? "red" : "white"}
           />
         </View>
 
@@ -141,6 +149,10 @@ const PresList = ({ route }) => {
             style={styles.input}
             value={dosage}
             onChangeText={(text) => setDosage(text)}
+            placeholder={dosageError ? dosageError : ""}
+            placeholderTextColor={dosageError ? "red" : "white"}
+            multiline
+            numberOfLines={2}
           />
         </View>
 

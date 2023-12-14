@@ -26,10 +26,8 @@ const PatientTreatments = ({ navigation, route }) => {
             itemData.id = childSnapshot.key;
             loadedData.push(itemData);
           });
-          const sortedData = loadedData.sort((a, b) =>
-            a.id.localeCompare(b.id)
-          );
-          setTreatments(sortedData);
+
+          setTreatments(loadedData);
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -54,8 +52,10 @@ const PatientTreatments = ({ navigation, route }) => {
     >
       <Text
         style={styles.itemHeaderText}
+      >{`Treatment: ${item.treatmentName}`}</Text>
+      <Text
+        style={styles.itemText}
       >{`Medical Unit: ${item.medicalUnitName}`}</Text>
-      <Text style={styles.itemText}>{`Treatment: ${item.treatmentName}`}</Text>
       <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
     </TouchableOpacity>

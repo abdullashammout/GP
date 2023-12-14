@@ -153,18 +153,18 @@ const styles = StyleSheet.create({
     top: 10,
   },
   item: {
-    backgroundColor: "lightblue",
+    backgroundColor: "#3498db",
     padding: 10,
     margin: 10,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-    height: 130,
-    width: 40,
+    height: 140,
   },
   title: {
     fontSize: 10,
+    color: "white",
   },
   image: {
     height: 90,
@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
     padding: 15,
   },
 
-  infoContainer: {},
   infoRow: {
     flexDirection: "row",
     justifyContent: "space-between",

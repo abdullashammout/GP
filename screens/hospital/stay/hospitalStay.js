@@ -34,10 +34,8 @@ export default function HospitalStay({ navigation, route }) {
             itemData.id = childSnapshot.key;
             loadedData.push(itemData);
           });
-          const sortedData = loadedData.sort((a, b) =>
-            a.id.localeCompare(b.id)
-          );
-          setData(sortedData);
+
+          setData(loadedData);
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -170,7 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemContainer: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#ADD8E6",
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,

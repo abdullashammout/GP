@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   logout: {
-    backgroundColor: "#DC143C",
+    backgroundColor: "#e74c3c",
     padding: 3,
     borderRadius: 5,
     flexDirection: "row",

@@ -6,6 +6,7 @@ import {
   Button,
   FlatList,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { set, ref, push, get } from "firebase/database";
 import { db } from "../../firebase";
@@ -15,6 +16,7 @@ const Vaccine = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [vaccines, setVaccines] = useState([]);
   const [vaccineName, setVaccineName] = useState("");
+  const [vaccineNameError, setVaccineNameError] = useState(null);
   const [medicalUnitName, setMedicalUnitName] = useState("");
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
@@ -33,8 +35,7 @@ const Vaccine = ({ navigation, route }) => {
           itemData.id = childSnapshot.key;
           loadedData.push(itemData);
         });
-        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
-        setVaccines(sortedData);
+        setVaccines(loadedData);
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -50,6 +51,11 @@ const Vaccine = ({ navigation, route }) => {
   getMedicalUnitName();
 
   const addVaccine = async () => {
+    if (vaccineName === "") {
+      setVaccineName("");
+      setVaccineNameError("Please enter vaccine name");
+      return;
+    }
     try {
       if (vaccineName) {
         const newVaccine = { vaccineName, formattedDate, medicalUnitName };
@@ -65,24 +71,39 @@ const Vaccine = ({ navigation, route }) => {
         setVaccines((prevData) => [...prevData, newVaccine]);
 
         setVaccineName("");
+        setVaccineNameError(null);
       }
     } catch (error) {
       console.error("Error adding item:", error);
     }
   };
 
+  const deleteVaccine = async (id) => {
+    try {
+      const newVaccines = vaccines.filter((item) => item.id !== id);
+
+      const presDataRef = ref(db, `users/patients/${patientId}/Vaccine/${id}`);
+      await set(presDataRef, null);
+
+      setVaccines(newVaccines);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Vaccine Tracker</Text>
-
       <TextInput
         style={styles.input}
-        placeholder="Vaccine Name"
+        placeholder={vaccineNameError ? vaccineNameError : "Vaccine Name"}
+        placeholderTextColor={vaccineNameError ? "red" : "gray"}
         value={vaccineName}
         onChangeText={(text) => setVaccineName(text)}
       />
 
-      <Button title="Add Vaccine" onPress={addVaccine} />
+      <TouchableOpacity style={styles.addButton} onPress={addVaccine}>
+        <Text style={styles.buttonText}>Add Vaccine</Text>
+      </TouchableOpacity>
 
       <Text style={styles.historyHeader}>Vaccine History</Text>
       {vaccines.length === 0 ? (
@@ -109,6 +130,12 @@ const Vaccine = ({ navigation, route }) => {
                 Date: {"  "}
                 {item.formattedDate}
               </Text>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteVaccine(item.id)}
+              >
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -134,6 +161,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+    borderRadius: 5,
   },
   historyHeader: {
     fontSize: 18,
@@ -144,8 +172,26 @@ const styles = StyleSheet.create({
   vaccineItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#ADD8E6",
     borderRadius: 8,
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 20,
+    right: 8,
+    backgroundColor: "#e74c3c",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  addButton: {
+    backgroundColor: "#3498db",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
   },
 });
 

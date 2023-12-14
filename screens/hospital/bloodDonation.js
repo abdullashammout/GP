@@ -6,17 +6,16 @@ import {
   Button,
   TextInput,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { ref, set, get, push } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BloodDonation = ({ navigation, route }) => {
   const { patientId } = route.params;
-
-  const [lastDonationDate, setLastDonationDate] = useState(null);
   const [donationType, setDonationType] = useState("");
+  const [donationTypeError, setDonationTypeError] = useState(null);
   const [eligible, setEligible] = useState(null);
   const [medicalUnitName, setMedicalUnitName] = useState("");
   const [donationData, setDonationData] = useState([]);
@@ -44,8 +43,7 @@ const BloodDonation = ({ navigation, route }) => {
           itemData.id = childSnapshot.key;
           loadedData.push(itemData);
         });
-        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
-        setDonationData(sortedData);
+        setDonationData(loadedData);
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -59,6 +57,11 @@ const BloodDonation = ({ navigation, route }) => {
   getMedicalUnitName();
 
   const addBloodDonation = async () => {
+    if (donationType === "") {
+      setDonationType("");
+      setDonationTypeError("please enter dontaion type");
+      return;
+    }
     try {
       // const testDate = new Date();
       // testDate.setDate(currentDate.getDate() - 50); // Set date 60 days ago
@@ -83,8 +86,24 @@ const BloodDonation = ({ navigation, route }) => {
       set(newDonationRef, newDonation);
       setDonationData((prevData) => [...prevData, newDonation]);
       setDonationType("");
+      setDonationTypeError(null);
     } catch (error) {
       console.error("Error saving donation:", error);
+    }
+  };
+  const deleteDonation = async (id) => {
+    try {
+      const newDonations = donationData.filter((item) => item.id !== id);
+
+      const donationDataRef = ref(
+        db,
+        `users/patients/${patientId}/BloodDonations/${id}`
+      );
+
+      await set(donationDataRef, null);
+      setDonationData(newDonations);
+    } catch (error) {
+      console.error("Error deleting donation:", error);
     }
   };
   const checkEligibility = () => {
@@ -120,7 +139,10 @@ const BloodDonation = ({ navigation, route }) => {
       <View>
         <TextInput
           style={styles.input}
-          placeholder="Enter Dontaion Type"
+          placeholder={
+            donationTypeError ? donationTypeError : "Enter Dontaion Type"
+          }
+          placeholderTextColor={donationTypeError ? "red" : "gray"}
           value={donationType}
           onChangeText={(text) => setDonationType(text)}
         />
@@ -158,9 +180,15 @@ const BloodDonation = ({ navigation, route }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
+              <Text> type: {item.donationType}</Text>
               <Text> Location: {item.medicalUnitName}</Text>
               <Text> Date: {item.formattedDate}</Text>
-              <Text> type: {item.donationType}</Text>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteDonation(item.id)}
+              >
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -195,8 +223,20 @@ const styles = StyleSheet.create({
   bloodDonationItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#ADD8E6",
     borderRadius: 8,
+  },
+  deleteButton: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    backgroundColor: "#e74c3c",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 22,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

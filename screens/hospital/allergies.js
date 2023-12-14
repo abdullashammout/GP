@@ -15,6 +15,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [allergies, setAllergies] = useState([]);
   const [allergyName, setAllergyName] = useState("");
+  const [allergyNameError, setAlleryNameError] = useState(null);
   const [medicalUnitName, setMedicalUnitName] = useState("");
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
@@ -33,8 +34,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
           itemData.id = childSnapshot.key;
           loadedData.push(itemData);
         });
-        const sortedData = loadedData.sort((a, b) => a.id.localeCompare(b.id));
-        setAllergies(sortedData);
+        setAllergies(loadedData);
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -52,21 +52,26 @@ const PatientAllergiesPage = ({ navigation, route }) => {
   getMedicalUnitName();
 
   const addAllergy = async () => {
+    if (allergyName === "") {
+      setAllergyName("");
+      setAlleryNameError("Please Enter Allergy Name");
+      return;
+    }
+
     try {
       const newAllergy = { allergyName, formattedDate, medicalUnitName };
-      if (newAllergy !== "") {
-        const AllergyDataRef = ref(db, `users/patients/${patientId}/Allergy`);
+      const AllergyDataRef = ref(db, `users/patients/${patientId}/Allergy`);
 
-        const newAllergyRef = push(AllergyDataRef, newAllergy);
+      const newAllergyRef = push(AllergyDataRef, newAllergy);
 
-        const newItemId = newAllergyRef.key;
-        newAllergy.id = newItemId;
+      const newItemId = newAllergyRef.key;
+      newAllergy.id = newItemId;
 
-        await set(newAllergyRef, newAllergy);
-        setAllergies((prevData) => [...prevData, newAllergy]);
+      await set(newAllergyRef, newAllergy);
+      setAllergies((prevData) => [...prevData, newAllergy]);
 
-        setAllergyName("");
-      }
+      setAllergyName("");
+      setAlleryNameError("");
     } catch (error) {
       console.error("Error adding item:", error);
     }
@@ -93,7 +98,10 @@ const PatientAllergiesPage = ({ navigation, route }) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Enter new allergy"
+          placeholder={
+            allergyNameError ? allergyNameError : "Enter new allergy"
+          }
+          placeholderTextColor={allergyNameError ? "red" : "gray"}
           value={allergyName.trim()}
           onChangeText={(text) => setAllergyName(text)}
         />
@@ -115,12 +123,14 @@ const PatientAllergiesPage = ({ navigation, route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.allergyItem}>
               <View style={styles.row}>
+                <Text style={styles.label}>Name:</Text>
+                <Text>{item.allergyName}</Text>
+              </View>
+              <View style={styles.row}>
                 <Text style={styles.label}>Hospital:</Text>
                 <Text>{item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Name:</Text>
-                <Text>{item.allergyName}</Text>
                 <Text style={styles.label}> Date:</Text>
                 <Text>{item.formattedDate}</Text>
               </View>
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
   allergyItem: {
     marginBottom: 8,
     padding: 8,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#ADD8E6",
     borderRadius: 8,
   },
   row: {
@@ -185,9 +195,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
-    padding: 5,
+    padding: 10,
     borderRadius: 5,
-    marginTop: 17,
+    marginTop: 22,
   },
   buttonText: {
     color: "white",

@@ -7,6 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
@@ -17,6 +19,8 @@ const TreatmentList = ({ navigation, route }) => {
   const [treatments, setTreatments] = useState([]);
   const [treatmentName, setTreatmentName] = useState("");
   const [doctorName, setDoctorName] = useState("");
+  const [treatNameError, setTreatNameError] = useState(null);
+  const [doctorNameError, setDoctorNameError] = useState(null);
   const [medicalUnitName, setMedicalUnitName] = useState("");
 
   useEffect(() => {
@@ -32,10 +36,8 @@ const TreatmentList = ({ navigation, route }) => {
             itemData.id = childSnapshot.key;
             loadedData.push(itemData);
           });
-          const sortedData = loadedData.sort((a, b) =>
-            a.id.localeCompare(b.id)
-          );
-          setTreatments(sortedData);
+
+          setTreatments(loadedData);
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -67,104 +69,125 @@ const TreatmentList = ({ navigation, route }) => {
   };
 
   const handleAddItem = async () => {
-    if (treatmentName && doctorName) {
-      try {
-        const currentDate = new Date();
-        const formattedDate = `${currentDate.getDate()}/${
-          currentDate.getMonth() + 1
-        }/${currentDate.getFullYear()}`;
+    if (treatmentName === "" || doctorName === "") {
+      setDoctorName("");
+      setTreatmentName("");
+      setDoctorNameError("Required");
+      setTreatNameError("Required");
+      return;
+    }
+    try {
+      const currentDate = new Date();
+      const formattedDate = `${currentDate.getDate()}/${
+        currentDate.getMonth() + 1
+      }/${currentDate.getFullYear()}`;
 
-        const newItemData = {
-          treatmentName: treatmentName,
-          createdBy: doctorName,
-          medicalUnitName: medicalUnitName,
-          date: formattedDate,
-        };
+      const newItemData = {
+        treatmentName: treatmentName,
+        createdBy: doctorName,
+        medicalUnitName: medicalUnitName,
+        date: formattedDate,
+      };
 
-        const treatDataRef = ref(db, `users/patients/${patientId}/Treatments`);
+      const treatDataRef = ref(db, `users/patients/${patientId}/Treatments`);
 
-        const newTreatmentRef = push(treatDataRef, newItemData);
+      const newTreatmentRef = push(treatDataRef, newItemData);
 
-        const newItemId = newTreatmentRef.key;
-        newItemData.id = newItemId;
+      const newItemId = newTreatmentRef.key;
+      newItemData.id = newItemId;
 
-        set(newTreatmentRef, newItemData);
-        setTreatments((prevData) => [...prevData, newItemData]);
+      set(newTreatmentRef, newItemData);
+      setTreatments((prevData) => [...prevData, newItemData]);
 
-        setTreatmentName("");
-        setDoctorName("");
-      } catch (error) {
-        console.error("Error adding item:", error);
-      }
+      setTreatmentName("");
+      setDoctorName("");
+      setDoctorNameError(null);
+      setTreatNameError(null);
+    } catch (error) {
+      console.error("Error adding item:", error);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Treatment List</Text>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <Text style={styles.header}>Treatment List</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Doctor Name"
-        value={doctorName}
-        onChangeText={(text) => setDoctorName(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Treatment Name"
-        value={treatmentName}
-        onChangeText={(text) => setTreatmentName(text)}
-      />
-      <Button title="Add Treatment" onPress={handleAddItem} />
+        <TextInput
+          style={styles.input}
+          placeholder={doctorNameError ? doctorNameError : "Doctor Name"}
+          placeholderTextColor={doctorNameError ? "red" : "gray"}
+          value={doctorName}
+          onChangeText={(text) => setDoctorName(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder={treatNameError ? treatNameError : "Treatment Name"}
+          placeholderTextColor={treatNameError ? "red" : "gray"}
+          value={treatmentName}
+          onChangeText={(text) => setTreatmentName(text)}
+        />
+        <Button title="Add Treatment" onPress={handleAddItem} />
 
-      <Text style={styles.listHeader}>Treatments</Text>
-      {treatments.length === 0 ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>No Treatments recorded for this patient.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={treatments}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.treatmentItem}>
-              <View>
-                <Text style={{ fontWeight: "bold" }}>
-                  Medical Unit: {item.medicalUnitName}{" "}
-                </Text>
-              </View>
-              <Text>Treatment: {item.treatmentName}</Text>
-              <Text>Doctor: {item.createdBy}</Text>
-              <Text>Date : {item.date} </Text>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={{ ...styles.button, backgroundColor: "#3498db" }}
-                  onPress={() =>
-                    navigation.navigate("TreatmentDetails", {
+        <Text style={styles.listHeader}>Treatments</Text>
+        {treatments.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No Treatments recorded for this patient.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={treatments}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.treatmentItem}
+                onPress={() =>
+                  navigation.navigate(
+                    "TreatmentDetails",
+                    {
                       name: item.treatmentName,
                       itemId: item.id,
                       itemName: item.createdBy,
                       medicalUnitName: item.medicalUnitName,
                       patientId: patientId,
-                    })
-                  }
-                >
-                  <Text style={{ color: "white" }}>View Details</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleDeleteItem(item.id)}
-                >
-                  <Text style={{ color: "white" }}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        />
-      )}
-    </View>
+                    },
+                    setDoctorNameError(null),
+                    setTreatNameError(null)
+                  )
+                }
+              >
+                <View>
+                  <Text
+                    style={{ fontWeight: "bold", color: "white", fontSize: 16 }}
+                  >
+                    Treatment: {item.treatmentName}{" "}
+                  </Text>
+                </View>
+                <Text style={styles.dateText}>
+                  Medical Unit: {item.medicalUnitName}
+                </Text>
+                <Text style={styles.dateText}>Doctor: {item.createdBy}</Text>
+                <Text style={styles.dateText}>Date: {item.date} </Text>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleDeleteItem(item.id)}
+                  >
+                    <Text style={{ color: "white" }}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -178,6 +201,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 16,
+  },
+  dateText: {
+    marginTop: 5,
+    color: "white", // black for text
   },
   input: {
     height: 40,
@@ -193,23 +220,31 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   treatmentItem: {
-    justifyContent: "space-between",
-    backgroundColor: "#f1f1f1",
-    padding: 10,
+    backgroundColor: "#3498db",
+    borderRadius: 8,
+    elevation: 3, // Add elevation for shadow on Android
+    shadowColor: "#000", // Add shadow for iOS
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    padding: 16,
     marginVertical: 8,
     marginHorizontal: 16,
-    borderRadius: 5,
-  },
-  button: {
-    alignSelf: "flex-end",
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    marginTop: 5,
-    borderRadius: 5,
   },
   buttonContainer: {
     position: "absolute",
-    right: 10,
+    alignSelf: "flex-end",
+    top: 80,
+    right: 5,
+  },
+  button: {
+    backgroundColor: "#e74c3c",
+    padding: 10,
+    marginLeft: 5, // Add some space between buttons
+    borderRadius: 5,
   },
 });
 

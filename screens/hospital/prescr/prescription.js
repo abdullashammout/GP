@@ -5,7 +5,6 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Button,
   TextInput,
   Modal,
   TouchableWithoutFeedback,
@@ -18,6 +17,7 @@ const Prescription = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [userName, setUserName] = useState("");
   const [medicalUnitName, setMedicalUnitName] = useState("");
+  const [userNameError, setUserNameError] = useState(null);
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -34,10 +34,8 @@ const Prescription = ({ navigation, route }) => {
             itemData.id = childSnapshot.key;
             loadedData.push(itemData);
           });
-          const sortedData = loadedData.sort((a, b) =>
-            a.id.localeCompare(b.id)
-          );
-          setData(sortedData);
+
+          setData(loadedData);
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -69,6 +67,10 @@ const Prescription = ({ navigation, route }) => {
   };
 
   const handleAddItem = async () => {
+    if (userName === "") {
+      setUserNameError(" Required  ");
+      return;
+    }
     try {
       const currentDate = new Date();
       const formattedDate = `${currentDate.getDate()}/${
@@ -95,6 +97,8 @@ const Prescription = ({ navigation, route }) => {
 
       setUserName("");
       setMedicalUnitName("");
+      setUserNameError("");
+
       setModalVisible(false);
     } catch (error) {
       console.error("Error adding item:", error);
@@ -102,27 +106,24 @@ const Prescription = ({ navigation, route }) => {
   };
 
   const renderItem = ({ item, index }) => (
-    <View style={styles.itemContainer}>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() =>
+        navigation.navigate("presList", {
+          idd: index + 1,
+          itemId: item.id,
+          itemName: item.createdBy,
+          medicalUnitName: item.medicalUnitName,
+          patientId: patientId,
+        })
+      }
+    >
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>Prescription {index + 1}</Text>
-        <Text>Doctor name: {item.createdBy}</Text>
+        <Text style={styles.dateText}>Doctor name: {item.createdBy}</Text>
         <Text style={styles.dateText}>Date: {item.date}</Text>
         <Text style={styles.dateText}>Time: {item.time}</Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: "#3498db" }}
-            onPress={() =>
-              navigation.navigate("presList", {
-                idd: index + 1,
-                itemId: item.id,
-                itemName: item.createdBy,
-                medicalUnitName: item.medicalUnitName,
-                patientId: patientId,
-              })
-            }
-          >
-            <Text style={{ color: "white" }}>Add Medications</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => handleDeleteItem(item.id)}
@@ -131,7 +132,7 @@ const Prescription = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -161,6 +162,7 @@ const Prescription = ({ navigation, route }) => {
           onPressOut={() => {
             setModalVisible(false);
             setUserName("");
+            setUserNameError(null);
           }}
         >
           <View style={styles.centeredView}>
@@ -168,13 +170,18 @@ const Prescription = ({ navigation, route }) => {
               <Text>Enter doctor name</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Your name"
+                placeholder={userNameError ? userNameError : "Your Name"}
+                placeholderTextColor={userNameError ? "red" : "gray"}
                 value={userName}
                 onChangeText={(text) => setUserName(text)}
               />
-              <View style={styles.buttonsContainer}>
+              <View>
                 <TouchableOpacity
-                  style={{ ...styles.button, backgroundColor: "#3498db" }}
+                  style={{
+                    ...styles.button,
+                    paddingHorizontal: 20,
+                    backgroundColor: "#3498db",
+                  }}
                   onPress={handleAddItem}
                 >
                   <Text style={{ color: "white" }}>Add</Text>
@@ -204,11 +211,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f1f1f1",
-    padding: 10,
+    backgroundColor: "#3498db",
+    padding: 16,
     marginVertical: 8,
     marginHorizontal: 16,
-    borderRadius: 5,
+    borderRadius: 10,
+    elevation: 3, // Add elevation for shadow on Android
+    shadowColor: "#000", // Add shadow for iOS
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   itemInfo: {
     flex: 1,
@@ -216,11 +231,11 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "black", // black for text
+    color: "white", // black for text
   },
   dateText: {
     marginTop: 5,
-    color: "black", // black for text
+    color: "white", // black for text
   },
   centeredView: {
     flex: 1,
@@ -232,7 +247,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 35,
+    padding: 45,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -247,7 +262,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
     padding: 10,
-    marginTop: 5,
+    marginTop: 22,
     borderRadius: 5,
   },
   buttonContainer: {
@@ -267,7 +282,7 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 10,
     backgroundColor: "#fff",
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
     paddingVertical: 8,
     borderRadius: 5,
     borderColor: "gray",
