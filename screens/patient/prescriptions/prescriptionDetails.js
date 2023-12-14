@@ -56,13 +56,6 @@ const PrescriptionDetails = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>Doctor Name:</Text>
-            <Text style={styles.value}>Dr. {itemName}</Text>
-          </View>
-        </View>
-
         <Text style={styles.sectionHeader}>Medications</Text>
 
         {medications.length > 0 ? (
