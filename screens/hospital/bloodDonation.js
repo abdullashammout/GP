@@ -135,7 +135,6 @@ const BloodDonation = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Blood Donation Tracker</Text>
       <View>
         <TextInput
           style={styles.input}
@@ -146,7 +145,12 @@ const BloodDonation = ({ navigation, route }) => {
           value={donationType}
           onChangeText={(text) => setDonationType(text)}
         />
-        <Button title="Add Donation" onPress={addBloodDonation} />
+        <TouchableOpacity
+          style={styles.checkEligibilityButton}
+          onPress={addBloodDonation}
+        >
+          <Text style={styles.checkEligibilityButtonText}>Add Donation</Text>
+        </TouchableOpacity>
       </View>
       <View style={{ marginTop: 15 }}>
         {eligible !== null && (
@@ -165,7 +169,14 @@ const BloodDonation = ({ navigation, route }) => {
               : "The Patient is not eligible to donate blood yet."}
           </Text>
         )}
-        <Button title="Check Eligibility" onPress={checkEligibility} />
+        <TouchableOpacity
+          style={styles.checkEligibilityButton}
+          onPress={checkEligibility}
+        >
+          <Text style={styles.checkEligibilityButtonText}>
+            Check Eligibility
+          </Text>
+        </TouchableOpacity>
       </View>
       <Text style={styles.historyHeader}>Blood Donation History</Text>
       {donationData.length === 0 ? (
@@ -237,6 +248,17 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
+  },
+  checkEligibilityButton: {
+    backgroundColor: "#3498db",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  checkEligibilityButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

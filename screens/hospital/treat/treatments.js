@@ -115,8 +115,6 @@ const TreatmentList = ({ navigation, route }) => {
       }}
     >
       <View style={styles.container}>
-        <Text style={styles.header}>Treatment List</Text>
-
         <TextInput
           style={styles.input}
           placeholder={doctorNameError ? doctorNameError : "Doctor Name"}
@@ -131,9 +129,14 @@ const TreatmentList = ({ navigation, route }) => {
           value={treatmentName}
           onChangeText={(text) => setTreatmentName(text)}
         />
-        <Button title="Add Treatment" onPress={handleAddItem} />
+        <TouchableOpacity
+          style={styles.checkEligibilityButton}
+          onPress={handleAddItem}
+        >
+          <Text style={styles.checkEligibilityButtonText}>Add Treatment</Text>
+        </TouchableOpacity>
 
-        <Text style={styles.listHeader}>Treatments</Text>
+        <Text style={styles.listHeader}>Treatments History</Text>
         {treatments.length === 0 ? (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -245,6 +248,17 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 5, // Add some space between buttons
     borderRadius: 5,
+  },
+  checkEligibilityButton: {
+    backgroundColor: "#3498db",
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  checkEligibilityButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

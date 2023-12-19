@@ -117,21 +117,6 @@ const PresList = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Prescription ID:</Text>
-          <Text style={styles.value}>{idd}</Text>
-        </View>
-
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Medical unit Name:</Text>
-          <Text style={styles.value}>{medicalUnitName}</Text>
-        </View>
-
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Doctor Name:</Text>
-          <Text style={styles.value}>{itemName}</Text>
-        </View>
-
         <View style={styles.formContainer}>
           <Text style={styles.label}>Medication:</Text>
           <TextInput
@@ -156,7 +141,12 @@ const PresList = ({ route }) => {
           />
         </View>
 
-        <Button title="Add Medication" onPress={handleAddMedication} />
+        <TouchableOpacity
+          style={styles.checkEligibilityButton}
+          onPress={handleAddMedication}
+        >
+          <Text style={styles.checkEligibilityButtonText}>Add Medication</Text>
+        </TouchableOpacity>
 
         <FlatList
           data={medications}
@@ -236,6 +226,17 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     padding: 4,
+  },
+  checkEligibilityButton: {
+    backgroundColor: "#3498db",
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  checkEligibilityButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
