@@ -316,6 +316,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Treatments",
           }}
         />
         <Stack.Screen
@@ -334,6 +335,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Patient Allergies",
           }}
         />
         <Stack.Screen
@@ -352,6 +354,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Blood Donation Tracker",
           }}
         />
         <Stack.Screen

@@ -94,7 +94,6 @@ const PatientAllergiesPage = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Patient Allergies</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -105,11 +104,11 @@ const PatientAllergiesPage = ({ navigation, route }) => {
           value={allergyName.trim()}
           onChangeText={(text) => setAllergyName(text)}
         />
-
-        <TouchableOpacity style={styles.addButton} onPress={addAllergy}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.addButton} onPress={addAllergy}>
+        <Text style={styles.buttonText}>Add</Text>
+      </TouchableOpacity>
+      <Text style={styles.header}>Allergy History</Text>
       {allergies.length === 0 ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -181,15 +180,18 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 40,
-    borderColor: "#eaeaea",
+    borderColor: "black",
     borderWidth: 1,
+    borderRadius: 5,
     marginRight: 10,
     paddingLeft: 10,
+    marginBottom: 10,
   },
   addButton: {
     backgroundColor: "#3498db",
     padding: 10,
     borderRadius: 5,
+    marginBottom: 10,
   },
   deleteButton: {
     position: "absolute",
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

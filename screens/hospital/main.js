@@ -80,7 +80,7 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("Prescription", { patientId });
     }
     if (index === "2") {
-      navigation.navigate("diagnosis");
+      navigation.navigate("diagnosis", { patientId });
     }
     if (index === "3") {
       navigation.navigate("treatments", { patientId });
@@ -92,7 +92,7 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("allergies", { patientId });
     }
     if (index === "6") {
-      navigation.navigate("lab");
+      navigation.navigate("lab", { patientId });
     }
     if (index === "7") {
       navigation.navigate("BloodDonation", { patientId });
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: "#3498db",
     padding: 10,
-    margin: 10,
+    margin: 8,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

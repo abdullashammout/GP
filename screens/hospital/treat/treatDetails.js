@@ -140,7 +140,12 @@ const TreatmentDetails = ({ route }) => {
           />
         </View>
 
-        <Button title="Add Details" onPress={handleAddTreatmentDetails} />
+        <TouchableOpacity
+          style={styles.checkEligibilityButton}
+          onPress={handleAddTreatmentDetails}
+        >
+          <Text style={styles.checkEligibilityButtonText}>Add Details</Text>
+        </TouchableOpacity>
 
         <FlatList
           data={details}
@@ -225,6 +230,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
+  },
+  checkEligibilityButton: {
+    backgroundColor: "#3498db",
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  checkEligibilityButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 export default TreatmentDetails;
