@@ -17,7 +17,6 @@ import PatientPage from "./screens/patient/patientPage";
 import MainScreen from "./screens/hospital/main";
 import ResetPasswordScreen from "./screens/patient/ResetPassword";
 import Prescription from "./screens/hospital/prescr/prescription";
-import Diagnosis from "./screens/hospital/diagnosis";
 import Treatments from "./screens/hospital/treat/treatments";
 import TreatmentDetails from "./screens/hospital/treat/treatDetails";
 import Allergies from "./screens/hospital/allergies";
@@ -40,6 +39,7 @@ import PatientAllergies from "./screens/patient/patientAllergies";
 import PrescriptionDetails from "./screens/patient/prescriptions/prescriptionDetails";
 import PatientTreatments from "./screens/patient/Treatments/pTreatments";
 import PatientTreatDetails from "./screens/patient/Treatments/treatmentDetails";
+import DiagnosisList from "./screens/hospital/diagnosis";
 
 const Stack = createNativeStackNavigator();
 
@@ -302,11 +302,12 @@ export default function App() {
         />
         <Stack.Screen
           name="diagnosis"
-          component={Diagnosis}
+          component={DiagnosisList}
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Patient Diagnosis",
           }}
         />
         <Stack.Screen
