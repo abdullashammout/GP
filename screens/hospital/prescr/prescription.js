@@ -120,6 +120,7 @@ const Prescription = ({ navigation, route }) => {
     >
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>Prescription {index + 1}</Text>
+        <Text style={styles.dateText}>Hospital: {item.medicalUnitName}</Text>
         <Text style={styles.dateText}>Doctor name: {item.createdBy}</Text>
         <Text style={styles.dateText}>Date: {item.date}</Text>
         <Text style={styles.dateText}>Time: {item.time}</Text>
@@ -144,11 +145,13 @@ const Prescription = ({ navigation, route }) => {
           <Text>No Prescriptions recorded for this patient.</Text>
         </View>
       ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        <View style={{ marginBottom: 50 }}>
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
       )}
       <Modal
         animationType="fade"
@@ -262,7 +265,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
     padding: 10,
-    marginTop: 22,
+    marginTop: 38,
     borderRadius: 5,
   },
   buttonContainer: {

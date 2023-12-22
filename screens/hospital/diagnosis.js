@@ -156,7 +156,14 @@ const DiagnosisList = ({ navigation, route }) => {
           </View>
         )}
       />
-      <Button title="Add diagnosis" onPress={toggleModal} />
+      <TouchableOpacity
+        style={{ ...styles.btns, paddingVertical: 12 }}
+        onPress={toggleModal}
+      >
+        <Text style={{ color: "#fff", textAlign: "center" }}>
+          Add diagnosis
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

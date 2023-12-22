@@ -106,7 +106,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
         />
       </View>
       <TouchableOpacity style={styles.addButton} onPress={addAllergy}>
-        <Text style={styles.buttonText}>Add</Text>
+        <Text style={styles.buttonText}>Add Allergy</Text>
       </TouchableOpacity>
       <Text style={styles.header}>Allergy History</Text>
       {allergies.length === 0 ? (
