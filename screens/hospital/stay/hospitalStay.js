@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Keyboard,
   StyleSheet,
   Button,
   TextInput,
@@ -102,9 +103,15 @@ export default function HospitalStay({ navigation, route }) {
     <View style={styles.itemContainer}>
       <Text style={{ fontWeight: "bold" }}>hospital admission {index + 1}</Text>
       <Text>hospital name: {item.medicalUnitName}</Text>
-      <Text>Doctor name:Dr.{item.createdBy}</Text>
+      <Text>Doctor name:{item.createdBy}</Text>
       <Text>entry date:{item.date}</Text>
       <Text>entry time:{item.time}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleDeleteItem(item.id)}
+      >
+        <Text style={{ color: "white" }}>Delete</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -133,8 +140,7 @@ export default function HospitalStay({ navigation, route }) {
       >
         <TouchableWithoutFeedback
           onPressOut={() => {
-            setModalVisibile(false);
-            setDoctorName("");
+            Keyboard.dismiss();
           }}
         >
           <View style={styles.centeredView}>
@@ -146,7 +152,20 @@ export default function HospitalStay({ navigation, route }) {
                 value={doctorName}
                 onChangeText={(text) => setDoctorName(text)}
               />
-              <Button title="Add" onPress={handleAddItem} />
+              <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <TouchableOpacity style={styles.btns} onPress={handleAddItem}>
+                  <Text style={{ color: "#fff" }}>Add</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.btns}
+                  onPress={() => {
+                    setModalVisibile(false);
+                  }}
+                >
+                  <Text style={{ color: "#fff" }}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -207,6 +226,15 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  button: {
+    backgroundColor: "#e74c3c",
+    padding: 10,
+    marginLeft: 5, // Add some space between buttons
+    borderRadius: 5,
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+  },
   addItem: {
     backgroundColor: "#3498db",
     position: "absolute",
@@ -215,5 +243,14 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 90,
     borderRadius: 10,
+  },
+  btns: {
+    marginLeft: 17,
+    top: 5,
+    backgroundColor: "#3498db",
+    bottom: 20,
+    padding: 15,
+    borderRadius: 10,
+    margin: 5,
   },
 });

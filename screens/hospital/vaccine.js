@@ -3,7 +3,8 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  TouchableWithoutFeedback,
+  Keyboard,
   FlatList,
   StyleSheet,
   TouchableOpacity,
@@ -92,55 +93,61 @@ const Vaccine = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder={vaccineNameError ? vaccineNameError : "Vaccine Name"}
-        placeholderTextColor={vaccineNameError ? "red" : "gray"}
-        value={vaccineName}
-        onChangeText={(text) => setVaccineName(text)}
-      />
-
-      <TouchableOpacity style={styles.addButton} onPress={addVaccine}>
-        <Text style={styles.buttonText}>Add Vaccine</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.historyHeader}>Vaccine History</Text>
-      {vaccines.length === 0 ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>No Vaccines recorded for this patient.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={vaccines}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.vaccineItem}>
-              <Text>
-                Medical Unit: {"  "}
-                {item.medicalUnitName}
-              </Text>
-              <Text>
-                Vaccine Name: {"  "}
-                {item.vaccineName}
-              </Text>
-              <Text>
-                Date: {"  "}
-                {item.formattedDate}
-              </Text>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => deleteVaccine(item.id)}
-              >
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder={vaccineNameError ? vaccineNameError : "Vaccine Name"}
+          placeholderTextColor={vaccineNameError ? "red" : "gray"}
+          value={vaccineName}
+          onChangeText={(text) => setVaccineName(text)}
         />
-      )}
-    </View>
+
+        <TouchableOpacity style={styles.addButton} onPress={addVaccine}>
+          <Text style={styles.buttonText}>Add Vaccine</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.historyHeader}>Vaccine History</Text>
+        {vaccines.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No Vaccines recorded for this patient.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={vaccines}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.vaccineItem}>
+                <Text>
+                  Vaccine Name: {"  "}
+                  {item.vaccineName}
+                </Text>
+                <Text>
+                  hospital: {"  "}
+                  {item.medicalUnitName}
+                </Text>
+                <Text>
+                  Date: {"  "}
+                  {item.formattedDate}
+                </Text>
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => deleteVaccine(item.id)}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
