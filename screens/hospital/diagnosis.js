@@ -160,7 +160,7 @@ const DiagnosisList = ({ navigation, route }) => {
         style={{ ...styles.btns, paddingVertical: 12 }}
         onPress={toggleModal}
       >
-        <Text style={{ color: "#fff", textAlign: "center" }}>
+        <Text style={{ ...styles.buttonText, fontSize: 16 }}>
           Add diagnosis
         </Text>
       </TouchableOpacity>

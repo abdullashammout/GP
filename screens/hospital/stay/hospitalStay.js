@@ -174,7 +174,9 @@ export default function HospitalStay({ navigation, route }) {
         style={styles.addItem}
         onPress={() => setModalVisibile(true)}
       >
-        <Text style={{ color: "white" }}>add new Hospital Entry</Text>
+        <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>
+          add new Hospital Entry
+        </Text>
       </TouchableOpacity>
     </View>
   );

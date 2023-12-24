@@ -108,7 +108,9 @@ const Vaccine = ({ navigation, route }) => {
         />
 
         <TouchableOpacity style={styles.addButton} onPress={addVaccine}>
-          <Text style={styles.buttonText}>Add Vaccine</Text>
+          <Text style={{ ...styles.buttonText, fontSize: 16 }}>
+            Add Vaccine
+          </Text>
         </TouchableOpacity>
 
         <Text style={styles.historyHeader}>Vaccine History</Text>
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   historyHeader: {
     fontSize: 18,

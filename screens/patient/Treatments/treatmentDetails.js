@@ -67,10 +67,6 @@ const PatientTreatDetails = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Doctor: </Text>
-          <Text>Dr.{itemName}</Text>
-        </View>
         <View style={styles.formContainer}></View>
 
         <FlatList
