@@ -45,18 +45,9 @@ const Vaccines = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.vaccineItem}>
-              <Text style={styles.bold}>
-                Vaccine Name: {"  "}
-                {item.vaccineName}
-              </Text>
-              <Text>
-                Medical Unit: {"  "}
-                {item.medicalUnitName}
-              </Text>
-              <Text>
-                Date: {"  "}
-                {item.formattedDate}
-              </Text>
+              <Text style={styles.bold}>Vaccine Name: {item.vaccineName}</Text>
+              <Text>Medical Unit: {item.medicalUnitName}</Text>
+              <Text>Date: {item.formattedDate}</Text>
             </View>
           )}
         />

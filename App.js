@@ -40,6 +40,8 @@ import PrescriptionDetails from "./screens/patient/prescriptions/prescriptionDet
 import PatientTreatments from "./screens/patient/Treatments/pTreatments";
 import PatientTreatDetails from "./screens/patient/Treatments/treatmentDetails";
 import DiagnosisList from "./screens/hospital/diagnosis";
+import PatientDiagnosis from "./screens/patient/patientDiagnosis";
+import PatientStay from "./screens/patient/hospitalStay";
 
 const Stack = createNativeStackNavigator();
 
@@ -529,6 +531,26 @@ export default function App() {
             headerTitleAlign: "center",
             statusBarStyle: "dark",
             title: "Treatment Details ",
+          }}
+        />
+        <Stack.Screen
+          name="pDiagnosis"
+          component={PatientDiagnosis}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Diagnosis",
+          }}
+        />
+        <Stack.Screen
+          name="pStay"
+          component={PatientStay}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Hospital Stay",
           }}
         />
       </Stack.Navigator>

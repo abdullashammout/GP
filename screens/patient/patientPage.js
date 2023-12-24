@@ -160,7 +160,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientPres", { userId });
     }
     if (index === "2") {
-      navigation.navigate("diagnosis");
+      navigation.navigate("pDiagnosis", { userId });
     }
     if (index === "3") {
       navigation.navigate("pTreat", { userId });
@@ -178,7 +178,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientBloodDonations", { userId });
     }
     if (index === "8") {
-      navigation.navigate("hospitalStay");
+      navigation.navigate("pStay", { userId });
     }
   };
   const renderItem = ({ item }) => (

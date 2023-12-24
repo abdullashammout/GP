@@ -106,7 +106,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
         />
       </View>
       <TouchableOpacity style={styles.addButton} onPress={addAllergy}>
-        <Text style={styles.buttonText}>Add Allergy</Text>
+        <Text style={{ ...styles.buttonText, fontSize: 16 }}>Add Allergy</Text>
       </TouchableOpacity>
       <Text style={styles.header}>Allergy History</Text>
       {allergies.length === 0 ? (
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: "black",
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     marginRight: 10,
     paddingLeft: 10,
     marginBottom: 10,

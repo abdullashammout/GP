@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
+    borderRadius: 10,
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
   },
   checkEligibilityButton: {
     backgroundColor: "#3498db",
-    padding: 15,
+    padding: 10,
     borderRadius: 8,
     alignItems: "center",
   },
