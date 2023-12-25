@@ -26,7 +26,7 @@ const BloodDonation = ({ navigation, route }) => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [patientId]);
 
   const loadData = async () => {
     try {
@@ -191,9 +191,11 @@ const BloodDonation = ({ navigation, route }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
-              <Text> type: {item.donationType}</Text>
-              <Text> Location: {item.medicalUnitName}</Text>
-              <Text> Date: {item.formattedDate}</Text>
+              <Text style={{ fontWeight: "bold" }}>
+                type: {item.donationType}
+              </Text>
+              <Text>Location: {item.medicalUnitName}</Text>
+              <Text>Date: {item.formattedDate}</Text>
               <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => deleteDonation(item.id)}
@@ -240,11 +242,11 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     position: "absolute",
-    alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 5,
-    marginTop: 22,
+    bottom: 5,
+    right: 5,
   },
   buttonText: {
     color: "white",

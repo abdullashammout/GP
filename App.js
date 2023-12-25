@@ -20,7 +20,6 @@ import Prescription from "./screens/hospital/prescr/prescription";
 import Treatments from "./screens/hospital/treat/treatments";
 import TreatmentDetails from "./screens/hospital/treat/treatDetails";
 import Allergies from "./screens/hospital/allergies";
-import Lab from "./screens/hospital/labResults";
 import BloodDonation from "./screens/hospital/bloodDonation";
 import HospitalStay from "./screens/hospital/stay/hospitalStay";
 import Vaccine from "./screens/hospital/vaccine";
@@ -42,6 +41,7 @@ import PatientTreatDetails from "./screens/patient/Treatments/treatmentDetails";
 import DiagnosisList from "./screens/hospital/diagnosis";
 import PatientDiagnosis from "./screens/patient/patientDiagnosis";
 import PatientStay from "./screens/patient/hospitalStay";
+import ChronicIllness from "./screens/hospital/chronicIllness";
 
 const Stack = createNativeStackNavigator();
 
@@ -342,12 +342,13 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="lab"
-          component={Lab}
+          name="chronic"
+          component={ChronicIllness}
           options={{
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Chronic Diseases",
           }}
         />
         <Stack.Screen

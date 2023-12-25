@@ -60,7 +60,7 @@ export default function MainScreen({ route, navigation }) {
     },
     {
       index: "6",
-      title: "Lab results",
+      title: "Chronic Illness",
       image: require("../../pics/results.png"),
     },
     {
@@ -92,7 +92,7 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("allergies", { patientId });
     }
     if (index === "6") {
-      navigation.navigate("lab", { patientId });
+      navigation.navigate("chronic", { patientId });
     }
     if (index === "7") {
       navigation.navigate("BloodDonation", { patientId });
@@ -163,8 +163,9 @@ const styles = StyleSheet.create({
     height: 140,
   },
   title: {
-    fontSize: 10,
+    fontSize: 12,
     color: "white",
+    fontWeight: "bold",
   },
   image: {
     height: 90,

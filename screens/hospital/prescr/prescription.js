@@ -8,6 +8,7 @@ import {
   TextInput,
   Modal,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
@@ -43,7 +44,7 @@ const Prescription = ({ navigation, route }) => {
     };
 
     loadData();
-  }, [patientId, data]);
+  }, [patientId]);
 
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");
@@ -163,9 +164,7 @@ const Prescription = ({ navigation, route }) => {
       >
         <TouchableWithoutFeedback
           onPressOut={() => {
-            setModalVisible(false);
-            setUserName("");
-            setUserNameError(null);
+            Keyboard.dismiss();
           }}
         >
           <View style={styles.centeredView}>

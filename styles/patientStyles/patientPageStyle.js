@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 5,
     color: "white",
+    fontWeight: "bold",
   },
   image: {
     height: 100,

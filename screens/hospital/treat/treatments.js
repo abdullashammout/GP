@@ -45,7 +45,7 @@ const TreatmentList = ({ navigation, route }) => {
     };
 
     loadData();
-  }, [patientId, treatments]);
+  }, [patientId]);
 
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");
