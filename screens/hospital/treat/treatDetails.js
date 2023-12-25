@@ -14,7 +14,7 @@ import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
 
 const TreatmentDetails = ({ route }) => {
-  const { name, itemId, itemName, medicalUnitName, patientId } = route.params;
+  const { name, itemId, patientId } = route.params;
   const [details, setDetails] = useState([]);
   const [treatmentDetails, setTreatmentDetails] = useState(``);
   const [treatmentDetailsError, setTreatmentDetailsError] = useState(null);

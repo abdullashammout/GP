@@ -44,7 +44,7 @@ const Vaccine = ({ navigation, route }) => {
   };
   useEffect(() => {
     loadData();
-  }, [patientId, vaccines]);
+  }, [patientId]);
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");
     setMedicalUnitName(Name);
@@ -126,18 +126,11 @@ const Vaccine = ({ navigation, route }) => {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View style={styles.vaccineItem}>
-                <Text>
-                  Vaccine Name: {"  "}
-                  {item.vaccineName}
+                <Text style={{ fontWeight: "bold" }}>
+                  Vaccine Name: {item.vaccineName}
                 </Text>
-                <Text>
-                  hospital: {"  "}
-                  {item.medicalUnitName}
-                </Text>
-                <Text>
-                  Date: {"  "}
-                  {item.formattedDate}
-                </Text>
+                <Text>hospital: {item.medicalUnitName}</Text>
+                <Text>Date: {item.formattedDate}</Text>
                 <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={() => deleteVaccine(item.id)}

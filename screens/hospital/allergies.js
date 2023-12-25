@@ -43,7 +43,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
 
   useEffect(() => {
     loadData();
-  }, [patientId, allergies]);
+  }, [patientId]);
 
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");
@@ -123,15 +123,13 @@ const PatientAllergiesPage = ({ navigation, route }) => {
             <View style={styles.allergyItem}>
               <View style={styles.row}>
                 <Text style={styles.label}>Name:</Text>
-                <Text>{item.allergyName}</Text>
+                <Text style={{ fontWeight: "bold" }}>{item.allergyName}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Hospital:</Text>
-                <Text>{item.medicalUnitName}</Text>
+                <Text>Hospital: {item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}> Date:</Text>
-                <Text>{item.formattedDate}</Text>
+                <Text>Date: {item.formattedDate}</Text>
               </View>
               <TouchableOpacity
                 style={styles.deleteButton}
@@ -195,11 +193,11 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     position: "absolute",
-    alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 5,
-    marginTop: 22,
+    bottom: 5,
+    right: 5,
   },
   buttonText: {
     color: "white",

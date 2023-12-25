@@ -47,7 +47,7 @@ export default function PatientStay({ navigation, route }) {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text>No hospital entries recorded for this patient.</Text>
+          <Text>You have no hospital entries yet.</Text>
         </View>
       ) : (
         <FlatList

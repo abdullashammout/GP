@@ -44,7 +44,7 @@ export default function HospitalStay({ navigation, route }) {
     };
 
     loadData();
-  }, [patientId, data]);
+  }, [patientId]);
 
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");

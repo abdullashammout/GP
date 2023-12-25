@@ -34,7 +34,7 @@ const PatientAllergies = ({ route }) => {
     <View style={styles.container}>
       {allergies.length === 0 ? (
         <View style={styles.noAllergiesContainer}>
-          <Text style={styles.noAllergiesText}>No allergies recorded.</Text>
+          <Text style={styles.noAllergiesText}>You have no allergies yet.</Text>
         </View>
       ) : (
         <FlatList

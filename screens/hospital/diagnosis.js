@@ -48,7 +48,7 @@ const DiagnosisList = ({ navigation, route }) => {
 
   useEffect(() => {
     loadData();
-  }, [patientId, diagnosis]);
+  }, [patientId]);
 
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");

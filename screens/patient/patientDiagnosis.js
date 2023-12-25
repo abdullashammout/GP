@@ -34,7 +34,7 @@ const PatientDiagnosis = ({ route }) => {
     <View style={styles.container}>
       {diagnosis.length === 0 ? (
         <View style={styles.noDiagnosisContainer}>
-          <Text style={styles.noDiagnosisText}>No diagnosis recorded.</Text>
+          <Text style={styles.noDiagnosisText}>You have no diagnosis yet.</Text>
         </View>
       ) : (
         <FlatList
@@ -43,7 +43,7 @@ const PatientDiagnosis = ({ route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.allergyItem}>
               <View style={styles.row}>
-                <Text style={styles.label}>Name: {item.diagnosis}</Text>
+                <Text style={styles.label}>Diagnosis: {item.diagnosis}</Text>
               </View>
               <View style={styles.row}>
                 <Text>Hospital: </Text>
