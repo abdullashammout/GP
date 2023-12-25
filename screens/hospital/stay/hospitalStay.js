@@ -205,13 +205,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 8,
     paddingHorizontal: 8,
-    borderRadius: 5,
+    borderRadius: 6,
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
     margin: 20,

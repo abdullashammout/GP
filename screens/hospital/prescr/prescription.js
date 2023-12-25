@@ -178,16 +178,30 @@ const Prescription = ({ navigation, route }) => {
                 onChangeText={(text) => setUserName(text)}
               />
               <View>
-                <TouchableOpacity
-                  style={{
-                    ...styles.button,
-                    paddingHorizontal: 20,
-                    backgroundColor: "#3498db",
-                  }}
-                  onPress={handleAddItem}
-                >
-                  <Text style={{ color: "white" }}>Add</Text>
-                </TouchableOpacity>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={{
+                      ...styles.button,
+                      marginRight: 10,
+                      paddingHorizontal: 20,
+                      backgroundColor: "#3498db",
+                    }}
+                    onPress={handleAddItem}
+                  >
+                    <Text style={{ color: "white" }}>Add</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      ...styles.button,
+                      backgroundColor: "#3498db",
+                    }}
+                    onPress={() => {
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
@@ -243,8 +257,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
+
   modalView: {
     margin: 20,
     backgroundColor: "white",
