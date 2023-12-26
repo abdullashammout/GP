@@ -42,6 +42,8 @@ import DiagnosisList from "./screens/hospital/diagnosis";
 import PatientDiagnosis from "./screens/patient/patientDiagnosis";
 import PatientStay from "./screens/patient/hospitalStay";
 import ChronicIllness from "./screens/hospital/chronicIllness";
+import PatientChronic from "./screens/patient/patientChronic";
+import PharPrescription from "./screens/pharmacy/prescriptions";
 
 const Stack = createNativeStackNavigator();
 
@@ -231,6 +233,8 @@ export default function App() {
               component={SearchPh}
               options={{
                 headerShown: false,
+                statusBarColor: "white",
+                statusBarStyle: "dark",
               }}
             />
             <Stack.Screen
@@ -585,6 +589,24 @@ export default function App() {
             headerTitleAlign: "center",
             statusBarStyle: "dark",
             title: "Hospital Stay",
+          }}
+        />
+        <Stack.Screen
+          name="pChronic"
+          component={PatientChronic}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Chronic Diseases History",
+          }}
+        />
+        <Stack.Screen
+          name="pharPrescriptions"
+          component={PharPrescription}
+          options={{
+            headerShown: false,
+            statusBarStyle: "dark",
           }}
         />
       </Stack.Navigator>
