@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TextInput,
-  Button,
+  Alert,
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import styles from "../../../styles/hospitalStyles/detailsPresStyles";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
 
 const PresList = ({ route }) => {
-  const { itemId, idd, itemName, medicalUnitName, patientId } = route.params;
+  const { itemId, patientId } = route.params;
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState(``);
@@ -75,17 +75,32 @@ const PresList = ({ route }) => {
   };
 
   const handleDeleteMedication = async (id) => {
-    try {
-      const newMedications = medications.filter((med) => med.id !== id);
-      const medDataRef = ref(
-        db,
-        `users/patients/${patientId}/prescription/${itemId}/medications/${id}`
-      );
-      await set(medDataRef, null);
-      setMedications(newMedications);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Medication?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newMedications = medications.filter((med) => med.id !== id);
+              const medDataRef = ref(
+                db,
+                `users/patients/${patientId}/prescription/${itemId}/medications/${id}`
+              );
+              await set(medDataRef, null);
+              setMedications(newMedications);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   const renderMedicationItem = ({ item }) => (
@@ -157,87 +172,5 @@ const PresList = ({ route }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#f5f5f5",
-  },
-  header: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  infoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  formContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  medicationItem: {
-    justifyContent: "space-between",
-    marginVertical: 10,
-    padding: 15,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
-    position: "relative",
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  value: {
-    fontSize: 16,
-    color: "#555",
-  },
-  medication: {
-    fontStyle: "italic",
-    color: "#777",
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginLeft: 10,
-    padding: 5,
-    borderRadius: 8,
-    backgroundColor: "white",
-  },
-  deleteButton: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-    position: "absolute",
-    right: 10,
-    top: 50,
-    transform: [{ translateY: -25 }],
-  },
-  row: {
-    flexDirection: "row",
-    padding: 4,
-  },
-  checkEligibilityButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  checkEligibilityButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
 
 export default PresList;

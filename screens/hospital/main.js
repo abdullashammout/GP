@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   FlatList,
-  StyleSheet,
   TouchableOpacity,
   Text,
   Image,
+  Alert,
 } from "react-native";
+import styles from "../../styles/hospitalStyles/mainStyles";
+import { Ionicons } from "@expo/vector-icons";
 import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
 
@@ -16,8 +18,9 @@ export default function MainScreen({ route, navigation }) {
   const [patientAge, setPatientAge] = useState(null);
   const [patientGender, setPatientGender] = useState(null);
   const [pId, setPId] = useState(null);
+
+  // Fetch patient information from the database using the patientId
   useEffect(() => {
-    // Fetch patient information from the database using the patientId
     const userRef = ref(db, `users/patients/${patientId}`);
     get(userRef)
       .then((snapshot) => {
@@ -111,24 +114,32 @@ export default function MainScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <Text
+        style={{
+          textAlign: "center",
+          margin: 18,
+          fontSize: 20,
+          fontWeight: "bold",
+        }}
+      >
+        Patient Record
+      </Text>
       <View style={styles.patientInfoContainer}>
-        <View style={styles.infoContainer}>
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>Name:</Text>
-            <Text style={styles.info}>{patientName}</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>Age:</Text>
-            <Text style={styles.info}>{patientAge}</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>Gender:</Text>
-            <Text style={styles.info}>{patientGender}</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>ID:</Text>
-            <Text style={styles.info}>{pId}</Text>
-          </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.info}>{patientName}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Age:</Text>
+          <Text style={styles.info}>{patientAge}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Gender:</Text>
+          <Text style={styles.info}>{patientGender}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>ID:</Text>
+          <Text style={styles.info}>{pId}</Text>
         </View>
       </View>
       <View style={styles.flatcontainer}>
@@ -140,57 +151,30 @@ export default function MainScreen({ route, navigation }) {
           numColumns={2} // Number of columns in the grindex
         />
       </View>
+      <Ionicons
+        style={{ position: "absolute", left: 20, top: 23 }}
+        name="arrow-back"
+        size={24}
+        color="black"
+        onPress={() => {
+          Alert.alert(
+            "Exit Confirmation",
+            "Are you sure you want to exit patient record?",
+            [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Exit",
+                onPress: async () => {
+                  navigation.goBack();
+                },
+              },
+            ]
+          );
+        }}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  flatcontainer: {
-    top: 10,
-  },
-  item: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    margin: 8,
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 20,
-    height: 140,
-  },
-  title: {
-    fontSize: 12,
-    color: "white",
-    fontWeight: "bold",
-  },
-  image: {
-    height: 90,
-    width: 90,
-    marginBottom: 10,
-  },
-  patientInfoContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    elevation: 3,
-    margin: 10,
-    marginVertical: 2,
-    padding: 15,
-  },
-
-  infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
-  },
-  label: {
-    fontWeight: "bold",
-    color: "#333",
-  },
-  info: {
-    color: "#555",
-  },
-});

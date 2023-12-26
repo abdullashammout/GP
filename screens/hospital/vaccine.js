@@ -6,14 +6,15 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
-  StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
+import styles from "../../styles/hospitalStyles/vaccineStyles";
 import { set, ref, push, get } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Vaccine = ({ navigation, route }) => {
+const Vaccine = ({ route }) => {
   const { patientId } = route.params;
   const [vaccines, setVaccines] = useState([]);
   const [vaccineName, setVaccineName] = useState("");
@@ -80,16 +81,34 @@ const Vaccine = ({ navigation, route }) => {
   };
 
   const deleteVaccine = async (id) => {
-    try {
-      const newVaccines = vaccines.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Diagnosis?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newVaccines = vaccines.filter((item) => item.id !== id);
 
-      const presDataRef = ref(db, `users/patients/${patientId}/Vaccine/${id}`);
-      await set(presDataRef, null);
+              const presDataRef = ref(
+                db,
+                `users/patients/${patientId}/Vaccine/${id}`
+              );
+              await set(presDataRef, null);
 
-      setVaccines(newVaccines);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              setVaccines(newVaccines);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -145,56 +164,5 @@ const Vaccine = ({ navigation, route }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    borderRadius: 10,
-  },
-  historyHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  vaccineItem: {
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
-  },
-  deleteButton: {
-    position: "absolute",
-    top: 20,
-    right: 8,
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  addButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-});
 
 export default Vaccine;

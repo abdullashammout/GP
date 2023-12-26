@@ -3,13 +3,11 @@ import {
   View,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
+  Alert,
   FlatList,
-  StyleSheet,
   TouchableOpacity,
 } from "react-native";
-
+import styles from "../../styles/hospitalStyles/chronicStyles";
 import { set, ref, push, get } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -85,20 +83,37 @@ const ChronicIllness = ({ route }) => {
   };
 
   const deleteChronic = async (id) => {
-    try {
-      const newChronicIllnesss = chronicIllnesses.filter(
-        (item) => item.id !== id
-      );
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Chronic Disease?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newChronicIllnesss = chronicIllnesses.filter(
+                (item) => item.id !== id
+              );
 
-      const presDataRef = ref(db, `users/patients/${patientId}/Chronic/${id}`);
-      await set(presDataRef, null);
+              const presDataRef = ref(
+                db,
+                `users/patients/${patientId}/Chronic/${id}`
+              );
+              await set(presDataRef, null);
 
-      setChronicIllnesses(newChronicIllnesss);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              setChronicIllnesses(newChronicIllnesss);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -109,13 +124,21 @@ const ChronicIllness = ({ route }) => {
           value={newChronic}
           onChangeText={(text) => setNewChronic(text)}
         />
-
-        <TouchableOpacity style={styles.addButton} onPress={addChronic}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.addButton} onPress={addChronic}>
+        <Text
+          style={{ ...styles.buttonText, fontWeight: "bold", fontSize: 16 }}
+        >
+          Add Chronic Disease
+        </Text>
+      </TouchableOpacity>
+      <Text style={styles.header}>Chronic Diseases History</Text>
       {chronicIllnesses.length === 0 ? (
-        <Text>No chronic Disease recorded for this patient.</Text>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No chronic Disease recorded for this patient.</Text>
+        </View>
       ) : (
         <FlatList
           data={chronicIllnesses}
@@ -147,70 +170,5 @@ const ChronicIllness = ({ route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  row: {
-    flexDirection: "row",
-    marginBottom: 5,
-  },
-  label: {
-    fontWeight: "bold",
-    marginRight: 5,
-    paddingLeft: 5,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginRight: 10,
-    paddingLeft: 10,
-    borderRadius: 10,
-  },
-  addButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 5,
-  },
-  deleteButton: {
-    backgroundColor: "#e74c3c",
-    padding: 8, // Adjust the padding to make the button fit better
-    borderRadius: 5,
-    position: "absolute",
-    bottom: 5,
-    right: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  chronicItem: {
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
-  },
-  textin: {
-    paddingRight: 5,
-  },
-});
 
 export default ChronicIllness;

@@ -3,13 +3,13 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  Alert,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
+import styles from "../../../styles/hospitalStyles/treatmentStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
@@ -54,26 +54,40 @@ const TreatmentList = ({ navigation, route }) => {
   getMedicalUnitName();
 
   const handleDeleteItem = async (id) => {
-    try {
-      const newData = treatments.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Treatment?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newData = treatments.filter((item) => item.id !== id);
 
-      const treatidRef = ref(
-        db,
-        `users/patients/${patientId}/Treatments/${id}`
-      );
-      await set(treatidRef, null);
-      setTreatments(newData);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              const treatidRef = ref(
+                db,
+                `users/patients/${patientId}/Treatments/${id}`
+              );
+              await set(treatidRef, null);
+              setTreatments(newData);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
-
   const handleAddItem = async () => {
     if (treatmentName === "" || doctorName === "") {
       setDoctorName("");
       setTreatmentName("");
-      setDoctorNameError("Required");
-      setTreatNameError("Required");
+      setDoctorNameError("Please enter doctor name");
+      setTreatNameError("Please Enter treatment Name");
       return;
     }
     try {
@@ -193,74 +207,5 @@ const TreatmentList = ({ navigation, route }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  dateText: {
-    marginTop: 5,
-    color: "white", // black for text
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 10,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-  listHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  treatmentItem: {
-    backgroundColor: "#3498db",
-    borderRadius: 8,
-    elevation: 3, // Add elevation for shadow on Android
-    shadowColor: "#000", // Add shadow for iOS
-    shadowOffset: {
-      width: 1,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    padding: 16,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  buttonContainer: {
-    position: "absolute",
-    alignSelf: "flex-end",
-    top: 80,
-    right: 5,
-  },
-  button: {
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    marginLeft: 5, // Add some space between buttons
-    borderRadius: 5,
-  },
-  checkEligibilityButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  checkEligibilityButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
 
 export default TreatmentList;
