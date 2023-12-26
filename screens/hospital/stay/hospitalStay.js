@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet,
-  Button,
+  Alert,
   TextInput,
   Modal,
 } from "react-native";
+import styles from "../../../styles/hospitalStyles/hospitalStayStyle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
@@ -53,20 +53,34 @@ export default function HospitalStay({ navigation, route }) {
   getMedicalUnitName();
 
   const handleDeleteItem = async (id) => {
-    try {
-      const newData = data.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Hospital Entry?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newData = data.filter((item) => item.id !== id);
 
-      const stayDataRef = ref(
-        db,
-        `users/patients/${patientId}/HospitalStay/${id}`
-      );
-      await set(stayDataRef, null);
-      setData(newData);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              const stayDataRef = ref(
+                db,
+                `users/patients/${patientId}/HospitalStay/${id}`
+              );
+              await set(stayDataRef, null);
+              setData(newData);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
-
   const handleAddItem = async () => {
     try {
       const currentDate = new Date();
@@ -181,78 +195,3 @@ export default function HospitalStay({ navigation, route }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "white",
-  },
-  itemContainer: {
-    backgroundColor: "#ADD8E6",
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 5,
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 8,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    marginLeft: 5, // Add some space between buttons
-    borderRadius: 5,
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-  },
-  addItem: {
-    backgroundColor: "#3498db",
-    position: "absolute",
-    bottom: 20,
-    alignSelf: "center",
-    padding: 10,
-    paddingHorizontal: 90,
-    borderRadius: 10,
-  },
-  btns: {
-    marginLeft: 17,
-    top: 5,
-    backgroundColor: "#3498db",
-    bottom: 20,
-    padding: 15,
-    borderRadius: 10,
-    margin: 5,
-  },
-});

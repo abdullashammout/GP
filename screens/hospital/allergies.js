@@ -5,8 +5,9 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  Alert,
 } from "react-native";
+import styles from "../../styles/hospitalStyles/allergyStyles";
 import { set, ref, push, get } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -78,18 +79,33 @@ const PatientAllergiesPage = ({ navigation, route }) => {
   };
 
   const deleteAllergy = async (id) => {
-    try {
-      const newAllergies = allergies.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Allergy?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newAllergies = allergies.filter((item) => item.id !== id);
 
-      const AllergyDataRef = ref(
-        db,
-        `users/patients/${patientId}/Allergy/${id}`
-      );
-      await set(AllergyDataRef, null);
-      setAllergies(newAllergies);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              const AllergyDataRef = ref(
+                db,
+                `users/patients/${patientId}/Allergy/${id}`
+              );
+              await set(AllergyDataRef, null);
+              setAllergies(newAllergies);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -144,66 +160,5 @@ const PatientAllergiesPage = ({ navigation, route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  allergyItem: {
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
-  },
-  row: {
-    flexDirection: "row",
-    marginBottom: 5,
-  },
-  label: {
-    fontWeight: "bold",
-    marginRight: 5,
-  },
-
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 10,
-    marginRight: 10,
-    paddingLeft: 10,
-    marginBottom: 10,
-  },
-  addButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  deleteButton: {
-    position: "absolute",
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    borderRadius: 5,
-    bottom: 5,
-    right: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-});
 
 export default PatientAllergiesPage;

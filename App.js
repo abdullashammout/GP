@@ -169,6 +169,41 @@ export default function App() {
     };
   }, [userLoggedIn]);
 
+  useEffect(() => {
+    const backHandlerr = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        const currentRoute = navigationRef.current.getCurrentRoute();
+
+        // Check if the user is on one of the special screens
+        if (currentRoute.name === "hospitalMain") {
+          Alert.alert(
+            "Exit Confirmation",
+            "Are you sure you want to exit patient record?",
+            [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Exit",
+                onPress: async () => {
+                  navigationRef.current.goBack();
+                },
+              },
+            ]
+          ); // logout
+          return true; // Tell the app that we've handled the back press
+        }
+
+        return false; // Let the default back press behavior happen
+      }
+    );
+    return () => {
+      backHandlerr.remove();
+    };
+  }, []);
+
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
@@ -287,9 +322,7 @@ export default function App() {
           name="hospitalMain"
           component={MainScreen}
           options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            title: "Patient Information",
+            headerShown: false,
             statusBarStyle: "dark",
           }}
         />

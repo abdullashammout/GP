@@ -3,14 +3,14 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  Alert,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import styles from "../../styles/hospitalStyles/diagnosisStyles";
 import { set, ref, push, get } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -84,18 +84,33 @@ const DiagnosisList = ({ navigation, route }) => {
   };
 
   const deleteDiagnosis = async (id) => {
-    try {
-      const newDiagnosis = diagnosis.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Diagnosis?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newDiagnosis = diagnosis.filter((item) => item.id !== id);
 
-      const DiagnosisDataRef = ref(
-        db,
-        `users/patients/${patientId}/Diagnosis/${id}`
-      );
-      await set(DiagnosisDataRef, null);
-      setDiagnosis(newDiagnosis);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              const DiagnosisDataRef = ref(
+                db,
+                `users/patients/${patientId}/Diagnosis/${id}`
+              );
+              await set(DiagnosisDataRef, null);
+              setDiagnosis(newDiagnosis);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -137,27 +152,34 @@ const DiagnosisList = ({ navigation, route }) => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-
-      <FlatList
-        data={diagnosis}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.diagnosisItem}>
-            <Text style={styles.bold}>Diagnosis: {item.diagnosis}</Text>
-            <Text>Hospital: {item.medicalUnit}</Text>
-            <Text>Doctor: {item.doctor}</Text>
-            <Text>Date:{item.date}</Text>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => deleteDiagnosis(item.id)}
-            >
-              <Text style={styles.buttonText}>Delete</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      {diagnosis.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No diagnosis recorded for this patient.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={diagnosis}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.diagnosisItem}>
+              <Text style={styles.bold}>Diagnosis: {item.diagnosis}</Text>
+              <Text>Hospital: {item.medicalUnit}</Text>
+              <Text>Doctor: {item.doctor}</Text>
+              <Text>Date:{item.date}</Text>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteDiagnosis(item.id)}
+              >
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      )}
       <TouchableOpacity
-        style={{ ...styles.btns, paddingVertical: 12 }}
+        style={{ ...styles.btns, paddingVertical: 12, marginLeft: 1 }}
         onPress={toggleModal}
       >
         <Text style={{ ...styles.buttonText, fontSize: 16 }}>
@@ -167,82 +189,5 @@ const DiagnosisList = ({ navigation, route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: "#3498db",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 12,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    color: "#2c3e50",
-  },
-  listHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  diagnosisItem: {
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "80%",
-    padding: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-  },
-  modalHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  bold: {
-    fontWeight: "bold",
-  },
-  deleteButton: {
-    position: "absolute",
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    borderRadius: 5,
-    bottom: 15,
-    right: 15,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  btns: {
-    marginLeft: 17,
-    top: 5,
-    backgroundColor: "#3498db",
-    bottom: 20,
-    padding: 15,
-    borderRadius: 10,
-    margin: 5,
-  },
-});
 
 export default DiagnosisList;

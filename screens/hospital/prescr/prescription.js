@@ -4,12 +4,13 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
   TextInput,
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
+import styles from "../../../styles/hospitalStyles/presStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
@@ -53,18 +54,33 @@ const Prescription = ({ navigation, route }) => {
   getMedicalUnitName();
 
   const handleDeleteItem = async (id) => {
-    try {
-      const newData = data.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Prescription?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newData = data.filter((item) => item.id !== id);
 
-      const presDataRef = ref(
-        db,
-        `users/patients/${patientId}/prescription/${id}`
-      );
-      await set(presDataRef, null);
-      setData(newData);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+              const presDataRef = ref(
+                db,
+                `users/patients/${patientId}/prescription/${id}`
+              );
+              await set(presDataRef, null);
+              setData(newData);
+            } catch (error) {
+              console.error("Error deleting item:", error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   const handleAddItem = async () => {
@@ -211,109 +227,12 @@ const Prescription = ({ navigation, route }) => {
         style={styles.addItem}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={{ color: "white" }}>Add new Prescription</Text>
+        <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
+          Add new Prescription
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#3498db",
-    padding: 16,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 10,
-    elevation: 3, // Add elevation for shadow on Android
-    shadowColor: "#000", // Add shadow for iOS
-    shadowOffset: {
-      width: 1,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-  },
-  itemInfo: {
-    flex: 1,
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "white", // black for text
-  },
-  dateText: {
-    marginTop: 5,
-    color: "white", // black for text
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 45,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    alignSelf: "flex-end",
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    marginTop: 38,
-    borderRadius: 5,
-  },
-  buttonContainer: {
-    position: "absolute",
-    right: 10,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    color: "black", // black for text
-  },
-  input: {
-    marginBottom: 10,
-    backgroundColor: "#fff",
-    paddingHorizontal: 40,
-    paddingVertical: 8,
-    borderRadius: 5,
-    borderColor: "gray",
-    borderWidth: 1,
-  },
-  addItem: {
-    backgroundColor: "#3498db",
-    position: "absolute",
-    bottom: 20,
-    alignSelf: "center",
-    padding: 10,
-    paddingHorizontal: 90,
-    borderRadius: 10,
-  },
-});
 
 export default Prescription;

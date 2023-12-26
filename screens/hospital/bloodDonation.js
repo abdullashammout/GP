@@ -3,11 +3,11 @@ import {
   View,
   Text,
   FlatList,
-  Button,
+  Alert,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import styles from "../../styles/hospitalStyles/bloodDonationStyles";
 import { ref, set, get, push } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -92,20 +92,38 @@ const BloodDonation = ({ navigation, route }) => {
     }
   };
   const deleteDonation = async (id) => {
-    try {
-      const newDonations = donationData.filter((item) => item.id !== id);
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this Blood Donation?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              const newDonations = donationData.filter(
+                (item) => item.id !== id
+              );
 
-      const donationDataRef = ref(
-        db,
-        `users/patients/${patientId}/BloodDonations/${id}`
-      );
+              const donationDataRef = ref(
+                db,
+                `users/patients/${patientId}/BloodDonations/${id}`
+              );
 
-      await set(donationDataRef, null);
-      setDonationData(newDonations);
-    } catch (error) {
-      console.error("Error deleting donation:", error);
-    }
+              await set(donationDataRef, null);
+              setDonationData(newDonations);
+            } catch (error) {
+              console.error("Error deleting donation:", error);
+            }
+          },
+        },
+      ]
+    );
   };
+
   const checkEligibility = () => {
     if (donationData.length === 0) {
       setEligible(true);
@@ -209,60 +227,5 @@ const BloodDonation = ({ navigation, route }) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  input: {
-    borderRadius: 10,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-  historyHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  bloodDonationItem: {
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
-  },
-  deleteButton: {
-    position: "absolute",
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    borderRadius: 5,
-    bottom: 5,
-    right: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  checkEligibilityButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  checkEligibilityButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
 
 export default BloodDonation;
