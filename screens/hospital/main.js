@@ -64,7 +64,7 @@ export default function MainScreen({ route, navigation }) {
     {
       index: "6",
       title: "Chronic Illness",
-      image: require("../../pics/results.png"),
+      image: require("../../pics/Chronic.png"),
     },
     {
       index: "7",

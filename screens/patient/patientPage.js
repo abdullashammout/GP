@@ -141,8 +141,8 @@ export default function PatientPage({ navigation, route }) {
     },
     {
       index: "6",
-      title: "Lab results",
-      image: require("../../pics/results.png"),
+      title: "Chronic Diseases",
+      image: require("../../pics/Chronic.png"),
     },
     {
       index: "7",
@@ -172,7 +172,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientAllergies", { userId });
     }
     if (index === "6") {
-      navigation.navigate("lab");
+      navigation.navigate("pChronic", { userId });
     }
     if (index === "7") {
       navigation.navigate("patientBloodDonations", { userId });
