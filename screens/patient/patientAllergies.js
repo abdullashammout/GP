@@ -80,9 +80,9 @@ const styles = StyleSheet.create({
   },
   allergyItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "lightblue", // Light Pastel Red
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   row: {
     flexDirection: "row",

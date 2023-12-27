@@ -26,6 +26,10 @@ const LoginForm = ({ navigation }) => {
   const [passwordError, setPasswordError] = useState(null);
   const [passwordSecure, setPasswordSecure] = useState(true);
 
+  const goToSignUp = () => {
+    navigation.navigate("SignUp");
+  };
+
   const signIn = async () => {
     if (id === null || password === "") {
       setIdError("This Field Is Required");
@@ -162,9 +166,12 @@ const LoginForm = ({ navigation }) => {
         </View>
         <View style={styles.underInput}>
           <TouchableOpacity style={styles.forgetPass} onPress={resetPassword}>
-            <Text style={{ color: "blue" }}>forget password?</Text>
+            <Text style={{ color: "#4169E1" }}>forget password?</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity style={{ marginTop: 20 }} onPress={goToSignUp}>
+          <Text style={{ color: "#4169E1" }}>Sign Up?</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.loginBtn} onPress={signIn}>
           <Text style={{ textAlign: "center", color: "white" }}>
             {isLoading ? <ActivityIndicator size="small" /> : "Login"}

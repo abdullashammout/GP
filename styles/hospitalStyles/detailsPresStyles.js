@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
   medicationItem: {
     justifyContent: "space-between",
     marginVertical: 10,
-    padding: 15,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
     position: "relative",
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 15,
   },
   label: {
     fontSize: 16,

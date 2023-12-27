@@ -103,6 +103,9 @@ const ResetPasswordScreen = () => {
       }}
     >
       <View style={styles.container}>
+        <View style={{ alignSelf: "flex-start", marginLeft: 35, bottom: 5 }}>
+          <Text style={{ textAlign: "left", fontSize: 16 }}>Email:</Text>
+        </View>
         <TextInput
           style={styles.input}
           placeholder={emailError ? emailError : "Enter your email"}

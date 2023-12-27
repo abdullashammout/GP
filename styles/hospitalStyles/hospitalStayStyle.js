@@ -7,11 +7,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemContainer: {
-    backgroundColor: "#ADD8E6",
-    padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
-    borderRadius: 5,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   itemText: {
     fontSize: 16,

@@ -106,9 +106,9 @@ const styles = StyleSheet.create({
   },
   medicationItem: {
     marginVertical: 10,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
     padding: 15,
-    backgroundColor: "#B3E8CA",
-    borderRadius: 8,
   },
   label: {
     fontSize: 16,
