@@ -27,17 +27,17 @@ const styles = StyleSheet.create({
   },
   bloodDonationItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   deleteButton: {
     position: "absolute",
     backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 5,
-    bottom: 5,
-    right: 5,
+    bottom: 10,
+    right: 10,
   },
   buttonText: {
     color: "white",

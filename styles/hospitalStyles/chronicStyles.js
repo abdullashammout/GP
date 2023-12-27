@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     padding: 8, // Adjust the padding to make the button fit better
     borderRadius: 5,
     position: "absolute",
-    bottom: 5,
-    right: 5,
+    bottom: 10,
+    right: 10,
   },
   buttonText: {
     color: "white",
@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
   },
   chronicItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   inputContainer: {
     flexDirection: "row",

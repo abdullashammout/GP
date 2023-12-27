@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     top: 80,
-    right: 5,
+    right: 15,
   },
   button: {
     backgroundColor: "#e74c3c",

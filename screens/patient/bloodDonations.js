@@ -104,9 +104,15 @@ const BloodDonations = ({ route }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
-              <Text style={styles.bold}>Type: {item.donationType}</Text>
-              <Text>Location: {item.medicalUnitName}</Text>
-              <Text>Date: {item.formattedDate}</Text>
+              <Text style={{ ...styles.bold, marginBottom: 5 }}>
+                Type: {item.donationType}
+              </Text>
+              <Text style={{ marginBottom: 5 }}>
+                Location: {item.medicalUnitName}
+              </Text>
+              <Text style={{ marginBottom: 5 }}>
+                Date: {item.formattedDate}
+              </Text>
             </View>
           )}
         />
@@ -140,9 +146,9 @@ const styles = StyleSheet.create({
   },
   bloodDonationItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "lightblue",
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   noDonationsText: {
     textAlign: "center",

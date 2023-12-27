@@ -50,6 +50,10 @@ const PatientDiagnosis = ({ route }) => {
                 <Text>{item.medicalUnit}</Text>
               </View>
               <View style={styles.row}>
+                <Text>Doctor: </Text>
+                <Text>{item.doctor}</Text>
+              </View>
+              <View style={styles.row}>
                 <Text>Date: </Text>
                 <Text>{item.date}</Text>
               </View>
@@ -79,13 +83,12 @@ const styles = StyleSheet.create({
   },
   allergyItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "lightblue", // Light Pastel Red
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   row: {
     flexDirection: "row",
-    marginBottom: 5,
   },
   label: {
     fontWeight: "bold",

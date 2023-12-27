@@ -210,7 +210,7 @@ const BloodDonation = ({ navigation, route }) => {
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
               <Text style={{ fontWeight: "bold" }}>
-                type: {item.donationType}
+                Type: {item.donationType}
               </Text>
               <Text>Location: {item.medicalUnitName}</Text>
               <Text>Date: {item.formattedDate}</Text>

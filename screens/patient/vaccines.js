@@ -45,9 +45,15 @@ const Vaccines = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.vaccineItem}>
-              <Text style={styles.bold}>Vaccine Name: {item.vaccineName}</Text>
-              <Text>Medical Unit: {item.medicalUnitName}</Text>
-              <Text>Date: {item.formattedDate}</Text>
+              <Text style={{ ...styles.bold, marginBottom: 5 }}>
+                Vaccine Name: {item.vaccineName}
+              </Text>
+              <Text style={{ marginBottom: 5 }}>
+                Medical Unit: {item.medicalUnitName}
+              </Text>
+              <Text style={{ marginBottom: 5 }}>
+                Date: {item.formattedDate}
+              </Text>
             </View>
           )}
         />
@@ -74,9 +80,9 @@ const styles = StyleSheet.create({
   },
   vaccineItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "lightblue",
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   noVaccinesContainer: {
     flex: 1,

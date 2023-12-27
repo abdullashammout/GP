@@ -198,7 +198,7 @@ const Prescription = ({ navigation, route }) => {
                   <TouchableOpacity
                     style={{
                       ...styles.button,
-                      marginRight: 10,
+                      marginRight: 20,
                       paddingHorizontal: 20,
                       backgroundColor: "#3498db",
                     }}

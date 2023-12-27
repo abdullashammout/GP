@@ -59,15 +59,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    alignSelf: "flex-end",
     backgroundColor: "#e74c3c",
     padding: 10,
-    marginTop: 38,
     borderRadius: 5,
   },
   buttonContainer: {
     position: "absolute",
     right: 10,
+    bottom: 10,
   },
   textStyle: {
     color: "white",
@@ -80,6 +79,7 @@ const styles = StyleSheet.create({
     color: "black", // black for text
   },
   input: {
+    margin: 10,
     marginBottom: 10,
     backgroundColor: "#fff",
     paddingHorizontal: 40,

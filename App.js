@@ -317,6 +317,7 @@ export default function App() {
           name="resetPasswordScreen"
           component={ResetPasswordScreen}
           options={{
+            headerShadowVisible: false,
             headerTitleAlign: "center",
             title: "Password Reset",
             statusBarStyle: "dark",
@@ -558,7 +559,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Treatments",
+            title: "Treatments History",
           }}
         />
         <Stack.Screen
@@ -568,7 +569,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Treatment Details ",
+            title: "Treatment Details",
           }}
         />
         <Stack.Screen
@@ -578,7 +579,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Diagnosis",
+            title: "Diagnosis History",
           }}
         />
         <Stack.Screen
@@ -588,7 +589,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Hospital Stay",
+            title: "Hospital Entries",
           }}
         />
         <Stack.Screen

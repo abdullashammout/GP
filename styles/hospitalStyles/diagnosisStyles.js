@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
   },
   diagnosisItem: {
     marginBottom: 8,
-    padding: 8,
-    backgroundColor: "#ADD8E6",
-    borderRadius: 8,
+    backgroundColor: "#aed6f1", // Adjust the background color
+    borderRadius: 12,
+    padding: 16,
   },
   modalContainer: {
     flex: 1,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3498db",
     bottom: 20,
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 12,
     margin: 5,
   },
 });
