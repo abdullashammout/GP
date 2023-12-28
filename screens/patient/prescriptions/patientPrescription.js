@@ -48,7 +48,7 @@ const PatientPrescription = ({ navigation, route }) => {
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[styles.itemContainer, item.isSold && styles.soldItemContainer]}
       onPress={() =>
         navigation.navigate("patientMedications", {
           itemId: item.id,
@@ -65,6 +65,7 @@ const PatientPrescription = ({ navigation, route }) => {
       <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
       <Text style={styles.itemText}>{`Time: ${item.time}`}</Text>
+      {item.isSold ? <Text style={styles.soldText}>Sold</Text> : null}
     </TouchableOpacity>
   );
 
@@ -123,6 +124,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     color: "#555",
+  },
+  soldText: {
+    position: "absolute",
+    right: 20,
+    top: 70,
+    fontSize: 16,
+    color: "black", // or any color you prefer for sold prescriptions
+    fontWeight: "bold",
+    opacity: 0.7,
+  },
+  soldItemContainer: {
+    opacity: 0.7,
   },
 });
 

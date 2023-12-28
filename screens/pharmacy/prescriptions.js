@@ -5,13 +5,50 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { ref, get } from "firebase/database";
+import { ref, get, set, update } from "firebase/database";
 import { db } from "../../firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 const PharPrescription = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [prescriptions, setPrescriptions] = useState([]);
+
+  const handleSellPrescription = async (id) => {
+    Alert.alert("Sell Confirmation", "Are you sure you sold the prescription", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "ok",
+        onPress: async () => {
+          try {
+            // Update the local state to mark the prescription as sold
+            const updatedPrescriptions = prescriptions.map((prescription) =>
+              prescription.id === id
+                ? { ...prescription, isSold: !prescription.isSold }
+                : prescription
+            );
+            setPrescriptions(updatedPrescriptions);
+
+            // Update the database to mark the prescription as sold
+            // Modify the path accordingly based on your database structure
+            const presDataRef = ref(
+              db,
+              `users/patients/${patientId}/prescription/${id}`
+            );
+            await update(presDataRef, {
+              isSold: !prescriptions.find((p) => p.id === id)?.isSold,
+            });
+          } catch (error) {
+            console.error("Error selling prescription:", error);
+          }
+        },
+      },
+    ]);
+  };
 
   useEffect(() => {
     const loadPrescriptions = async () => {
@@ -48,7 +85,7 @@ const PharPrescription = ({ navigation, route }) => {
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[styles.itemContainer, item.isSold && styles.soldItemContainer]}
       onPress={() =>
         navigation.navigate("patientMedications", {
           itemId: item.id,
@@ -65,13 +102,20 @@ const PharPrescription = ({ navigation, route }) => {
       <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
       <Text style={styles.itemText}>{`Time: ${item.time}`}</Text>
+      <TouchableOpacity
+        style={styles.sell}
+        onPress={() => handleSellPrescription(item.id)}
+        disabled={item.isSold} // optional: disable the touchable opacity if the item is sold
+      >
+        <Text style={{ color: "white" }}>{item.isSold ? "Sold" : "Sell"}</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <View style={{ margin: 20, marginTop: 15 }}>
-        <Text style={{ textAlign: "center", fontSize: 16, fontWeight: "bold" }}>
+      <View style={{ margin: 20, marginTop: 5 }}>
+        <Text style={{ textAlign: "center", fontSize: 19, fontWeight: "bold" }}>
           Patient Prescriptions
         </Text>
       </View>
@@ -89,6 +133,30 @@ const PharPrescription = ({ navigation, route }) => {
           </Text>
         </View>
       )}
+      <Ionicons
+        style={{ position: "absolute", left: 20, top: 23 }}
+        name="arrow-back"
+        size={24}
+        color="black"
+        onPress={() => {
+          Alert.alert(
+            "Exit Confirmation",
+            "Are you sure you want to exit patient Prescription History?",
+            [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Exit",
+                onPress: async () => {
+                  navigation.goBack();
+                },
+              },
+            ]
+          );
+        }}
+      />
     </View>
   );
 };
@@ -128,6 +196,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     color: "#555",
+  },
+  soldItemContainer: {
+    opacity: 0.7,
+  },
+  sell: {
+    backgroundColor: "lightgreen",
+    padding: 10,
+    position: "absolute",
+    borderRadius: 5,
+    right: 25,
+    top: 65,
   },
 });
 
