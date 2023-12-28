@@ -206,6 +206,41 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const backHandlerr = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        const currentRoute = navigationRef.current.getCurrentRoute();
+
+        // Check if the user is on one of the special screens
+        if (currentRoute.name === "pharPrescriptions") {
+          Alert.alert(
+            "Exit Confirmation",
+            "Are you sure you want to exit patient Prescription History?",
+            [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Exit",
+                onPress: async () => {
+                  navigationRef.current.goBack();
+                },
+              },
+            ]
+          );
+          return true; // Tell the app that we've handled the back press
+        }
+
+        return false; // Let the default back press behavior happen
+      }
+    );
+    return () => {
+      backHandlerr.remove();
+    };
+  }, []);
+
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
