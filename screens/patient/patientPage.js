@@ -25,7 +25,9 @@ export default function PatientPage({ navigation, route }) {
   const { userId } = route.params;
   const [patientName, setPatientName] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [patientImage, setPatientImage] = useState(null); // New state for patient image URL
   const [animation] = useState(new Animated.Value(0));
+
   useEffect(() => {
     const fetchPatientInfo = async () => {
       try {
@@ -33,12 +35,18 @@ export default function PatientPage({ navigation, route }) {
         const snapshot = await get(userInfo);
 
         if (snapshot.exists()) {
-          const { email, gender, age } = snapshot.val();
+          const { email, gender, age, picture } = snapshot.val();
 
           await AsyncStorage.setItem("PatientEmail", email);
           await AsyncStorage.setItem("PatientId", userId);
           await AsyncStorage.setItem("PatientGender", gender);
           await AsyncStorage.setItem("PatientAge", age.toString());
+          if (picture) {
+            console.log("Image URL:", picture); // Add this console log
+            setPatientImage(picture);
+          } else {
+            console.log("No image URL found in Firebase.");
+          }
         }
       } catch (error) {
         console.error("Error fetching Patient data:", error);
@@ -67,6 +75,7 @@ export default function PatientPage({ navigation, route }) {
 
     fetchPatientName();
   }, [userId]);
+
   const getPatientName = async () => {
     const pName = await AsyncStorage.getItem("PatientName");
     setPatientName(pName);
@@ -247,11 +256,23 @@ export default function PatientPage({ navigation, route }) {
               <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
             <View style={styles.drawerHeader}>
-              <Ionicons
-                name="md-person-circle-outline"
-                size={65}
-                color="white"
-              />
+              {patientImage ? (
+                <Image
+                  source={{ uri: patientImage }}
+                  style={{
+                    width: 85,
+                    height: 85,
+                    borderRadius: 100,
+                    backgroundColor: "white",
+                  }}
+                />
+              ) : (
+                <Ionicons
+                  name="md-person-circle-outline"
+                  size={85}
+                  color="white"
+                />
+              )}
               <Text style={styles.patientName}>{patientName}</Text>
             </View>
             <View style={{ width: 300, height: 1, backgroundColor: "white" }}>
@@ -304,7 +325,7 @@ export default function PatientPage({ navigation, route }) {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  marginTop: 450,
+                  marginTop: 420,
                   flexDirection: "row",
                 }}
                 onPress={logout}

@@ -53,9 +53,7 @@ const PatientTreatments = ({ navigation, route }) => {
       <Text
         style={styles.itemHeaderText}
       >{`Treatment: ${item.treatmentName}`}</Text>
-      <Text
-        style={styles.itemText}
-      >{`Medical Unit: ${item.medicalUnitName}`}</Text>
+      <Text style={styles.itemText}>{`Hospital: ${item.medicalUnitName}`}</Text>
       <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
     </TouchableOpacity>
