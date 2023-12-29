@@ -33,7 +33,9 @@ export default function PatientStay({ navigation, route }) {
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
-      <Text style={{ fontWeight: "bold" }}>hospital admission {index + 1}</Text>
+      <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+        hospital admission {index + 1}
+      </Text>
       <Text>hospital name: {item.medicalUnitName}</Text>
       <Text>Doctor name:{item.createdBy}</Text>
       <Text>entry date:{item.date}</Text>

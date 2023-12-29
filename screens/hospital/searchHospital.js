@@ -96,10 +96,7 @@ export default function SearchHospital({ navigation, route }) {
 
     if (!idExists) {
       setId("");
-      setIdError(
-        "ID not found",
-        "The entered patient ID does not exist in the database."
-      );
+      setIdError("ID not found");
       setLoading(false);
       return;
     }

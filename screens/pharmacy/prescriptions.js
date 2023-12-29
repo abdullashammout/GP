@@ -15,6 +15,35 @@ const PharPrescription = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [prescriptions, setPrescriptions] = useState([]);
 
+  const [patientName, setPatientName] = useState("");
+  const [patientAge, setPatientAge] = useState(null);
+  const [patientGender, setPatientGender] = useState(null);
+  const [pId, setPId] = useState(null);
+
+  // Fetch patient information from the database using the patientId
+  useEffect(() => {
+    const userRef = ref(db, `users/patients/${patientId}`);
+    get(userRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // Set the patient name to state
+          const { name } = snapshot.val();
+          setPatientName(name);
+          const { age } = snapshot.val();
+          setPatientAge(age);
+          const { gender } = snapshot.val();
+          setPatientGender(gender);
+          const { id } = snapshot.val();
+          setPId(id);
+        } else {
+          console.log("Patient not found");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching patient data: ", error);
+      });
+  }, [patientId]);
+
   const handleSellPrescription = async (id) => {
     Alert.alert("Sell Confirmation", "Are you sure you sold the prescription", [
       {
@@ -119,6 +148,24 @@ const PharPrescription = ({ navigation, route }) => {
           Patient Prescriptions
         </Text>
       </View>
+      <View style={styles.patientInfoContainer}>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.info}>{patientName}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Age:</Text>
+          <Text style={styles.info}>{patientAge}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Gender:</Text>
+          <Text style={styles.info}>{patientGender}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>ID:</Text>
+          <Text style={styles.info}>{pId}</Text>
+        </View>
+      </View>
       {prescriptions.length > 0 ? (
         <FlatList
           data={prescriptions}
@@ -207,6 +254,28 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     right: 25,
     top: 65,
+  },
+  patientInfoContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    elevation: 3,
+    margin: 10,
+    marginVertical: 2,
+    padding: 15,
+    marginBottom: 10,
+  },
+
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  label: {
+    fontWeight: "bold",
+    color: "#333",
+  },
+  info: {
+    color: "#555",
   },
 });
 

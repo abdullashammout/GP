@@ -108,7 +108,7 @@ const BloodDonations = ({ route }) => {
                 Type: {item.donationType}
               </Text>
               <Text style={{ marginBottom: 5 }}>
-                Location: {item.medicalUnitName}
+                Medical Unit: {item.medicalUnitName}
               </Text>
               <Text style={{ marginBottom: 5 }}>
                 Date: {item.formattedDate}
