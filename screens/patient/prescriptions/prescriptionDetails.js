@@ -39,12 +39,32 @@ const PrescriptionDetails = ({ route }) => {
   const renderMedicationItem = ({ item }) => (
     <View style={styles.medicationItem}>
       <View style={styles.row}>
-        <Text style={styles.label}>Medication: </Text>
-        <Text style={[styles.value, styles.medication]}>{item.medication}</Text>
+        <Text style={styles.label}>
+          Medication:{" "}
+          <Text
+            style={{
+              ...styles.value,
+              fontWeight: "normal",
+              ...styles.medication,
+            }}
+          >
+            {item.medication}
+          </Text>
+        </Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.label}>Dosage: </Text>
-        <Text style={styles.value}>{item.dosage}</Text>
+        <Text style={styles.label}>
+          Dosage:{" "}
+          <Text
+            style={{
+              ...styles.value,
+              ...styles.medication,
+              fontWeight: "normal",
+            }}
+          >
+            {item.dosage}
+          </Text>
+        </Text>
       </View>
     </View>
   );
@@ -56,7 +76,7 @@ const PrescriptionDetails = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <Text style={styles.sectionHeader}>Medications</Text>
+        <Text style={styles.sectionHeader}>Medications :</Text>
 
         {medications.length > 0 ? (
           <FlatList
@@ -66,9 +86,13 @@ const PrescriptionDetails = ({ route }) => {
             style={styles.flatlist}
           />
         ) : (
-          <Text style={styles.noMedicationsText}>
-            No medications prescribed.
-          </Text>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={styles.noMedicationsText}>
+              No medications prescribed yet.
+            </Text>
+          </View>
         )}
       </View>
     </TouchableWithoutFeedback>

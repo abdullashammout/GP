@@ -106,15 +106,26 @@ const PresList = ({ route }) => {
   const renderMedicationItem = ({ item }) => (
     <View style={styles.medicationItem}>
       <View style={styles.row}>
-        <Text style={styles.label}>Medication:</Text>
-        <Text style={[styles.value, styles.medication]}>
-          {" "}
-          {item.medication}
+        <Text style={styles.label}>
+          Medication:{" "}
+          <Text
+            style={{
+              ...styles.value,
+              ...styles.medication,
+              fontWeight: "normal",
+            }}
+          >
+            {item.medication}
+          </Text>
         </Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.label}>Dosage:</Text>
-        <Text style={styles.value}> {item.dosage}</Text>
+        <Text style={styles.label}>
+          Dosage:{" "}
+          <Text style={{ ...styles.value, fontWeight: "normal" }}>
+            {item.dosage}
+          </Text>
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.deleteButton}
@@ -137,6 +148,8 @@ const PresList = ({ route }) => {
           <TextInput
             style={styles.input}
             value={medication}
+            multiline
+            maxLength={16}
             onChangeText={(text) => setMedication(text)}
             placeholder={medicationError ? medicationError : ""}
             placeholderTextColor={medicationError ? "red" : "white"}
@@ -148,6 +161,7 @@ const PresList = ({ route }) => {
           <TextInput
             style={styles.input}
             value={dosage}
+            maxLength={20}
             onChangeText={(text) => setDosage(text)}
             placeholder={dosageError ? dosageError : ""}
             placeholderTextColor={dosageError ? "red" : "white"}

@@ -43,18 +43,21 @@ const PatientDiagnosis = ({ route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.allergyItem}>
               <View style={styles.row}>
-                <Text style={styles.label}>Diagnosis: {item.diagnosis}</Text>
+                <Text style={styles.label}>
+                  Diagnosis:{" "}
+                  <Text style={{ fontWeight: "normal" }}>{item.diagnosis}</Text>
+                </Text>
               </View>
               <View style={styles.row}>
-                <Text>Hospital: </Text>
+                <Text style={styles.label}>Hospital: </Text>
                 <Text>{item.medicalUnit}</Text>
               </View>
               <View style={styles.row}>
-                <Text>Doctor: </Text>
+                <Text style={styles.label}>Doctor: </Text>
                 <Text>{item.doctor}</Text>
               </View>
               <View style={styles.row}>
-                <Text>Date: </Text>
+                <Text style={styles.label}>Date: </Text>
                 <Text>{item.date}</Text>
               </View>
             </View>

@@ -140,10 +140,6 @@ const TreatmentDetails = ({ route }) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Treatment: </Text>
-          <Text>{name}</Text>
-        </View>
         <View style={styles.formContainer}>
           <Text style={styles.label}>Details:</Text>
           <TextInput

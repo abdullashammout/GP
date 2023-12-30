@@ -7,15 +7,34 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#3498db",
+    padding: 16,
     marginVertical: 8,
     marginHorizontal: 16,
-    backgroundColor: "#aed6f1", // Adjust the background color
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 10,
+    elevation: 3, // Add elevation for shadow on Android
+    shadowColor: "#000", // Add shadow for iOS
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  itemInfo: {
+    flex: 1,
   },
   itemText: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "white", // black for text
+  },
+  dateText: {
+    marginTop: 5,
+    color: "white", // black for text
   },
   input: {
     height: 40,

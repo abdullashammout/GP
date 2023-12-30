@@ -139,13 +139,19 @@ const PatientAllergiesPage = ({ navigation, route }) => {
             <View style={styles.allergyItem}>
               <View style={styles.row}>
                 <Text style={styles.label}>Name:</Text>
-                <Text style={{ fontWeight: "bold" }}>{item.allergyName}</Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.allergyName}
+                  </Text>
+                </Text>
               </View>
               <View style={styles.row}>
-                <Text>Hospital: {item.medicalUnitName}</Text>
+                <Text style={styles.label}>Hospital:</Text>
+                <Text>{item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>
-                <Text>Date: {item.formattedDate}</Text>
+                <Text style={styles.label}>Date:</Text>
+                <Text>{item.formattedDate}</Text>
               </View>
               <TouchableOpacity
                 style={styles.deleteButton}
