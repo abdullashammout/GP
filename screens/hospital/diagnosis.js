@@ -164,10 +164,21 @@ const DiagnosisList = ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.diagnosisItem}>
-              <Text style={styles.bold}>Diagnosis: {item.diagnosis}</Text>
-              <Text>Hospital: {item.medicalUnit}</Text>
-              <Text>Doctor: {item.doctor}</Text>
-              <Text>Date:{item.date}</Text>
+              <Text style={styles.bold}>
+                Diagnosis:{" "}
+                <Text style={{ fontWeight: "normal" }}>{item.diagnosis}</Text>
+              </Text>
+              <Text style={styles.bold}>
+                Hospital:{" "}
+                <Text style={{ fontWeight: "normal" }}>{item.medicalUnit}</Text>
+              </Text>
+              <Text style={styles.bold}>
+                Doctor:{" "}
+                <Text style={{ fontWeight: "normal" }}>{item.doctor}</Text>
+              </Text>
+              <Text style={styles.bold}>
+                Date: <Text style={{ fontWeight: "normal" }}>{item.date}</Text>
+              </Text>
               <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => deleteDiagnosis(item.id)}

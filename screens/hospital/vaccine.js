@@ -146,10 +146,23 @@ const Vaccine = ({ route }) => {
             renderItem={({ item }) => (
               <View style={styles.vaccineItem}>
                 <Text style={{ fontWeight: "bold" }}>
-                  Vaccine Name: {item.vaccineName}
+                  Vaccine Name:{" "}
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.vaccineName}
+                  </Text>
                 </Text>
-                <Text>hospital: {item.medicalUnitName}</Text>
-                <Text>Date: {item.formattedDate}</Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  hospital:{" "}
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.medicalUnitName}
+                  </Text>
+                </Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  Date:{" "}
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.formattedDate}
+                  </Text>
+                </Text>
                 <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={() => deleteVaccine(item.id)}

@@ -8,6 +8,7 @@ const AccountInfoScreen = ({ navigation, route }) => {
   const { userId } = route.params || {};
   const [patientEmail, setPatientEmail] = useState("");
   const [patientId, setPatientId] = useState("");
+  const [patientName, setPatientName] = useState("");
   const [patientGender, setPatientGender] = useState("");
   const [patientAge, setPatientAge] = useState("");
 
@@ -15,11 +16,13 @@ const AccountInfoScreen = ({ navigation, route }) => {
     const pEmail = await AsyncStorage.getItem("PatientEmail");
     const pID = await AsyncStorage.getItem("PatientId");
     const pGender = await AsyncStorage.getItem("PatientGender");
+    const pName = await AsyncStorage.getItem("PatientName");
     const pAge = await AsyncStorage.getItem("PatientAge");
     setPatientEmail(pEmail);
     setPatientId(pID);
     setPatientGender(pGender);
     setPatientAge(pAge);
+    setPatientName(pName);
   };
 
   useEffect(() => {
@@ -28,6 +31,7 @@ const AccountInfoScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <InfoContainer label="Name" value={patientName} />
       <InfoContainer label="Email" value={patientEmail} />
       <InfoContainer label="ID" value={patientId} />
       <InfoContainer label="Gender" value={patientGender} />

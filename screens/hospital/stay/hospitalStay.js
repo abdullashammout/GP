@@ -114,19 +114,31 @@ export default function HospitalStay({ navigation, route }) {
   };
 
   const renderItem = ({ item, index }) => (
-    <View style={styles.itemContainer}>
-      <Text style={{ fontWeight: "bold" }}>hospital admission {index + 1}</Text>
-      <Text>hospital name: {item.medicalUnitName}</Text>
-      <Text>Doctor name:{item.createdBy}</Text>
-      <Text>entry date:{item.date}</Text>
-      <Text>entry time:{item.time}</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleDeleteItem(item.id)}
-      >
-        <Text style={{ color: "white" }}>Delete</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => {
+        navigation.navigate("StayList", {
+          itemId: item.id,
+          patientId: patientId,
+        });
+      }}
+    >
+      <View style={styles.itemInfo}>
+        <Text style={styles.itemText}>hospital admission {index + 1}</Text>
+        <Text style={styles.dateText}>
+          hospital name: {item.medicalUnitName}
+        </Text>
+        <Text style={styles.dateText}>Doctor name:{item.createdBy}</Text>
+        <Text style={styles.dateText}>entry date:{item.date}</Text>
+        <Text style={styles.dateText}>entry time:{item.time}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleDeleteItem(item.id)}
+        >
+          <Text style={{ color: "white" }}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
 
   return (

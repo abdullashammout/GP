@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { ref, get } from "firebase/database";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 
 export default function PatientStay({ navigation, route }) {
   const { userId } = route.params;
@@ -32,15 +38,25 @@ export default function PatientStay({ navigation, route }) {
   }, [userId, data]);
 
   const renderItem = ({ item, index }) => (
-    <View style={styles.itemContainer}>
-      <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-        hospital admission {index + 1}
-      </Text>
-      <Text>hospital name: {item.medicalUnitName}</Text>
-      <Text>Doctor name:{item.createdBy}</Text>
-      <Text>entry date:{item.date}</Text>
-      <Text>entry time:{item.time}</Text>
-    </View>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => {
+        navigation.navigate("PStayDetails", {
+          itemId: item.id,
+          patientId: userId,
+        });
+      }}
+    >
+      <View style={styles.itemInfo}>
+        <Text style={styles.itemText}>hospital admission {index + 1}</Text>
+        <Text style={styles.dateText}>
+          hospital name: {item.medicalUnitName}
+        </Text>
+        <Text style={styles.dateText}>Doctor name:{item.createdBy}</Text>
+        <Text style={styles.dateText}>entry date:{item.date}</Text>
+        <Text style={styles.dateText}>entry time:{item.time}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -69,10 +85,33 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#3498db",
+    padding: 16,
     marginVertical: 8,
     marginHorizontal: 16,
-    backgroundColor: "#aed6f1", // Adjust the background color
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 10,
+    elevation: 3, // Add elevation for shadow on Android
+    shadowColor: "#000", // Add shadow for iOS
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  itemInfo: {
+    flex: 1,
+  },
+  itemText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white", // black for text
+  },
+  dateText: {
+    marginTop: 5,
+    color: "white", // black for text
   },
 });

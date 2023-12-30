@@ -19,30 +19,14 @@ export default function PrivacyScreen() {
       <Text style={{ marginTop: 20, fontWeight: "bold", fontSize: 16 }}>
         Information We Collect:
       </Text>
-      <Text>
-        - [List the types of information collected, such as user account data,
-        device information, etc.]
-      </Text>
-      <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 16 }}>
-        How We Use Your Information:
-      </Text>
-      <Text>
-        - [Explain the purposes for which the collected information is used,
-        e.g., to improve the app, provide personalized content, etc.]
-      </Text>
-      <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 16 }}>
-        Your Choices:
-      </Text>
-      <Text>
-        - [Describe user options regarding data collection, opt-out choices,
-        etc.]
-      </Text>
+      <Text>-Citizen ID -Citizen name -Citizen Age -Citizen Gender</Text>
+
       <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 16 }}>
         Contact Us:
       </Text>
       <Text>
-        - [Provide contact information for users to reach out with privacy
-        concerns or questions.]
+        - Send message to our customer service:{"          "}
+        {"-------------------------->  "}E-health@outlook.com
       </Text>
     </View>
   );

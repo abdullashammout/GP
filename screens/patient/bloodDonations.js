@@ -104,15 +104,22 @@ const BloodDonations = ({ route }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
-              <Text style={{ ...styles.bold, marginBottom: 5 }}>
-                Type: {item.donationType}
-              </Text>
-              <Text style={{ marginBottom: 5 }}>
-                Medical Unit: {item.medicalUnitName}
-              </Text>
-              <Text style={{ marginBottom: 5 }}>
-                Date: {item.formattedDate}
-              </Text>
+              <View style={styles.row}>
+                <Text style={{ ...styles.bold, marginBottom: 5 }}>
+                  Dontaion Type:{" "}
+                </Text>
+                <Text>{item.donationType}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={{ ...styles.bold, marginBottom: 5 }}>
+                  Medical Unit:{" "}
+                </Text>
+                <Text>{item.medicalUnitName}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={{ ...styles.bold, marginBottom: 5 }}>Date: </Text>
+                <Text>{item.formattedDate}</Text>
+              </View>
             </View>
           )}
         />
@@ -128,6 +135,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#fff",
+  },
+  row: {
+    flexDirection: "row",
   },
   eligibilityContainer: {
     marginTop: 15,

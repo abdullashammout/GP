@@ -210,10 +210,23 @@ const BloodDonation = ({ navigation, route }) => {
           renderItem={({ item }) => (
             <View style={styles.bloodDonationItem}>
               <Text style={{ fontWeight: "bold" }}>
-                Type: {item.donationType}
+                Dontaion Type:{" "}
+                <Text style={{ fontWeight: "normal" }}>
+                  {item.donationType}
+                </Text>
               </Text>
-              <Text>Location: {item.medicalUnitName}</Text>
-              <Text>Date: {item.formattedDate}</Text>
+              <Text style={{ fontWeight: "bold" }}>
+                Location:{" "}
+                <Text style={{ fontWeight: "normal" }}>
+                  {item.medicalUnitName}
+                </Text>
+              </Text>
+              <Text style={{ fontWeight: "bold" }}>
+                Date:{" "}
+                <Text style={{ fontWeight: "normal" }}>
+                  {item.formattedDate}
+                </Text>
+              </Text>
               <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => deleteDonation(item.id)}

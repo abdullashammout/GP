@@ -35,12 +35,13 @@ export default function PatientPage({ navigation, route }) {
         const snapshot = await get(userInfo);
 
         if (snapshot.exists()) {
-          const { email, gender, age, picture } = snapshot.val();
+          const { email, gender, age, picture, name } = snapshot.val();
 
           await AsyncStorage.setItem("PatientEmail", email);
           await AsyncStorage.setItem("PatientId", userId);
           await AsyncStorage.setItem("PatientGender", gender);
           await AsyncStorage.setItem("PatientAge", age.toString());
+          await AsyncStorage.setItem("PatientName", name);
           if (picture) {
             console.log("Image URL:", picture); // Add this console log
             setPatientImage(picture);
@@ -145,8 +146,8 @@ export default function PatientPage({ navigation, route }) {
     { index: "4", title: "Vaccine", image: require("../../pics/vaccine.png") },
     {
       index: "5",
-      title: "Allergies",
-      image: require("../../pics/allergy.png"),
+      title: "Hospital stay",
+      image: require("../../pics/stay.png"),
     },
     {
       index: "6",
@@ -160,8 +161,8 @@ export default function PatientPage({ navigation, route }) {
     },
     {
       index: "8",
-      title: "Hospital stay",
-      image: require("../../pics/stay.png"),
+      title: "Allergies",
+      image: require("../../pics/allergy.png"),
     },
   ];
   const toPresc = (index) => {
@@ -178,7 +179,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientVaccines", { userId });
     }
     if (index === "5") {
-      navigation.navigate("patientAllergies", { userId });
+      navigation.navigate("pStay", { userId });
     }
     if (index === "6") {
       navigation.navigate("pChronic", { userId });
@@ -187,7 +188,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientBloodDonations", { userId });
     }
     if (index === "8") {
-      navigation.navigate("pStay", { userId });
+      navigation.navigate("patientAllergies", { userId });
     }
   };
   const renderItem = ({ item }) => (
