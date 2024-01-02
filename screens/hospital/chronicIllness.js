@@ -157,12 +157,14 @@ const ChronicIllness = ({ route }) => {
                 <Text style={styles.label}>Date:</Text>
                 <Text style={styles.textin}>{item.formattedDate}</Text>
               </View>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => deleteChronic(item.id)}
-              >
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
+              {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => deleteChronic(item.id)}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
         />

@@ -12,12 +12,14 @@ import {
 } from "react-native";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StayList = ({ route }) => {
-  const { itemId, patientId } = route.params;
+  const { itemId, patientId, currentMedicalUnit } = route.params;
   const [details, setDetails] = useState([]);
   const [entryDetails, setEntryDetails] = useState(``);
   const [entryError, setEntryError] = useState(null);
+  const [medicalUnitName, setMedicalUnitName] = useState("");
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
@@ -44,6 +46,11 @@ const StayList = ({ route }) => {
   useEffect(() => {
     fetchEntryDetails();
   }, [itemId, patientId]);
+  const getMedicalUnitName = async () => {
+    const Name = await AsyncStorage.getItem("HospitalName");
+    setMedicalUnitName(Name);
+  };
+  getMedicalUnitName();
 
   const handleAddEntryDetails = async () => {
     if (entryDetails === "") {
@@ -120,12 +127,14 @@ const StayList = ({ route }) => {
         <Text style={styles.detailsLabel}>Time:</Text>
         <Text style={styles.value}>{item.formattedTime}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleDeleteEntryDetails(item.id)}
-      >
-        <Text style={{ color: "white" }}>Delete</Text>
-      </TouchableOpacity>
+      {medicalUnitName === currentMedicalUnit && ( // Check if created by the current medical unit
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteEntryDetails(item.id)}
+        >
+          <Text style={{ color: "white" }}>Delete</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 
@@ -135,31 +144,48 @@ const StayList = ({ route }) => {
         Keyboard.dismiss();
       }}
     >
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.label}>Details:</Text>
-          <TextInput
-            style={styles.input}
-            value={entryDetails}
-            multiline
-            onChangeText={(text) => setEntryDetails(text)}
-            placeholder={entryError ? entryError : ""}
-            placeholderTextColor={entryError ? "red" : "white"}
+      <View
+        style={
+          medicalUnitName === currentMedicalUnit
+            ? styles.container
+            : { ...styles.container, backgroundColor: "white" }
+        }
+      >
+        {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
+          <>
+            <View style={styles.formContainer}>
+              <Text style={styles.label}>Details:</Text>
+              <TextInput
+                style={styles.input}
+                value={entryDetails}
+                multiline
+                onChangeText={(text) => setEntryDetails(text)}
+                placeholder={entryError ? entryError : ""}
+                placeholderTextColor={entryError ? "red" : "white"}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={styles.checkEligibilityButton}
+              onPress={handleAddEntryDetails}
+            >
+              <Text style={styles.checkEligibilityButtonText}>Add Details</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        {details.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No details recoreded for this hospital entry yet.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={details}
+            renderItem={renderDetailsItem}
+            keyExtractor={(item) => item.id.toString()}
           />
-        </View>
-
-        <TouchableOpacity
-          style={styles.checkEligibilityButton}
-          onPress={handleAddEntryDetails}
-        >
-          <Text style={styles.checkEligibilityButtonText}>Add Details</Text>
-        </TouchableOpacity>
-
-        <FlatList
-          data={details}
-          renderItem={renderDetailsItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

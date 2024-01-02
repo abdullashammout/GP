@@ -124,13 +124,13 @@ const Prescription = ({ navigation, route }) => {
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      style={[styles.itemContainer, item.isSold && styles.soldItemContainer]}
+      style={styles.itemContainer}
       onPress={() =>
         navigation.navigate("presList", {
           idd: index + 1,
           itemId: item.id,
           itemName: item.createdBy,
-          medicalUnitName: item.medicalUnitName,
+          currentMedicalUnit: item.medicalUnitName,
           patientId: patientId,
         })
       }
@@ -141,15 +141,16 @@ const Prescription = ({ navigation, route }) => {
         <Text style={styles.dateText}>Doctor name: {item.createdBy}</Text>
         <Text style={styles.dateText}>Date: {item.date}</Text>
         <Text style={styles.dateText}>Time: {item.time}</Text>
-        {item.isSold ? <Text style={styles.soldText}>Sold</Text> : null}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleDeleteItem(item.id)}
-          >
-            <Text style={{ color: "white" }}>Delete</Text>
-          </TouchableOpacity>
-        </View>
+        {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleDeleteItem(item.id)}
+            >
+              <Text style={{ color: "white" }}>Delete</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );

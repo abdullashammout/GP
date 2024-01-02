@@ -163,12 +163,14 @@ const Vaccine = ({ route }) => {
                     {item.formattedDate}
                   </Text>
                 </Text>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => deleteVaccine(item.id)}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
+                {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => deleteVaccine(item.id)}
+                  >
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             )}
           />
