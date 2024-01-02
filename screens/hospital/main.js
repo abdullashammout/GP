@@ -58,20 +58,20 @@ export default function MainScreen({ route, navigation }) {
       image: require("../../pics/diagnosis.png"),
     },
     { index: "3", title: "Treatments", image: require("../../pics/treat.png") },
-    { index: "4", title: "Vaccine", image: require("../../pics/vaccine.png") },
+    { index: "4", title: "Vaccines", image: require("../../pics/vaccine.png") },
     {
       index: "5",
-      title: "Hospital stay",
+      title: "Hospital Entries",
       image: require("../../pics/stay.png"),
     },
     {
       index: "6",
-      title: "Chronic Illness",
+      title: "Chronic Illnesses",
       image: require("../../pics/Chronic.png"),
     },
     {
       index: "7",
-      title: "Blood donation",
+      title: "Blood donations",
       image: require("../../pics/blood.png"),
     },
     {

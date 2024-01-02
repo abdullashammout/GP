@@ -23,28 +23,11 @@ export default function SearchHospital({ navigation, route }) {
   const [loading, setLoading] = useState(false); // Add loading state
 
   useEffect(() => {
-    const fetchHospitalName = async () => {
-      try {
-        const userRef = ref(db, `users/medical_units/hospital/${userId}`);
-        const snapshot = await get(userRef);
-
-        if (snapshot.exists()) {
-          const { name } = snapshot.val();
-          await AsyncStorage.setItem("HospitalName", name);
-        } else {
-          console.log("Hospital not found");
-        }
-      } catch (error) {
-        console.error("Error fetching hospital data:", error);
-      } finally {
-      }
-    };
     const getHospitalName = async () => {
       const hosName = await AsyncStorage.getItem("HospitalName");
       setHospitalname(hosName);
     };
 
-    fetchHospitalName();
     getHospitalName();
   }, [userId]);
 
@@ -165,8 +148,8 @@ export default function SearchHospital({ navigation, route }) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.logout} onPress={logout}>
-          <Text>Logout</Text>
-          <MaterialCommunityIcons name="logout" size={24} color="black" />
+          <Text style={{ fontSize: 13 }}>Logout</Text>
+          <MaterialCommunityIcons name="logout" size={18} color="black" />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>

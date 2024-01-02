@@ -18,6 +18,7 @@ import { db } from "../../../firebase";
 export default function HospitalStay({ navigation, route }) {
   const { patientId } = route.params;
   const [doctorName, setDoctorName] = useState("");
+  const [doctorNameError, setDoctorNameError] = useState();
   const [medicalUnitName, setMedicalUnitName] = useState("");
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisibile] = useState(false);
@@ -82,6 +83,10 @@ export default function HospitalStay({ navigation, route }) {
     );
   };
   const handleAddItem = async () => {
+    if (doctorName === "") {
+      setDoctorNameError("Required");
+      return;
+    }
     try {
       const currentDate = new Date();
       const formattedDate = `${currentDate.getDate()}/${
@@ -106,6 +111,7 @@ export default function HospitalStay({ navigation, route }) {
       set(newHospitalStayRef, newItemData);
       setData((prevData) => [...prevData, newItemData]);
 
+      setDoctorNameError(null);
       setDoctorName("");
       setModalVisibile(false);
     } catch (error) {
@@ -153,11 +159,13 @@ export default function HospitalStay({ navigation, route }) {
           <Text>No hospital entries recorded for this patient.</Text>
         </View>
       ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
+        <View style={{ marginBottom: 50 }}>
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       )}
       <Modal
         animationType="fade"
@@ -174,10 +182,11 @@ export default function HospitalStay({ navigation, route }) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text>enter doctor name</Text>
+              <Text>Enter Doctor Name</Text>
               <TextInput
                 style={styles.input}
-                placeholder="your name"
+                placeholder={doctorNameError ? doctorNameError : "your name"}
+                placeholderTextColor={doctorNameError ? "red" : "gray"}
                 value={doctorName}
                 onChangeText={(text) => setDoctorName(text)}
               />
@@ -190,6 +199,8 @@ export default function HospitalStay({ navigation, route }) {
                   style={styles.btns}
                   onPress={() => {
                     setModalVisibile(false);
+                    setDoctorName("");
+                    setDoctorNameError(null);
                   }}
                 >
                   <Text style={{ color: "#fff" }}>Cancel</Text>

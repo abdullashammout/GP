@@ -35,13 +35,15 @@ export default function PatientPage({ navigation, route }) {
         const snapshot = await get(userInfo);
 
         if (snapshot.exists()) {
-          const { email, gender, age, picture, name } = snapshot.val();
+          const { email, gender, age, picture, name, bloodType } =
+            snapshot.val();
 
           await AsyncStorage.setItem("PatientEmail", email);
           await AsyncStorage.setItem("PatientId", userId);
           await AsyncStorage.setItem("PatientGender", gender);
           await AsyncStorage.setItem("PatientAge", age.toString());
           await AsyncStorage.setItem("PatientName", name);
+          await AsyncStorage.setItem("PatientBloodType", bloodType);
           if (picture) {
             console.log("Image URL:", picture); // Add this console log
             setPatientImage(picture);
@@ -143,10 +145,10 @@ export default function PatientPage({ navigation, route }) {
       image: require("../../pics/diagnosis.png"),
     },
     { index: "3", title: "Treatments", image: require("../../pics/treat.png") },
-    { index: "4", title: "Vaccine", image: require("../../pics/vaccine.png") },
+    { index: "4", title: "Vaccines", image: require("../../pics/vaccine.png") },
     {
       index: "5",
-      title: "Hospital stay",
+      title: "Hospital Entries",
       image: require("../../pics/stay.png"),
     },
     {
@@ -156,7 +158,7 @@ export default function PatientPage({ navigation, route }) {
     },
     {
       index: "7",
-      title: "Blood donation",
+      title: "Blood Donations",
       image: require("../../pics/blood.png"),
     },
     {
@@ -300,7 +302,7 @@ export default function PatientPage({ navigation, route }) {
                   size={17}
                   color="white"
                 />
-                <Text style={styles.optionText}>Account Information</Text>
+                <Text style={styles.optionText}>My Information</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", paddingBottom: 15 }}

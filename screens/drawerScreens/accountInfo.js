@@ -11,6 +11,7 @@ const AccountInfoScreen = ({ navigation, route }) => {
   const [patientName, setPatientName] = useState("");
   const [patientGender, setPatientGender] = useState("");
   const [patientAge, setPatientAge] = useState("");
+  const [patientBloodType, setPatientBloodType] = useState("");
 
   const getPatientInfo = async () => {
     const pEmail = await AsyncStorage.getItem("PatientEmail");
@@ -18,11 +19,13 @@ const AccountInfoScreen = ({ navigation, route }) => {
     const pGender = await AsyncStorage.getItem("PatientGender");
     const pName = await AsyncStorage.getItem("PatientName");
     const pAge = await AsyncStorage.getItem("PatientAge");
+    const pBloodType = await AsyncStorage.getItem("PatientBloodType");
     setPatientEmail(pEmail);
     setPatientId(pID);
     setPatientGender(pGender);
     setPatientAge(pAge);
     setPatientName(pName);
+    setPatientBloodType(pBloodType);
   };
 
   useEffect(() => {
@@ -31,9 +34,10 @@ const AccountInfoScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <InfoContainer label="Name" value={patientName} />
       <InfoContainer label="Email" value={patientEmail} />
+      <InfoContainer label="Name" value={patientName} />
       <InfoContainer label="ID" value={patientId} />
+      <InfoContainer label="Blood Type" value={patientBloodType} />
       <InfoContainer label="Gender" value={patientGender} />
       <InfoContainer label="Age" value={patientAge} />
     </View>
@@ -61,12 +65,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff", // White background for info container
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 100,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
+    paddingHorizontal: 80,
+    paddingVertical: 20,
   },
   label: {
     fontSize: 18,

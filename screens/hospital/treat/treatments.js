@@ -87,7 +87,7 @@ const TreatmentList = ({ navigation, route }) => {
       setDoctorName("");
       setTreatmentName("");
       setDoctorNameError("Please enter doctor name");
-      setTreatNameError("Please Enter treatment Name");
+      setTreatNameError("Please enter treatment Name");
       return;
     }
     try {
