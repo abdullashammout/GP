@@ -30,18 +30,20 @@ const styles = StyleSheet.create({
   },
   logout: {
     backgroundColor: "#e74c3c",
-    padding: 3,
+    padding: 2,
     borderRadius: 5,
     flexDirection: "row",
     position: "absolute",
     top: 22,
-    left: 20,
+    left: 14,
+    paddingVertical: 5,
   },
   hospitalName: {
+    fontStyle: "italic",
     position: "absolute",
     top: 20,
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: 20,
   },
 });
 

@@ -187,7 +187,7 @@ const Prescription = ({ navigation, route }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text>Enter doctor name</Text>
+              <Text>Enter Doctor Name:</Text>
               <TextInput
                 style={styles.input}
                 placeholder={userNameError ? userNameError : "Your Name"}

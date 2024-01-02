@@ -347,6 +347,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Sign Up",
           }}
         />
         <Stack.Screen
@@ -374,6 +375,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Prescriptions",
           }}
         />
         <Stack.Screen
@@ -403,6 +405,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Treatment Details",
           }}
         />
         <Stack.Screen
@@ -412,7 +415,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Patient Allergies",
+            title: "Allergies",
           }}
         />
         <Stack.Screen
@@ -442,6 +445,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Hospital Entries",
           }}
         />
         <Stack.Screen
@@ -461,7 +465,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
-            title: "Prescription Report",
+            title: "Prescription Details",
           }}
         />
         <Stack.Screen
@@ -471,6 +475,7 @@ export default function App() {
             headerShadowVisible: false,
             headerTitleAlign: "center",
             statusBarStyle: "dark",
+            title: "Hospital Entry Details",
           }}
         />
         <Stack.Screen
@@ -484,6 +489,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: "#34495e",
             },
+            title: "My Information",
           }}
         />
         <Stack.Screen
@@ -497,6 +503,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: "#34495e",
             },
+            title: "About Us",
           }}
         />
         <Stack.Screen
@@ -510,6 +517,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: "#34495e",
             },
+            title: "Privacy Policy",
           }}
         />
         <Stack.Screen
@@ -523,6 +531,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: "#34495e",
             },
+            title: "Change Password",
           }}
         />
         <Stack.Screen
@@ -536,6 +545,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: "#34495e",
             },
+            title: "Change Email",
           }}
         />
         <Stack.Screen

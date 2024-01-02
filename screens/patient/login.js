@@ -69,6 +69,21 @@ const LoginForm = ({ navigation }) => {
             // Navigate to the appropriate page based on the role
             await AsyncStorage.setItem("userRole", role);
             await AsyncStorage.setItem("userID", String(id));
+            if (role === "medical_units/hospital") {
+              try {
+                const userRef = ref(db, `users/medical_units/hospital/${id}`);
+                const snapshot = await get(userRef);
+
+                if (snapshot.exists()) {
+                  const { name } = snapshot.val();
+                  await AsyncStorage.setItem("HospitalName", name);
+                } else {
+                  console.log("Hospital not found");
+                }
+              } catch (error) {
+                console.error("Error fetching hospital data:", error);
+              }
+            }
             setId(null);
             setPassword("");
 
