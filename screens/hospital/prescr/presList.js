@@ -10,11 +10,13 @@ import {
   Keyboard,
 } from "react-native";
 import styles from "../../../styles/hospitalStyles/detailsPresStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
 
 const PresList = ({ route }) => {
-  const { itemId, patientId } = route.params;
+  const { itemId, patientId, currentMedicalUnit } = route.params;
+  const [medicalUnitName, setMedicalUnitName] = useState("");
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState(``);
@@ -41,6 +43,12 @@ const PresList = ({ route }) => {
   useEffect(() => {
     fetchMedications();
   }, [itemId, patientId]);
+
+  const getMedicalUnitName = async () => {
+    const Name = await AsyncStorage.getItem("HospitalName");
+    setMedicalUnitName(Name);
+  };
+  getMedicalUnitName();
 
   const handleAddMedication = async () => {
     if (medication === "" || dosage === "") {
@@ -127,12 +135,14 @@ const PresList = ({ route }) => {
           </Text>
         </Text>
       </View>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleDeleteMedication(item.id)}
-      >
-        <Text style={{ color: "white" }}>Delete</Text>
-      </TouchableOpacity>
+      {medicalUnitName === currentMedicalUnit && ( // Check if created by the current medical unit
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteMedication(item.id)}
+        >
+          <Text style={{ color: "white" }}>Delete</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 
@@ -142,46 +152,68 @@ const PresList = ({ route }) => {
         Keyboard.dismiss();
       }}
     >
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.label}>Medication:</Text>
-          <TextInput
-            style={styles.input}
-            value={medication}
-            multiline
-            maxLength={16}
-            onChangeText={(text) => setMedication(text)}
-            placeholder={medicationError ? medicationError : ""}
-            placeholderTextColor={medicationError ? "red" : "white"}
+      <View
+        style={
+          medicalUnitName === currentMedicalUnit
+            ? styles.container
+            : { ...styles.container, backgroundColor: "white" }
+        }
+      >
+        {medicalUnitName != currentMedicalUnit && (
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>Medications:</Text>
+        )}
+        {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
+          <>
+            <View style={styles.formContainer}>
+              <Text style={styles.label}>Medication:</Text>
+              <TextInput
+                style={styles.input}
+                value={medication}
+                multiline
+                maxLength={16}
+                onChangeText={(text) => setMedication(text)}
+                placeholder={medicationError ? medicationError : ""}
+                placeholderTextColor={medicationError ? "red" : "white"}
+              />
+            </View>
+
+            <View style={styles.formContainer}>
+              <Text style={styles.label}> Dosage:{"     "}</Text>
+              <TextInput
+                style={styles.input}
+                value={dosage}
+                maxLength={20}
+                onChangeText={(text) => setDosage(text)}
+                placeholder={dosageError ? dosageError : ""}
+                placeholderTextColor={dosageError ? "red" : "white"}
+                multiline
+                numberOfLines={2}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={styles.checkEligibilityButton}
+              onPress={handleAddMedication}
+            >
+              <Text style={styles.checkEligibilityButtonText}>
+                Add Medication
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+        {medications.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No medications prescriped yet.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={medications}
+            renderItem={renderMedicationItem}
+            keyExtractor={(item) => item.id.toString()}
           />
-        </View>
-
-        <View style={styles.formContainer}>
-          <Text style={styles.label}> Dosage:{"     "}</Text>
-          <TextInput
-            style={styles.input}
-            value={dosage}
-            maxLength={20}
-            onChangeText={(text) => setDosage(text)}
-            placeholder={dosageError ? dosageError : ""}
-            placeholderTextColor={dosageError ? "red" : "white"}
-            multiline
-            numberOfLines={2}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.checkEligibilityButton}
-          onPress={handleAddMedication}
-        >
-          <Text style={styles.checkEligibilityButtonText}>Add Medication</Text>
-        </TouchableOpacity>
-
-        <FlatList
-          data={medications}
-          renderItem={renderMedicationItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

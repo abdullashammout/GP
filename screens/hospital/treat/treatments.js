@@ -171,7 +171,7 @@ const TreatmentList = ({ navigation, route }) => {
                       name: item.treatmentName,
                       itemId: item.id,
                       itemName: item.createdBy,
-                      medicalUnitName: item.medicalUnitName,
+                      currentMedicalUnit: item.medicalUnitName,
                       patientId: patientId,
                     },
                     setDoctorNameError(null),
@@ -191,14 +191,16 @@ const TreatmentList = ({ navigation, route }) => {
                 </Text>
                 <Text style={styles.dateText}>Doctor: {item.createdBy}</Text>
                 <Text style={styles.dateText}>Date: {item.date} </Text>
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => handleDeleteItem(item.id)}
-                  >
-                    <Text style={{ color: "white" }}>Delete</Text>
-                  </TouchableOpacity>
-                </View>
+                {item.medicalUnitName === medicalUnitName && (
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => handleDeleteItem(item.id)}
+                    >
+                      <Text style={{ color: "white" }}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </TouchableOpacity>
             )}
           />

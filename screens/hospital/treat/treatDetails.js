@@ -11,13 +11,15 @@ import {
 } from "react-native";
 import styles from "../../../styles/hospitalStyles/detailsTreatStyles";
 import { set, ref, get, push } from "firebase/database";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../../../firebase";
 
 const TreatmentDetails = ({ route }) => {
-  const { name, itemId, patientId } = route.params;
+  const { name, itemId, patientId, currentMedicalUnit } = route.params;
   const [details, setDetails] = useState([]);
   const [treatmentDetails, setTreatmentDetails] = useState(``);
   const [treatmentDetailsError, setTreatmentDetailsError] = useState(null);
+  const [medicalUnitName, setMedicalUnitName] = useState("");
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
@@ -40,6 +42,11 @@ const TreatmentDetails = ({ route }) => {
       console.error("Error loading details:", error);
     }
   };
+  const getMedicalUnitName = async () => {
+    const Name = await AsyncStorage.getItem("HospitalName");
+    setMedicalUnitName(Name);
+  };
+  getMedicalUnitName();
 
   useEffect(() => {
     fetchTreatmentDetails();
@@ -124,12 +131,14 @@ const TreatmentDetails = ({ route }) => {
         <Text style={styles.detailsLabel}>Time:</Text>
         <Text style={styles.value}>{item.formattedTime}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleDeleteTreatmentDetails(item.id)}
-      >
-        <Text style={{ color: "white" }}>Delete</Text>
-      </TouchableOpacity>
+      {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteTreatmentDetails(item.id)}
+        >
+          <Text style={{ color: "white" }}>Delete</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 
@@ -139,31 +148,48 @@ const TreatmentDetails = ({ route }) => {
         Keyboard.dismiss();
       }}
     >
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.label}>Details:</Text>
-          <TextInput
-            style={styles.input}
-            value={treatmentDetails}
-            multiline
-            onChangeText={(text) => setTreatmentDetails(text)}
-            placeholder={treatmentDetailsError ? treatmentDetailsError : ""}
-            placeholderTextColor={treatmentDetailsError ? "red" : "white"}
+      <View
+        style={
+          medicalUnitName === currentMedicalUnit
+            ? styles.container
+            : { ...styles.container, backgroundColor: "white" }
+        }
+      >
+        {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
+          <>
+            <View style={styles.formContainer}>
+              <Text style={styles.label}>Details:</Text>
+              <TextInput
+                style={styles.input}
+                value={treatmentDetails}
+                multiline
+                onChangeText={(text) => setTreatmentDetails(text)}
+                placeholder={treatmentDetailsError ? treatmentDetailsError : ""}
+                placeholderTextColor={treatmentDetailsError ? "red" : "white"}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={styles.checkEligibilityButton}
+              onPress={handleAddTreatmentDetails}
+            >
+              <Text style={styles.checkEligibilityButtonText}>Add Details</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        {details.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No details recorded for this treatment yet.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={details}
+            renderItem={renderDetailsItem}
+            keyExtractor={(item) => item.id.toString()}
           />
-        </View>
-
-        <TouchableOpacity
-          style={styles.checkEligibilityButton}
-          onPress={handleAddTreatmentDetails}
-        >
-          <Text style={styles.checkEligibilityButtonText}>Add Details</Text>
-        </TouchableOpacity>
-
-        <FlatList
-          data={details}
-          renderItem={renderDetailsItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

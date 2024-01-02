@@ -120,6 +120,7 @@ export default function HospitalStay({ navigation, route }) {
         navigation.navigate("StayList", {
           itemId: item.id,
           patientId: patientId,
+          currentMedicalUnit: item.medicalUnitName,
         });
       }}
     >
@@ -131,12 +132,14 @@ export default function HospitalStay({ navigation, route }) {
         <Text style={styles.dateText}>Doctor name:{item.createdBy}</Text>
         <Text style={styles.dateText}>entry date:{item.date}</Text>
         <Text style={styles.dateText}>entry time:{item.time}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleDeleteItem(item.id)}
-        >
-          <Text style={{ color: "white" }}>Delete</Text>
-        </TouchableOpacity>
+        {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleDeleteItem(item.id)}
+          >
+            <Text style={{ color: "white" }}>Delete</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );

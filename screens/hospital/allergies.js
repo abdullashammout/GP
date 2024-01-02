@@ -153,12 +153,14 @@ const PatientAllergiesPage = ({ navigation, route }) => {
                 <Text style={styles.label}>Date:</Text>
                 <Text>{item.formattedDate}</Text>
               </View>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => deleteAllergy(item.id)}
-              >
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
+              {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => deleteAllergy(item.id)}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
         />

@@ -17,6 +17,7 @@ export default function MainScreen({ route, navigation }) {
   const [patientName, setPatientName] = useState("");
   const [patientAge, setPatientAge] = useState(null);
   const [patientGender, setPatientGender] = useState(null);
+  const [patientBloodType, setPatientBloodType] = useState("");
   const [pId, setPId] = useState(null);
 
   // Fetch patient information from the database using the patientId
@@ -34,6 +35,8 @@ export default function MainScreen({ route, navigation }) {
           setPatientGender(gender);
           const { id } = snapshot.val();
           setPId(id);
+          const { bloodType } = snapshot.val();
+          setPatientBloodType(bloodType);
         } else {
           console.log("Patient not found");
         }
@@ -58,8 +61,8 @@ export default function MainScreen({ route, navigation }) {
     { index: "4", title: "Vaccine", image: require("../../pics/vaccine.png") },
     {
       index: "5",
-      title: "Allergies",
-      image: require("../../pics/allergy.png"),
+      title: "Hospital stay",
+      image: require("../../pics/stay.png"),
     },
     {
       index: "6",
@@ -73,8 +76,8 @@ export default function MainScreen({ route, navigation }) {
     },
     {
       index: "8",
-      title: "Hospital stay",
-      image: require("../../pics/stay.png"),
+      title: "Allergies",
+      image: require("../../pics/allergy.png"),
     },
   ];
 
@@ -92,7 +95,7 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("vaccine", { patientId });
     }
     if (index === "5") {
-      navigation.navigate("allergies", { patientId });
+      navigation.navigate("hospitalStay", { patientId });
     }
     if (index === "6") {
       navigation.navigate("chronic", { patientId });
@@ -101,7 +104,7 @@ export default function MainScreen({ route, navigation }) {
       navigation.navigate("BloodDonation", { patientId });
     }
     if (index === "8") {
-      navigation.navigate("hospitalStay", { patientId });
+      navigation.navigate("allergies", { patientId });
     }
   };
 
@@ -126,6 +129,10 @@ export default function MainScreen({ route, navigation }) {
       </Text>
       <View style={styles.patientInfoContainer}>
         <View style={styles.infoRow}>
+          <Text style={styles.label}>ID:</Text>
+          <Text style={styles.info}>{pId}</Text>
+        </View>
+        <View style={styles.infoRow}>
           <Text style={styles.label}>Name:</Text>
           <Text style={styles.info}>{patientName}</Text>
         </View>
@@ -138,8 +145,8 @@ export default function MainScreen({ route, navigation }) {
           <Text style={styles.info}>{patientGender}</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>ID:</Text>
-          <Text style={styles.info}>{pId}</Text>
+          <Text style={styles.label}>Blood Type:</Text>
+          <Text style={styles.info}>{patientBloodType}</Text>
         </View>
       </View>
       <View style={styles.flatcontainer}>
