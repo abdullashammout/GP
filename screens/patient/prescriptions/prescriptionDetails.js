@@ -40,12 +40,25 @@ const PrescriptionDetails = ({ route }) => {
     <View style={styles.medicationItem}>
       <View style={styles.row}>
         <Text style={styles.label}>
-          Medication:{" "}
+          Diagnosis:{" "}
           <Text
             style={{
               ...styles.value,
               fontWeight: "normal",
               ...styles.medication,
+            }}
+          >
+            {item.diagnosis}
+          </Text>
+        </Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>
+          Medication:{" "}
+          <Text
+            style={{
+              ...styles.value,
+              fontWeight: "normal",
             }}
           >
             {item.medication}
@@ -58,7 +71,6 @@ const PrescriptionDetails = ({ route }) => {
           <Text
             style={{
               ...styles.value,
-              ...styles.medication,
               fontWeight: "normal",
             }}
           >

@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import styles from "../../styles/patientStyles/signUpStyle";
 import { auth } from "../../firebase";
@@ -85,7 +86,9 @@ const SignUPForm = () => {
     }
     if (!isEmailValid(email)) {
       setEmail("");
-      setEmailError("Invalid email");
+      setEmailError(
+        "Please enter a valid email address in the format user@example.com."
+      );
       return;
     }
 
@@ -205,6 +208,7 @@ const SignUPForm = () => {
       setIsPasswordMatching("Password and confirm Password do not match.");
       return;
     }
+    setIsLoading(false);
   };
 
   return (
@@ -305,7 +309,7 @@ const SignUPForm = () => {
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
           <Text style={{ textAlign: "center", color: "white" }}>
-            {isLoading ? "Signing Up" : "Sign Up"}
+            {isLoading ? <ActivityIndicator size="small" /> : "Sign Up"}
           </Text>
         </TouchableOpacity>
       </View>

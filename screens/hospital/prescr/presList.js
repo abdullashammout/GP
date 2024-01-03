@@ -20,6 +20,8 @@ const PresList = ({ route }) => {
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState(``);
+  const [diagnosis, setDiagnosis] = useState(``);
+  const [diagnosisError, setDiagnosisError] = useState(null);
   const [medicationError, setMedicationError] = useState(null);
   const [dosageError, setDosageError] = useState(null);
 
@@ -51,15 +53,16 @@ const PresList = ({ route }) => {
   getMedicalUnitName();
 
   const handleAddMedication = async () => {
-    if (medication === "" || dosage === "") {
+    if (medication === "" || dosage === "" || diagnosis === "") {
       setMedicationError("Required");
       setDosageError("Required");
+      setDiagnosisError("Required");
       return;
     }
 
     try {
-      if (medication && dosage) {
-        const newMedication = { medication, dosage };
+      if (medication && dosage && diagnosis) {
+        const newMedication = { medication, dosage, diagnosis };
         const prescriptionRef = ref(
           db,
           `users/patients/${patientId}/prescription/${itemId}/medications`
@@ -74,6 +77,8 @@ const PresList = ({ route }) => {
 
         setMedication("");
         setDosage(``);
+        setDiagnosis(``);
+        setDiagnosisError(null);
         setDosageError(null);
         setMedicationError(null);
       }
@@ -115,7 +120,7 @@ const PresList = ({ route }) => {
     <View style={styles.medicationItem}>
       <View style={styles.row}>
         <Text style={styles.label}>
-          Medication:{" "}
+          Diagnosis:{" "}
           <Text
             style={{
               ...styles.value,
@@ -123,6 +128,14 @@ const PresList = ({ route }) => {
               fontWeight: "normal",
             }}
           >
+            {item.diagnosis}
+          </Text>
+        </Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>
+          Medication:{" "}
+          <Text style={{ ...styles.value, fontWeight: "normal" }}>
             {item.medication}
           </Text>
         </Text>
@@ -165,6 +178,19 @@ const PresList = ({ route }) => {
         {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
           <>
             <View style={styles.formContainer}>
+              <Text style={styles.label}>Diagnosis:</Text>
+              <TextInput
+                style={styles.input}
+                value={diagnosis}
+                multiline
+                maxLength={16}
+                numberOfLines={2}
+                onChangeText={(text) => setDiagnosis(text)}
+                placeholder={diagnosisError ? diagnosisError : ""}
+                placeholderTextColor={diagnosisError ? "red" : "white"}
+              />
+            </View>
+            <View style={styles.formContainer}>
               <Text style={styles.label}>Medication:</Text>
               <TextInput
                 style={styles.input}
@@ -176,7 +202,6 @@ const PresList = ({ route }) => {
                 placeholderTextColor={medicationError ? "red" : "white"}
               />
             </View>
-
             <View style={styles.formContainer}>
               <Text style={styles.label}> Dosage:{"     "}</Text>
               <TextInput
