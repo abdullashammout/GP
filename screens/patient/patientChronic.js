@@ -3,7 +3,6 @@ import { View, Text, FlatList } from "react-native";
 import styles from "../../styles/hospitalStyles/chronicStyles";
 import { ref, get } from "firebase/database";
 import { db } from "../../firebase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PatientChronic = ({ route }) => {
   const { userId } = route.params;
