@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     position: "absolute",
     right: 10,
-    top: 50,
+    top: 65,
     transform: [{ translateY: -25 }],
   },
   row: {

@@ -23,6 +23,8 @@ export default function ChangeEmailScreen({ navigation, route }) {
   const { userId } = route.params || {};
 
   const [currentEmail, setCurrentEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [currentPasswordError, setCurrentPasswordError] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [currentEmailError, setCurrentEmailError] = useState("");
   const [newEmailError, setNewEmailError] = useState("");
@@ -64,57 +66,62 @@ export default function ChangeEmailScreen({ navigation, route }) {
     return true;
   };
 
-  // const handleChangeEmail = async () => {
-  //   if (currentEmail === "" || newEmail === "") {
-  //     setCurrentEmailError("This Field Is Required");
-  //     setNewEmailError("This Field Is Required");
-  //     return;
-  //   } else {
-  //     setCurrentEmailError(null);
-  //     setNewEmailError(null);
-  //   }
-  //   if (!isEmailValid(newEmail)) {
-  //     setNewEmail("");
-  //     setNewEmailError("Invalid email");
-  //     return;
-  //   }
+  const handleChangeEmail = async () => {
+    if (currentEmail === "" || newEmail === "" || currentPassword === "") {
+      setCurrentEmailError("This Field Is Required");
+      setNewEmailError("This Field Is Required");
+      setCurrentPasswordError("This Field Is Required");
+      return;
+    } else {
+      setCurrentPasswordError(null);
+      setCurrentEmailError(null);
+      setNewEmailError(null);
+    }
+    if (!isEmailValid(newEmail)) {
+      setNewEmail("");
+      setNewEmailError("Invalid email");
+      return;
+    }
 
-  //   try {
-  //     const user = auth.currentUser;
+    try {
+      const user = auth.currentUser;
 
-  //     // Reauthenticate user before changing email
-  //     const credential = EmailAuthProvider.credential(
-  //       currentEmail,
-  //       // You might need to ask the user to input their password for reauthentication
-  //       password
-  //     );
+      // Reauthenticate user before changing email
+      const credential = EmailAuthProvider.credential(
+        currentEmail,
+        // You might need to ask the user to input their password for reauthentication
+        currentPassword
+      );
 
-  //     await reauthenticateWithCredential(user, credential);
-  //     await verifyBeforeUpdateEmail(user, newEmail);
-  //     Alert.alert("verify", "please verify your new email for security  ");
-  //     const userData = ref(db, `users/patients/${userId}`);
-  //     update(userData, {
-  //       email: newEmail,
-  //     });
-  //     await updateEmail(user, newEmail);
-
-  //     setCurrentEmail("");
-  //     setNewEmail("");
-  //   } catch (error) {
-  //     console.log(error.code);
-  //     // Handle errors here
-  //     if (
-  //       error.code === "auth/invalid-email" ||
-  //       error.code === "auth/user-not-found" ||
-  //       error.code === "auth/invalid-login-credentials"
-  //     ) {
-  //       setCurrentEmail("");
-  //       setCurrentEmailError(
-  //         "Invalid current email. Please check your email address."
-  //       );
-  //     }
-  //   }
-  // };
+      await reauthenticateWithCredential(user, credential);
+      await verifyBeforeUpdateEmail(user, newEmail);
+      Alert.alert(
+        "verify Email",
+        "please verify your new email And then it will be changed"
+      );
+      const userData = ref(db, `users/patients/${userId}`);
+      update(userData, {
+        email: newEmail,
+      });
+      await updateEmail(user, newEmail);
+      Alert("Email changed successfully");
+      setCurrentEmail("");
+      setNewEmail("");
+    } catch (error) {
+      console.log(error.code);
+      // Handle errors here
+      if (
+        error.code === "auth/invalid-email" ||
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/invalid-login-credentials"
+      ) {
+        setCurrentEmail("");
+        setCurrentPassword("");
+        setCurrentEmailError("Invalid Email or Password.");
+        setCurrentPasswordError("Invalid Email or Password.");
+      }
+    }
+  };
 
   return (
     <TouchableWithoutFeedback
@@ -154,6 +161,32 @@ export default function ChangeEmailScreen({ navigation, route }) {
             onChangeText={(text) => setCurrentEmail(text)}
           />
           <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
+            Current Password:
+          </Text>
+          <TextInput
+            returnKeyType="next"
+            autoCapitalize="none"
+            style={{
+              padding: 10,
+              marginTop: 10,
+              marginLeft: 15,
+              height: 60,
+              width: 350,
+              borderRadius: 10,
+              borderColor: "white",
+              borderWidth: 2,
+            }}
+            placeholder={
+              currentPasswordError
+                ? currentPasswordError
+                : "Enter current Email"
+            }
+            placeholderTextColor={currentPasswordError ? "red" : "gray"}
+            value={currentPassword.trim()}
+            onChangeText={(text) => setCurrentPassword(text)}
+            secureTextEntry
+          />
+          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
             New Email:
           </Text>
 
@@ -186,6 +219,7 @@ export default function ChangeEmailScreen({ navigation, route }) {
               borderRadius: 10,
               left: 50,
             }}
+            onPress={handleChangeEmail}
           >
             <Text style={{ textAlign: "center", color: "white" }}>
               Change Email
