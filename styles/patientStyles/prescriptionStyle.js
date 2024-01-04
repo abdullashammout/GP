@@ -36,17 +36,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#555",
   },
-  soldText: {
-    position: "absolute",
-    right: 20,
-    top: 70,
-    fontSize: 16,
-    color: "black", // or any color you prefer for sold prescriptions
-    fontWeight: "bold",
-    opacity: 0.7,
-  },
-  soldItemContainer: {
-    opacity: 0.7,
-  },
 });
 export default styles;

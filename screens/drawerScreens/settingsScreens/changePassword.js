@@ -14,7 +14,7 @@ import {
   Keyboard,
   Alert,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "../../../styles/drawerStyles/changePasswordStyle";
 
 export default function ChangePassScreen() {
   const [oldPassword, setOldPassword] = useState("");
@@ -112,96 +112,43 @@ export default function ChangePassScreen() {
         Keyboard.dismiss();
       }}
     >
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <View
-          style={{
-            position: "absolute",
-            top: 20,
-            left: 15,
-          }}
-        >
-          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
-            Current Password:
-          </Text>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Current Password:</Text>
           <TextInput
             returnKeyType="next"
             autoCapitalize="none"
-            style={{
-              padding: 10,
-              marginTop: 10,
-              marginLeft: 15,
-              height: 60,
-              width: 350,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 2,
-            }}
+            style={styles.input}
             placeholder={oldError ? oldError : "Enter Old Password"}
             placeholderTextColor={oldError ? "red" : "gray"}
             value={oldPassword}
             onChangeText={(text) => setOldPassword(text)}
           />
-          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
-            New Password:
-          </Text>
-
+          <Text style={styles.label}>New Password:</Text>
           <TextInput
             returnKeyType="next"
             autoCapitalize="none"
-            style={{
-              padding: 10,
-              marginTop: 10,
-              marginLeft: 15,
-              height: 60,
-              width: 350,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 2,
-            }}
+            style={styles.input}
             placeholder={newError ? newError : "Enter New Password"}
             placeholderTextColor={newError ? "red" : "gray"}
             value={newPassword}
             onChangeText={(text) => setNewPassword(text)}
           />
-          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
-            Confirm New Password:
-          </Text>
-
+          <Text style={styles.label}>Confirm New Password:</Text>
           <TextInput
             returnKeyType="next"
             autoCapitalize="none"
-            style={{
-              padding: 10,
-              marginTop: 10,
-              marginLeft: 15,
-              height: 60,
-              width: 350,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 2,
-            }}
+            style={styles.input}
             placeholder={confError ? confError : "Confirm New Password"}
             placeholderTextColor={confError ? "red" : "gray"}
             value={confirmNewPassword}
             onChangeText={(text) => setConfirmNewPassword(text)}
           />
           <TouchableOpacity
-            style={{
-              marginTop: 50,
-              width: 280,
-              borderColor: "white",
-              padding: 10,
-              backgroundColor: "black",
-              borderWidth: 1,
-              borderRadius: 10,
-              left: 50,
-            }}
+            style={styles.button}
             onPress={handleChangePassword}
           >
-            <Text style={{ textAlign: "center", color: "white" }}>
-              {" "}
-              Change Password
-            </Text>
+            <Text style={styles.buttonText}>Change Password</Text>
           </TouchableOpacity>
         </View>
       </View>

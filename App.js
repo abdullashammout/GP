@@ -12,7 +12,6 @@ import LoginForm from "./screens/patient/login";
 import SignUPForm from "./screens/patient/signUp";
 import SearchPh from "./screens/pharmacy/searchPharmacy";
 import SearchHospital from "./screens/hospital/searchHospital";
-import SearchLabor from "./screens/laboratory/searchLaboratory";
 import PatientPage from "./screens/patient/patientPage";
 import MainScreen from "./screens/hospital/main";
 import ResetPasswordScreen from "./screens/patient/ResetPassword";
@@ -45,6 +44,7 @@ import ChronicIllness from "./screens/hospital/chronicIllness";
 import PatientChronic from "./screens/patient/patientChronic";
 import PharPrescription from "./screens/pharmacy/prescriptions";
 import PatientStayDetails from "./screens/patient/HospitalStay/hospitalStayDetails";
+import Medications from "./screens/pharmacy/medications";
 
 const Stack = createNativeStackNavigator();
 
@@ -56,8 +56,6 @@ const getRolePage = (role) => {
       return "hospital";
     case "medical_units/pharmacy":
       return "pharmacy";
-    case "medical_units/laboratory":
-      return "laboratory";
     default:
       return "load"; // Default to the home page if the role is unknown
   }
@@ -70,8 +68,6 @@ const getRoleComponent = (role) => {
       return SearchHospital;
     case "medical_units/pharmacy":
       return SearchPh;
-    case "medical_units/laboratory":
-      return SearchLabor;
     default:
       return LoadingScreen; // Default to the home component if the role is unknown
   }
@@ -130,7 +126,6 @@ export default function App() {
         if (
           currentRoute.name === "hospital" ||
           currentRoute.name === "pharmacy" ||
-          currentRoute.name === "laboratory" ||
           currentRoute.name === "patientPage"
         ) {
           Alert.alert(
@@ -294,13 +289,6 @@ export default function App() {
                 statusBarColor: "#34495e",
                 statusBarStyle: "light",
                 statusBarAnimation: "slide",
-              }}
-            />
-            <Stack.Screen
-              name="laboratory"
-              component={SearchLabor}
-              options={{
-                headerShown: false,
               }}
             />
           </>
@@ -664,6 +652,16 @@ export default function App() {
           options={{
             headerShown: false,
             statusBarStyle: "dark",
+          }}
+        />
+        <Stack.Screen
+          name="PharMedications"
+          component={Medications}
+          options={{
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            statusBarStyle: "dark",
+            title: "Prescription Details",
           }}
         />
       </Stack.Navigator>

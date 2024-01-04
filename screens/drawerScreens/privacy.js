@@ -1,12 +1,11 @@
 import React from "react";
 import { View, Text } from "react-native";
+import styles from "../../styles/drawerStyles/privacyStyle";
 
 export default function PrivacyScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text
-        style={{ fontSize: 18, textAlign: "center", paddingHorizontal: 20 }}
-      >
+    <View style={styles.container}>
+      <Text style={styles.description}>
         Your privacy is important to us. This Privacy Policy explains how we
         collect, use, and protect your personal information when you use
         E-HEALTH. We employ state-of-the-art security protocols to ensure the
@@ -16,16 +15,15 @@ export default function PrivacyScreen() {
         national identification number, making it easier to manage their
         healthcare needs.
       </Text>
-      <Text style={{ marginTop: 20, fontWeight: "bold", fontSize: 16 }}>
-        Information We Collect:
+      <Text style={styles.header}>Information We Collect:</Text>
+      <Text style={styles.listItem}>
+        - Citizen ID {"\n"}- Citizen name {"\n"}- Citizen Age {"\n"}- Citizen
+        Gender
       </Text>
-      <Text>-Citizen ID -Citizen name -Citizen Age -Citizen Gender</Text>
 
-      <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 16 }}>
-        Contact Us:
-      </Text>
-      <Text>
-        - Send message to our customer service:{"          "}
+      <Text style={[styles.header, styles.contactHeader]}>Contact Us:</Text>
+      <Text style={styles.contactText}>
+        - Send message to our customer service:{"\n"}
         {"-------------------------->  "}E-health@outlook.com
       </Text>
     </View>

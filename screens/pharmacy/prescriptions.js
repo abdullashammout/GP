@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
 import { ref, get, update } from "firebase/database";
 import { db } from "../../firebase";
 import { Ionicons } from "@expo/vector-icons";
-import styles from "../../styles/pharmacyStyle.js/prescriptionStyle";
+import styles from "../../styles/pharmacyStyle/prescriptionStyle";
 
 const PharPrescription = ({ navigation, route }) => {
   const { patientId } = route.params;
@@ -37,41 +37,6 @@ const PharPrescription = ({ navigation, route }) => {
         console.error("Error fetching patient data: ", error);
       });
   }, [patientId]);
-
-  const handleSellPrescription = async (id) => {
-    Alert.alert("Sell Confirmation", "Are you sure you sold the prescription", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "ok",
-        onPress: async () => {
-          try {
-            // Update the local state to mark the prescription as sold
-            const updatedPrescriptions = prescriptions.map((prescription) =>
-              prescription.id === id
-                ? { ...prescription, isSold: !prescription.isSold }
-                : prescription
-            );
-            setPrescriptions(updatedPrescriptions);
-
-            // Update the database to mark the prescription as sold
-            // Modify the path accordingly based on your database structure
-            const presDataRef = ref(
-              db,
-              `users/patients/${patientId}/prescription/${id}`
-            );
-            await update(presDataRef, {
-              isSold: !prescriptions.find((p) => p.id === id)?.isSold,
-            });
-          } catch (error) {
-            console.error("Error selling prescription:", error);
-          }
-        },
-      },
-    ]);
-  };
 
   useEffect(() => {
     const loadPrescriptions = async () => {
@@ -108,9 +73,9 @@ const PharPrescription = ({ navigation, route }) => {
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      style={[styles.itemContainer, item.isSold && styles.soldItemContainer]}
+      style={styles.itemContainer}
       onPress={() =>
-        navigation.navigate("patientMedications", {
+        navigation.navigate("PharMedications", {
           itemId: item.id,
           itemName: item.createdBy,
           medicalUnitName: item.medicalUnitName,
@@ -125,13 +90,6 @@ const PharPrescription = ({ navigation, route }) => {
       <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
       <Text style={styles.itemText}>{`Time: ${item.time}`}</Text>
-      <TouchableOpacity
-        style={styles.sell}
-        onPress={() => handleSellPrescription(item.id)}
-        disabled={item.isSold} // optional: disable the touchable opacity if the item is sold
-      >
-        <Text style={{ color: "white" }}>{item.isSold ? "Sold" : "Sell"}</Text>
-      </TouchableOpacity>
     </TouchableOpacity>
   );
 

@@ -58,5 +58,16 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
   },
+  soldItemContainer: {
+    opacity: 0.5,
+  },
+  sell: {
+    backgroundColor: "red",
+    padding: 10,
+    position: "absolute",
+    borderRadius: 5,
+    right: 15,
+    bottom: 25,
+  },
 });
 export default styles;
