@@ -60,7 +60,6 @@ const PatientPrescription = ({ navigation, route }) => {
       <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
       <Text style={styles.itemText}>{`Time: ${item.time}`}</Text>
-      {item.isSold ? <Text style={styles.soldText}>Sold</Text> : null}
     </TouchableOpacity>
   );
 

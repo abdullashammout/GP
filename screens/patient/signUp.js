@@ -307,7 +307,11 @@ const SignUPForm = () => {
             onChangeText={(text) => setEmail(text)}
           />
         </View>
-        <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={handleSignUp}
+          disabled={isLoading}
+        >
           <Text style={{ textAlign: "center", color: "white" }}>
             {isLoading ? <ActivityIndicator size="small" /> : "Sign Up"}
           </Text>

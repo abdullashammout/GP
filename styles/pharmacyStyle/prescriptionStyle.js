@@ -36,17 +36,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#555",
   },
-  soldItemContainer: {
-    opacity: 0.7,
-  },
-  sell: {
-    backgroundColor: "lightgreen",
-    padding: 10,
-    position: "absolute",
-    borderRadius: 5,
-    right: 25,
-    top: 65,
-  },
+
   patientInfoContainer: {
     backgroundColor: "#fff",
     borderRadius: 10,

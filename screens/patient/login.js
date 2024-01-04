@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import styles from "../../styles/patientStyles/loginStyle";
@@ -45,7 +44,6 @@ const LoginForm = ({ navigation }) => {
       "patients",
       "medical_units/hospital",
       "medical_units/pharmacy",
-      "medical_units/laboratory",
     ];
 
     for (const role of roles) {
@@ -113,8 +111,6 @@ const LoginForm = ({ navigation }) => {
         return "hospital";
       case "medical_units/pharmacy":
         return "pharmacy";
-      case "medical_units/laboratory":
-        return "laboratory";
       default:
         return "";
     }
@@ -187,7 +183,11 @@ const LoginForm = ({ navigation }) => {
         <TouchableOpacity style={{ marginTop: 20 }} onPress={goToSignUp}>
           <Text style={{ color: "#4169E1" }}>Sign Up?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn} onPress={signIn}>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={signIn}
+          disabled={isLoading}
+        >
           <Text style={{ textAlign: "center", color: "white" }}>
             {isLoading ? <ActivityIndicator size="small" /> : "Login"}
           </Text>

@@ -1,12 +1,11 @@
 import React from "react";
 import { View, Text } from "react-native";
+import styles from "../../styles/drawerStyles/aboutUsStyle";
 
 export default function AboutUsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text
-        style={{ fontSize: 18, textAlign: "center", paddingHorizontal: 20 }}
-      >
+    <View style={styles.container}>
+      <Text style={styles.description}>
         Welcome to E-HEALTH! We are dedicated to providing a seamless and
         enjoyable experience for our users. Our mission is to create an
         electronic health record for all citizens, leveraging the evolution of
@@ -15,13 +14,10 @@ export default function AboutUsScreen() {
         employ state-of-the-art security protocols to protect your personal
         information and prevent identity theft or compromise.
       </Text>
-      <Text style={{ marginTop: 20, fontWeight: "bold", fontSize: 16 }}>
-        Our Team:
-      </Text>
-      <Text>- Abdulla Shammout</Text>
-      <Text>- Sara Abu-Nahel</Text>
-      <Text>- Dania Isawi</Text>
-      {/* Add more team members as needed */}
+      <Text style={styles.teamHeader}>Our Team:</Text>
+      <Text style={styles.teamMember}>- Abdulla Shammout</Text>
+      <Text style={styles.teamMember}>- Sara Abu-Nahel</Text>
+      <Text style={styles.teamMember}>- Dania Isawi</Text>
     </View>
   );
 }

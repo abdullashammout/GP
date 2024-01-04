@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
@@ -14,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/hospitalStyles/searchHospitalStyle";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import PharPrescription from "./prescriptions";
 
 export default function SearchPh({ route, navigation }) {
   const { userId } = route.params || {};

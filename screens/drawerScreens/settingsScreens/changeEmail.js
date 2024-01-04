@@ -8,16 +8,15 @@ import {
   Keyboard,
   Alert,
 } from "react-native";
+import styles from "../../../styles/drawerStyles/changeEmailStyles";
 import { auth, db } from "../../../firebase";
 import { ref, update } from "firebase/database";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
-  sendEmailVerification,
   updateEmail,
   verifyBeforeUpdateEmail,
 } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ChangeEmailScreen({ navigation, route }) {
   const { userId } = route.params || {};
@@ -79,7 +78,9 @@ export default function ChangeEmailScreen({ navigation, route }) {
     }
     if (!isEmailValid(newEmail)) {
       setNewEmail("");
-      setNewEmailError("Invalid email");
+      setNewEmailError(
+        "Please enter a valid email address in the format user@example.com."
+      );
       return;
     }
 
@@ -117,8 +118,8 @@ export default function ChangeEmailScreen({ navigation, route }) {
       ) {
         setCurrentEmail("");
         setCurrentPassword("");
-        setCurrentEmailError("Invalid Email or Password.");
-        setCurrentPasswordError("Invalid Email or Password.");
+        setCurrentEmailError("Invalid current Email or Password.");
+        setCurrentPasswordError("Invalid current Email or Password.");
       }
     }
   };
@@ -129,30 +130,13 @@ export default function ChangeEmailScreen({ navigation, route }) {
         Keyboard.dismiss();
       }}
     >
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <View
-          style={{
-            position: "absolute",
-            top: 20,
-            left: 15,
-          }}
-        >
-          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
-            Current Email:
-          </Text>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Current Email:</Text>
           <TextInput
             returnKeyType="next"
             autoCapitalize="none"
-            style={{
-              padding: 10,
-              marginTop: 10,
-              marginLeft: 15,
-              height: 60,
-              width: 350,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 2,
-            }}
+            style={styles.input}
             placeholder={
               currentEmailError ? currentEmailError : "Enter current Email"
             }
@@ -160,22 +144,11 @@ export default function ChangeEmailScreen({ navigation, route }) {
             value={currentEmail.trim()}
             onChangeText={(text) => setCurrentEmail(text)}
           />
-          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
-            Current Password:
-          </Text>
+          <Text style={styles.label}>Current Password:</Text>
           <TextInput
             returnKeyType="next"
             autoCapitalize="none"
-            style={{
-              padding: 10,
-              marginTop: 10,
-              marginLeft: 15,
-              height: 60,
-              width: 350,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 2,
-            }}
+            style={styles.input}
             placeholder={
               currentPasswordError
                 ? currentPasswordError
@@ -186,44 +159,18 @@ export default function ChangeEmailScreen({ navigation, route }) {
             onChangeText={(text) => setCurrentPassword(text)}
             secureTextEntry
           />
-          <Text style={{ fontWeight: "bold", fontSize: 17, left: 25 }}>
-            New Email:
-          </Text>
-
+          <Text style={styles.label}>New Email:</Text>
           <TextInput
             returnKeyType="next"
             autoCapitalize="none"
-            style={{
-              padding: 10,
-              marginTop: 10,
-              marginLeft: 15,
-              height: 60,
-              width: 350,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 2,
-            }}
+            style={styles.input}
             placeholder={newEmailError ? newEmailError : "Enter New Email"}
             placeholderTextColor={newEmailError ? "red" : "gray"}
             value={newEmail.trim()}
             onChangeText={(text) => setNewEmail(text)}
           />
-          <TouchableOpacity
-            style={{
-              marginTop: 50,
-              width: 280,
-              borderColor: "white",
-              padding: 10,
-              backgroundColor: "black",
-              borderWidth: 1,
-              borderRadius: 10,
-              left: 50,
-            }}
-            onPress={handleChangeEmail}
-          >
-            <Text style={{ textAlign: "center", color: "white" }}>
-              Change Email
-            </Text>
+          <TouchableOpacity style={styles.button} onPress={handleChangeEmail}>
+            <Text style={styles.buttonText}>Change Email</Text>
           </TouchableOpacity>
         </View>
       </View>

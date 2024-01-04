@@ -9,6 +9,7 @@ import {
 import { auth, db } from "../../firebase";
 import { ref, get, update } from "firebase/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "../../styles/drawerStyles/settingsStyle";
 
 export default function SettingsScreen({ navigation, route }) {
   const { userId } = route.params || {};
@@ -38,64 +39,7 @@ export default function SettingsScreen({ navigation, route }) {
       },
     ]);
   };
-  const deleteAccount = async () => {
-    Alert.alert(
-      "Delete Account Confirmation",
-      "Are you sure you want to delete your account?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: () => {
-            Alert.alert(
-              "WARNING!",
-              "Make sure by deleting the account all information about your medical record will be deleted",
-              [
-                {
-                  text: "Cancel",
-                  style: "cancel",
-                },
-                {
-                  text: "Ok",
-                  onPress: async () => {
-                    setLoad(true);
-                    try {
-                      // Get the user data from the Realtime Database
-                      const userData = ref(db, `users/patients/${userId}`);
-                      const userSnapshot = await get(userData);
 
-                      if (userSnapshot.exists()) {
-                        await auth.currentUser.delete();
-                        update(userData, {
-                          email: null,
-                        });
-
-                        await AsyncStorage.removeItem("userRole");
-                        setLoad(false);
-                        navigation.navigate("home");
-                      }
-                    } catch (error) {
-                      console.error(
-                        "Error during account deletion:",
-                        error.message
-                      );
-                      Alert.alert(
-                        "Delete Account Error",
-                        "An error occurred during account deletion. Please try again."
-                      );
-                    }
-                  },
-                },
-              ]
-            );
-          },
-        },
-      ]
-    );
-  };
   if (load) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -104,82 +48,25 @@ export default function SettingsScreen({ navigation, route }) {
     );
   }
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#ecf0f1",
-      }}
-    >
+    <View style={styles.container}>
       <TouchableOpacity
-        style={{
-          padding: 17,
-          height: 60,
-          width: 350,
-          borderRadius: 10,
-          borderColor: "#f0f0f0",
-          borderWidth: 2,
-          backgroundColor: "#34495e",
-        }}
+        style={styles.button}
         onPress={() => {
           navigation.navigate("ChangePassword");
         }}
       >
-        <Text style={{ textAlign: "center", color: "white" }}>
-          Change Password
-        </Text>
+        <Text style={styles.buttonText}>Change Password</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={{
-          marginTop: 10,
-          padding: 17,
-          height: 60,
-          width: 350,
-          borderRadius: 10,
-          borderColor: "#f0f0f0",
-          backgroundColor: "#34495e",
-          borderWidth: 2,
-        }}
+        style={styles.button}
         onPress={() => {
           navigation.navigate("ChangeEmail", { userId });
         }}
       >
-        <Text style={{ textAlign: "center", color: "white" }}>
-          Change Email
-        </Text>
+        <Text style={styles.buttonText}>Change Email</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          marginTop: 10,
-          padding: 17,
-          height: 60,
-          width: 350,
-          borderRadius: 10,
-          borderColor: "#f0f0f0",
-          backgroundColor: "#34495e",
-          borderWidth: 2,
-        }}
-        onPress={logout}
-      >
-        <Text style={{ textAlign: "center", color: "white" }}>Logout</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          marginTop: 10,
-          padding: 17,
-          height: 60,
-          width: 350,
-          borderRadius: 10,
-          borderColor: "#f0f0f0",
-          backgroundColor: "#e74c3c",
-          borderWidth: 2,
-        }}
-        onPress={deleteAccount}
-      >
-        <Text style={{ textAlign: "center", color: "white" }}>
-          Delete Account
-        </Text>
+      <TouchableOpacity style={styles.deleteButton} onPress={logout}>
+        <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );

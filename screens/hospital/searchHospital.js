@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { ref, get } from "firebase/database";
 import { db, auth } from "../../firebase";
@@ -142,9 +143,13 @@ export default function SearchHospital({ navigation, route }) {
           maxLength={10}
           keyboardType="numeric"
         />
-        <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
+        <TouchableOpacity
+          style={styles.searchBtn}
+          onPress={handleSearch}
+          disabled={loading}
+        >
           <Text style={styles.searchBtnText}>
-            {loading ? "Searching..." : "Search"}
+            {loading ? <ActivityIndicator size="small" /> : "Search"}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.logout} onPress={logout}>
