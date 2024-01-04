@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
-    paddingHorizontal: 80,
+    justifyContent: "center",
     paddingVertical: 20,
+    width: "80%", // Alternatively, you can use flex: 1 for equal width
   },
   label: {
     fontSize: 18,
