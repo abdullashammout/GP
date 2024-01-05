@@ -285,15 +285,6 @@ export default function PatientPage({ navigation, route }) {
               <TouchableOpacity
                 style={{ flexDirection: "row", paddingBottom: 15 }}
                 onPress={() => {
-                  navigation.navigate("Settings", { userId });
-                }}
-              >
-                <SimpleLineIcons name="settings" size={17} color="white" />
-                <Text style={styles.optionText}>Settings</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ flexDirection: "row", paddingBottom: 15 }}
-                onPress={() => {
                   navigation.navigate("AccountInfo", { userId });
                 }}
               >
@@ -303,6 +294,29 @@ export default function PatientPage({ navigation, route }) {
                   color="white"
                 />
                 <Text style={styles.optionText}>My Information</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: "row", paddingBottom: 15 }}
+                onPress={() => {
+                  navigation.navigate("ChangePassword");
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="security"
+                  size={17}
+                  color="white"
+                />
+                <Text style={styles.optionText}>Change Password</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{ flexDirection: "row", paddingBottom: 15 }}
+                onPress={() => {
+                  navigation.navigate("ChangeEmail", { userId });
+                }}
+              >
+                <MaterialIcons name="email" size={17} color="white" />
+                <Text style={styles.optionText}>Change Email</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", paddingBottom: 15 }}

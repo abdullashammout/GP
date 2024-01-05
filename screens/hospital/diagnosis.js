@@ -21,6 +21,8 @@ const DiagnosisList = ({ navigation, route }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [diagnosisName, setDiagnosisName] = useState("");
   const [doctorName, setDoctorName] = useState("");
+  const [diagnosisError, setDiagnosisError] = useState(null);
+  const [doctorNameError, setDoctorNameError] = useState(null);
   const [medicalUnitName, setMedicalUnitName] = useState("");
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
@@ -57,30 +59,56 @@ const DiagnosisList = ({ navigation, route }) => {
   getMedicalUnitName();
 
   const addDiagnosis = async () => {
-    if (diagnosisName && doctorName) {
-      const newDiagnosis = {
-        diagnosis: diagnosisName,
-        date: formattedDate,
-        medicalUnit: medicalUnitName,
-        doctor: doctorName,
-      };
-      const diagnosisDataRef = ref(db, `users/patients/${patientId}/Diagnosis`);
-      const newDiagnosisRef = push(diagnosisDataRef, newDiagnosis);
-
-      const newItemId = newDiagnosisRef.key;
-      newDiagnosis.id = newItemId;
-      await set(newDiagnosisRef, newDiagnosis);
-      setDiagnosis((prevData) => [...prevData, newDiagnosis]);
-
-      setDiagnosisName("");
-      setDoctorName("");
-      toggleModal();
+    if (diagnosisName === "" || doctorName === "") {
+      setDoctorNameError("Please enter doctor name");
+      setDiagnosisError("Please enter Diagnosis ");
+      return;
     }
+    if (doctorName.length < 6) {
+      setDoctorName("");
+      setDoctorNameError("Minimum length 6 letters.");
+      return;
+    }
+    if (diagnosisName.length < 6) {
+      setDiagnosisName("");
+      setDiagnosisError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(doctorName)) {
+      setDoctorName("");
+      setDoctorNameError("only letters allowed.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(diagnosisName)) {
+      setDiagnosisName("");
+      setDiagnosisError("Only letters and numbers allowed");
+      return;
+    }
+
+    const newDiagnosis = {
+      diagnosis: diagnosisName,
+      date: formattedDate,
+      medicalUnit: medicalUnitName,
+      doctor: doctorName,
+    };
+    const diagnosisDataRef = ref(db, `users/patients/${patientId}/Diagnosis`);
+    const newDiagnosisRef = push(diagnosisDataRef, newDiagnosis);
+
+    const newItemId = newDiagnosisRef.key;
+    newDiagnosis.id = newItemId;
+    await set(newDiagnosisRef, newDiagnosis);
+    setDiagnosis((prevData) => [...prevData, newDiagnosis]);
+
+    setDiagnosisName("");
+    setDoctorName("");
+    toggleModal();
   };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     setDoctorName("");
     setDiagnosisName("");
+    setDiagnosisError(null);
+    setDoctorNameError(null);
   };
 
   const deleteDiagnosis = async (id) => {
@@ -127,16 +155,20 @@ const DiagnosisList = ({ navigation, route }) => {
 
               <TextInput
                 style={styles.input}
-                placeholder="Doctor Name"
+                placeholder={doctorNameError ? doctorNameError : "Doctor Name"}
+                placeholderTextColor={doctorNameError ? "red" : "gray"}
                 value={doctorName}
                 onChangeText={(text) => setDoctorName(text)}
+                maxLength={20}
               />
               <TextInput
                 style={styles.input}
-                placeholder="Diagnosis"
+                placeholder={diagnosisError ? diagnosisError : "Diagnosis Name"}
+                placeholderTextColor={diagnosisError ? "red" : "gray"}
                 value={diagnosisName}
                 onChangeText={(text) => setDiagnosisName(text)}
                 multiline
+                maxLength={50}
               />
 
               <View style={{ flexDirection: "row", alignSelf: "center" }}>
@@ -179,12 +211,14 @@ const DiagnosisList = ({ navigation, route }) => {
               <Text style={styles.bold}>
                 Date: <Text style={{ fontWeight: "normal" }}>{item.date}</Text>
               </Text>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => deleteDiagnosis(item.id)}
-              >
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
+              {item.medicalUnit === medicalUnitName && (
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => deleteDiagnosis(item.id)}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
         />

@@ -57,6 +57,16 @@ const ChronicIllness = ({ route }) => {
       setError("Please enter chronic disease name");
       return;
     }
+    if (newChronic.length < 6) {
+      setNewChronic("");
+      setError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(newChronic)) {
+      setNewChronic("");
+      setError("only letters allowed.");
+      return;
+    }
     try {
       if (newChronic) {
         const newChronicIllness = {
@@ -123,6 +133,7 @@ const ChronicIllness = ({ route }) => {
           placeholderTextColor={Error ? "red" : "gray"}
           value={newChronic}
           onChangeText={(text) => setNewChronic(text)}
+          maxLength={22}
         />
       </View>
       <TouchableOpacity style={styles.addButton} onPress={addChronic}>

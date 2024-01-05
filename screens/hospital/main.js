@@ -129,12 +129,12 @@ export default function MainScreen({ route, navigation }) {
       </Text>
       <View style={styles.patientInfoContainer}>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>ID:</Text>
-          <Text style={styles.info}>{pId}</Text>
-        </View>
-        <View style={styles.infoRow}>
           <Text style={styles.label}>Name:</Text>
           <Text style={styles.info}>{patientName}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>ID:</Text>
+          <Text style={styles.info}>{pId}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.label}>Age:</Text>

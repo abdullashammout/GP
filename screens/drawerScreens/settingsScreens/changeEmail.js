@@ -112,14 +112,24 @@ export default function ChangeEmailScreen({ navigation, route }) {
       console.log(error.code);
       // Handle errors here
       if (
-        error.code === "auth/invalid-email" ||
         error.code === "auth/user-not-found" ||
-        error.code === "auth/invalid-login-credentials"
+        error.code === "auth/invalid-login-credentials" ||
+        error.code === "auth/wrong-password"
       ) {
         setCurrentEmail("");
         setCurrentPassword("");
         setCurrentEmailError("Invalid current Email or Password.");
         setCurrentPasswordError("Invalid current Email or Password.");
+      } else if (error.code === "auth/invalid-email") {
+        setNewEmail("");
+        setNewEmailError(
+          "Please enter a valid email address in the format user@example.com."
+        );
+      } else {
+        Alert.alert(
+          "Error",
+          "An unexpected error occurred. Please try again later."
+        );
       }
     }
   };

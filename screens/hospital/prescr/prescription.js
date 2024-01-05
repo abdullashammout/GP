@@ -88,6 +88,18 @@ const Prescription = ({ navigation, route }) => {
       setUserNameError(" Required  ");
       return;
     }
+    if (userName.length < 6) {
+      setUserName("");
+      setUserNameError("Minimum length 6 letters.");
+      return;
+    } else {
+      setUserNameError(null);
+    }
+    if (!/^[a-zA-Z\s]*$/.test(userName)) {
+      setUserName("");
+      setUserNameError("only letters allowed.");
+      return;
+    }
     try {
       const currentDate = new Date();
       const formattedDate = `${currentDate.getDate()}/${
@@ -190,10 +202,13 @@ const Prescription = ({ navigation, route }) => {
               <Text>Enter Doctor Name:</Text>
               <TextInput
                 style={styles.input}
-                placeholder={userNameError ? userNameError : "Your Name"}
+                placeholder={
+                  userNameError ? userNameError : "First Name & Last Name"
+                }
                 placeholderTextColor={userNameError ? "red" : "gray"}
                 value={userName}
                 onChangeText={(text) => setUserName(text)}
+                maxLength={22}
               />
               <View>
                 <View style={{ flexDirection: "row" }}>
@@ -215,6 +230,8 @@ const Prescription = ({ navigation, route }) => {
                     }}
                     onPress={() => {
                       setModalVisible(false);
+                      setUserName("");
+                      setUserNameError(null);
                     }}
                   >
                     <Text style={{ color: "white" }}>Cancel</Text>

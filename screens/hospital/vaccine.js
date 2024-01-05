@@ -58,6 +58,16 @@ const Vaccine = ({ route }) => {
       setVaccineNameError("Please enter vaccine name");
       return;
     }
+    if (vaccineName.length < 6) {
+      setVaccineName("");
+      setVaccineNameError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(vaccineName)) {
+      setVaccineName("");
+      setVaccineNameError("only letters allowed.");
+      return;
+    }
     try {
       if (vaccineName) {
         const newVaccine = { vaccineName, formattedDate, medicalUnitName };
@@ -124,6 +134,7 @@ const Vaccine = ({ route }) => {
           placeholderTextColor={vaccineNameError ? "red" : "gray"}
           value={vaccineName}
           onChangeText={(text) => setVaccineName(text)}
+          maxLength={30}
         />
 
         <TouchableOpacity style={styles.addButton} onPress={addVaccine}>

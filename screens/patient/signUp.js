@@ -154,7 +154,6 @@ const SignUPForm = () => {
               const user = userCredential.user;
               update(idRef, {
                 email: email,
-                password: password,
               });
               setEmail("");
               setId("");

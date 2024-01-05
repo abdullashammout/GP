@@ -87,6 +87,18 @@ export default function HospitalStay({ navigation, route }) {
       setDoctorNameError("Required");
       return;
     }
+    if (doctorName.length < 6) {
+      setDoctorName("");
+      setDoctorNameError("Minimum length 6 letters.");
+      return;
+    } else {
+      setDoctorNameError(null);
+    }
+    if (!/^[a-zA-Z\s]*$/.test(doctorName)) {
+      setDoctorName("");
+      setDoctorNameError("only letters allowed.");
+      return;
+    }
     try {
       const currentDate = new Date();
       const formattedDate = `${currentDate.getDate()}/${
@@ -182,16 +194,22 @@ export default function HospitalStay({ navigation, route }) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text>Enter Doctor Name</Text>
+              <Text style={{ padding: 10 }}>Enter Doctor Name</Text>
               <TextInput
                 style={styles.input}
-                placeholder={doctorNameError ? doctorNameError : "your name"}
+                placeholder={
+                  doctorNameError ? doctorNameError : "First Name & Last Name"
+                }
                 placeholderTextColor={doctorNameError ? "red" : "gray"}
                 value={doctorName}
                 onChangeText={(text) => setDoctorName(text)}
+                maxLength={22}
               />
               <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <TouchableOpacity style={styles.btns} onPress={handleAddItem}>
+                <TouchableOpacity
+                  style={{ ...styles.btns, paddingHorizontal: 26 }}
+                  onPress={handleAddItem}
+                >
                   <Text style={{ color: "#fff" }}>Add</Text>
                 </TouchableOpacity>
 

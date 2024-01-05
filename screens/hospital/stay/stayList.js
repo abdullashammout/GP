@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet,
 } from "react-native";
+import styles from "../../../styles/hospitalStyles/stayListStyle";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,6 +55,16 @@ const StayList = ({ route }) => {
   const handleAddEntryDetails = async () => {
     if (entryDetails === "") {
       setEntryError("Required");
+      return;
+    }
+    if (entryDetails.length < 6) {
+      setEntryDetails("");
+      setEntryError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(entryDetails)) {
+      setEntryDetails("");
+      setEntryError("Only letters and numbers allowed");
       return;
     }
 
@@ -162,6 +172,7 @@ const StayList = ({ route }) => {
                 onChangeText={(text) => setEntryDetails(text)}
                 placeholder={entryError ? entryError : ""}
                 placeholderTextColor={entryError ? "red" : "white"}
+                maxLength={50}
               />
             </View>
 
@@ -190,92 +201,5 @@ const StayList = ({ route }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#f5f5f5",
-  },
-  header: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  infoContainer: {
-    flexDirection: "row",
-    marginBottom: 15,
-  },
-  formContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  medicationItem: {
-    marginVertical: 10,
-    backgroundColor: "#aed6f1", // Adjust the background color
-    borderRadius: 12,
-    padding: 15,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  value: {
-    fontSize: 16,
-    color: "#555",
-  },
-  medication: {
-    paddingRight: 80,
-    fontStyle: "italic",
-    color: "#777",
-  },
-  input: {
-    flex: 1,
-    height: 80,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginLeft: 10,
-    padding: 5,
-    borderRadius: 8,
-    backgroundColor: "white",
-  },
-  deleteButton: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-    position: "absolute",
-    right: 10,
-    bottom: 30,
-  },
-  row: {
-    flexDirection: "row",
-  },
-  detailsContainer: {
-    flexDirection: "row",
-    marginBottom: 8,
-  },
-  detailsLabel: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  checkEligibilityButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  checkEligibilityButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
 
 export default StayList;

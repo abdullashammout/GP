@@ -24,7 +24,6 @@ import HospitalStay from "./screens/hospital/stay/hospitalStay";
 import Vaccine from "./screens/hospital/vaccine";
 import PresList from "./screens/hospital/prescr/presList";
 import StayList from "./screens/hospital/stay/stayList";
-import SettingsScreen from "./screens/drawerScreens/settings";
 import AccountInfoScreen from "./screens/drawerScreens/accountInfo";
 import AboutUsScreen from "./screens/drawerScreens/aboutUs";
 import PrivacyScreen from "./screens/drawerScreens/privacy";
@@ -275,20 +274,6 @@ export default function App() {
                 headerShown: false,
                 statusBarStyle: "light",
                 statusBarColor: "#3498db",
-              }}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                headerTitleAlign: "center",
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#34495e",
-                },
-                statusBarColor: "#34495e",
-                statusBarStyle: "light",
-                statusBarAnimation: "slide",
               }}
             />
           </>

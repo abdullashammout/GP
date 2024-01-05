@@ -59,6 +59,57 @@ const PresList = ({ route }) => {
       setDiagnosisError("Required");
       return;
     }
+    if (diagnosis.length < 6 && medication.length < 6) {
+      setDiagnosis("");
+      setMedication("");
+      setDiagnosisError("Minimum length 6 letters.");
+      setMedicationError("Minimum length 6 letters.");
+      return;
+    }
+    if (diagnosis.length < 6 && dosage.length < 6) {
+      setDiagnosis("");
+      setDosage("");
+      setDiagnosisError("Minimum length 6 letters.");
+      setDosageError("Minimum length 6 letters.");
+      return;
+    }
+    if (medication.length < 6 && dosage.length < 6) {
+      setMedication("");
+      setDosage("");
+      setMedicationError("Minimum length 6 letters.");
+      setDosageError("Minimum length 6 letters.");
+      return;
+    }
+    if (diagnosis.length < 6) {
+      setDiagnosis("");
+      setDiagnosisError("Minimum length 6 letters.");
+      return;
+    }
+    if (medication.length < 6) {
+      setMedication("");
+      setMedicationError("Minimum length 6 letters.");
+      return;
+    }
+    if (dosage.length < 6) {
+      setDosage("");
+      setDosageError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(diagnosis)) {
+      setDiagnosis("");
+      setDiagnosisError("only letters allowed.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(dosage)) {
+      setDosage("");
+      setDosageError("Only letters and numbers allowed");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(medication)) {
+      setMedication("");
+      setMedicationError("Only letters and numbers allowed");
+      return;
+    }
 
     try {
       if (medication && dosage && diagnosis) {

@@ -84,12 +84,31 @@ const TreatmentList = ({ navigation, route }) => {
   };
   const handleAddItem = async () => {
     if (treatmentName === "" || doctorName === "") {
-      setDoctorName("");
-      setTreatmentName("");
       setDoctorNameError("Please enter doctor name");
       setTreatNameError("Please enter treatment Name");
       return;
     }
+    if (doctorName.length < 6) {
+      setDoctorName("");
+      setDoctorNameError("Minimum length 6 letters.");
+      return;
+    }
+    if (treatmentName.length < 6) {
+      setTreatmentName("");
+      setTreatNameError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(doctorName)) {
+      setDoctorName("");
+      setDoctorNameError("only letters allowed.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(treatmentName)) {
+      setTreatmentName("");
+      setTreatNameError("Only letters and numbers allowed");
+      return;
+    }
+
     try {
       const currentDate = new Date();
       const formattedDate = `${currentDate.getDate()}/${
@@ -135,6 +154,7 @@ const TreatmentList = ({ navigation, route }) => {
           placeholderTextColor={doctorNameError ? "red" : "gray"}
           value={doctorName}
           onChangeText={(text) => setDoctorName(text)}
+          maxLength={22}
         />
         <TextInput
           style={styles.input}
@@ -142,6 +162,7 @@ const TreatmentList = ({ navigation, route }) => {
           placeholderTextColor={treatNameError ? "red" : "gray"}
           value={treatmentName}
           onChangeText={(text) => setTreatmentName(text)}
+          maxLength={22}
         />
         <TouchableOpacity
           style={styles.checkEligibilityButton}
