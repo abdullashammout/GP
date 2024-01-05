@@ -342,7 +342,7 @@ export default function PatientPage({ navigation, route }) {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  marginTop: 420,
+                  marginTop: 390,
                   flexDirection: "row",
                 }}
                 onPress={logout}
