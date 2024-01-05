@@ -58,6 +58,17 @@ const TreatmentDetails = ({ route }) => {
       setTreatmentDetailsError("Required");
       return;
     }
+    if (treatmentDetails.length < 6) {
+      setTreatmentDetails("");
+      setTreatmentDetailsError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(treatmentDetails)) {
+      setTreatmentDetails("");
+      setTreatmentDetailsError("Only letters and numbers allowed");
+      return;
+    }
+
     try {
       const newTreatmentDetails = {
         treatmentDetails,
@@ -166,6 +177,7 @@ const TreatmentDetails = ({ route }) => {
                 onChangeText={(text) => setTreatmentDetails(text)}
                 placeholder={treatmentDetailsError ? treatmentDetailsError : ""}
                 placeholderTextColor={treatmentDetailsError ? "red" : "white"}
+                maxLength={50}
               />
             </View>
 

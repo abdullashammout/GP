@@ -58,6 +58,16 @@ const PatientAllergiesPage = ({ navigation, route }) => {
       setAlleryNameError("Please Enter Allergy Name");
       return;
     }
+    if (allergyName.length < 6) {
+      setAllergyName("");
+      setAlleryNameError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(allergyName)) {
+      setAllergyName("");
+      setAlleryNameError("only letters allowed.");
+      return;
+    }
 
     try {
       const newAllergy = { allergyName, formattedDate, medicalUnitName };
@@ -119,6 +129,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
           placeholderTextColor={allergyNameError ? "red" : "gray"}
           value={allergyName.trim()}
           onChangeText={(text) => setAllergyName(text)}
+          maxLength={20}
         />
       </View>
       <TouchableOpacity style={styles.addButton} onPress={addAllergy}>

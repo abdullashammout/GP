@@ -62,6 +62,16 @@ const BloodDonation = ({ navigation, route }) => {
       setDonationTypeError("please enter dontaion type");
       return;
     }
+    if (donationType.length < 6) {
+      setDonationType("");
+      setDonationTypeError("Minimum length 6 letters.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]*$/.test(donationType)) {
+      setDonationType("");
+      setDonationTypeError("Only letters allowed");
+      return;
+    }
     try {
       // const testDate = new Date();
       // testDate.setDate(currentDate.getDate() - 50); // Set date 60 days ago
@@ -162,6 +172,7 @@ const BloodDonation = ({ navigation, route }) => {
           placeholderTextColor={donationTypeError ? "red" : "gray"}
           value={donationType}
           onChangeText={(text) => setDonationType(text)}
+          maxLength={20}
         />
         <TouchableOpacity
           style={styles.checkEligibilityButton}
