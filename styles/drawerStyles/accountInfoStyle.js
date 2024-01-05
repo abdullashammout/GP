@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    paddingLeft: 50,
     paddingVertical: 20,
     width: "80%", // Alternatively, you can use flex: 1 for equal width
   },
