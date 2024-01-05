@@ -33,9 +33,9 @@ const AccountInfoScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <InfoContainer label="Email" value={patientEmail} />
       <InfoContainer label="Name" value={patientName} />
       <InfoContainer label="ID" value={patientId} />
+      <InfoContainer label="Email" value={patientEmail} />
       <InfoContainer label="Blood Type" value={patientBloodType} />
       <InfoContainer label="Gender" value={patientGender} />
       <InfoContainer label="Age" value={patientAge} />
