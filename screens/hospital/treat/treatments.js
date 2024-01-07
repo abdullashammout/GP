@@ -84,8 +84,8 @@ const TreatmentList = ({ navigation, route }) => {
   };
   const handleAddItem = async () => {
     if (treatmentName === "" || doctorName === "") {
-      setDoctorNameError("Please enter doctor name");
-      setTreatNameError("Please enter treatment Name");
+      setDoctorNameError("Required");
+      setTreatNameError("Required");
       return;
     }
     if (doctorName.length < 6) {
@@ -148,14 +148,19 @@ const TreatmentList = ({ navigation, route }) => {
       }}
     >
       <View style={styles.container}>
+        <Text style={{ bottom: 3 }}>Doctor Name: </Text>
         <TextInput
           style={styles.input}
-          placeholder={doctorNameError ? doctorNameError : "Doctor Name"}
+          placeholder={
+            doctorNameError ? doctorNameError : "First Name & Last Name"
+          }
           placeholderTextColor={doctorNameError ? "red" : "gray"}
           value={doctorName}
           onChangeText={(text) => setDoctorName(text)}
           maxLength={22}
         />
+        <Text style={{ bottom: 3 }}>Treatment Name: </Text>
+
         <TextInput
           style={styles.input}
           placeholder={treatNameError ? treatNameError : "Treatment Name"}

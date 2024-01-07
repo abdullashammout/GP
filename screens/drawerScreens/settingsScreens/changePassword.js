@@ -13,7 +13,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ActivityIndicator,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import styles from "../../../styles/drawerStyles/changePasswordStyle";
 
 export default function ChangePassScreen() {
@@ -23,6 +25,9 @@ export default function ChangePassScreen() {
   const [oldError, setOldError] = useState("");
   const [newError, setNewError] = useState("");
   const [confError, setConfError] = useState("");
+  const [oldPasswordSecure, setOldPasswordSecure] = useState(true);
+  const [newPasswordSecure, setNewPasswordSecure] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleChangePassword = async () => {
     if (oldPassword === "" || newPassword === "" || confirmNewPassword === "") {
@@ -43,6 +48,17 @@ export default function ChangePassScreen() {
         setConfError("Password must be at least 6 characters long.");
         return;
       }
+      if (!/^[a-zA-Z0-9!@#$%^&*]+$/.test(newPassword)) {
+        setNewPassword("");
+        setConfirmNewPassword("");
+        setNewError(
+          "Only letters, numbers, and the following special characters are allowed: !@#$%^&*"
+        );
+        setConfError(
+          "Only letters, numbers, and the following special characters are allowed: !@#$%^&*"
+        );
+        return;
+      }
 
       if (!/[A-Z]/.test(newPassword)) {
         setNewPassword("");
@@ -57,6 +73,20 @@ export default function ChangePassScreen() {
         setConfirmNewPassword("");
         setNewError("Password must contain at least one lowercase letter.");
         setConfError("Password must contain at least one lowercase letter.");
+        return;
+      }
+      if (
+        !/^[a-zA-Z0-9!@#$%^&*]+$/.test(newPassword) ||
+        !/[!@#$%^&*]/.test(newPassword)
+      ) {
+        setNewPassword("");
+        setConfirmNewPassword("");
+        setNewError(
+          "Password must contain at least one special character (!@#$%^&*)"
+        );
+        setConfError(
+          "Password must contain at least one special character (!@#$%^&*)"
+        );
         return;
       }
 
@@ -75,6 +105,7 @@ export default function ChangePassScreen() {
       return;
     }
 
+    setLoading(true);
     try {
       const user = auth.currentUser;
       const credential = await EmailAuthProvider.credential(
@@ -92,16 +123,19 @@ export default function ChangePassScreen() {
       setOldPassword("");
       setNewPassword("");
       setConfirmNewPassword("");
+      setLoading(false);
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         setOldPassword("");
         setOldError("Invalid current password");
+        setLoading(false);
       } else if (error.code === "auth/invalid-login-credentials") {
         setOldPassword("");
         setOldError("Invalid current password");
+        setLoading(false);
       } else {
-        console.log(error);
         Alert.alert("Error", "An error occurred. Please try again.");
+        setLoading(false);
       }
     }
   };
@@ -115,25 +149,49 @@ export default function ChangePassScreen() {
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Current Password:</Text>
-          <TextInput
-            returnKeyType="next"
-            autoCapitalize="none"
-            style={styles.input}
-            placeholder={oldError ? oldError : "Enter Old Password"}
-            placeholderTextColor={oldError ? "red" : "gray"}
-            value={oldPassword}
-            onChangeText={(text) => setOldPassword(text)}
-          />
+          <React.Fragment>
+            <TextInput
+              returnKeyType="next"
+              autoCapitalize="none"
+              style={styles.input}
+              placeholder={oldError ? oldError : "Enter Old Password"}
+              placeholderTextColor={oldError ? "red" : "gray"}
+              value={oldPassword}
+              secureTextEntry={oldPasswordSecure}
+              onChangeText={(text) => setOldPassword(text)}
+            />
+            <AntDesign
+              style={{ position: "absolute", right: 15, top: 52 }}
+              name={oldPasswordSecure ? "eye" : "eyeo"}
+              size={24}
+              color="black"
+              onPress={() => {
+                setOldPasswordSecure((prev) => !prev);
+              }}
+            />
+          </React.Fragment>
           <Text style={styles.label}>New Password:</Text>
-          <TextInput
-            returnKeyType="next"
-            autoCapitalize="none"
-            style={styles.input}
-            placeholder={newError ? newError : "Enter New Password"}
-            placeholderTextColor={newError ? "red" : "gray"}
-            value={newPassword}
-            onChangeText={(text) => setNewPassword(text)}
-          />
+          <React.Fragment>
+            <TextInput
+              returnKeyType="next"
+              autoCapitalize="none"
+              style={styles.input}
+              placeholder={newError ? newError : "Enter New Password"}
+              placeholderTextColor={newError ? "red" : "gray"}
+              value={newPassword}
+              secureTextEntry={newPasswordSecure}
+              onChangeText={(text) => setNewPassword(text)}
+            />
+            <AntDesign
+              style={{ position: "absolute", right: 15, top: 150 }}
+              name={newPasswordSecure ? "eye" : "eyeo"}
+              size={24}
+              color="black"
+              onPress={() => {
+                setNewPasswordSecure((prev) => !prev);
+              }}
+            />
+          </React.Fragment>
           <Text style={styles.label}>Confirm New Password:</Text>
           <TextInput
             returnKeyType="next"
@@ -142,13 +200,16 @@ export default function ChangePassScreen() {
             placeholder={confError ? confError : "Confirm New Password"}
             placeholderTextColor={confError ? "red" : "gray"}
             value={confirmNewPassword}
+            secureTextEntry={newPasswordSecure}
             onChangeText={(text) => setConfirmNewPassword(text)}
           />
           <TouchableOpacity
             style={styles.button}
             onPress={handleChangePassword}
           >
-            <Text style={styles.buttonText}>Change Password</Text>
+            <Text style={styles.buttonText}>
+              {loading ? <ActivityIndicator size="small" /> : "Change Password"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

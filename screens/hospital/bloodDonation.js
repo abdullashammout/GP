@@ -59,7 +59,7 @@ const BloodDonation = ({ navigation, route }) => {
   const addBloodDonation = async () => {
     if (donationType === "") {
       setDonationType("");
-      setDonationTypeError("please enter dontaion type");
+      setDonationTypeError("Required");
       return;
     }
     if (donationType.length < 6) {
@@ -164,6 +164,9 @@ const BloodDonation = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View>
+        <Text style={{ bottom: 5, fontWeight: "700" }}>
+          Blood Donation Type:{" "}
+        </Text>
         <TextInput
           style={styles.input}
           placeholder={

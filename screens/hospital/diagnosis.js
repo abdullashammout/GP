@@ -152,15 +152,18 @@ const DiagnosisList = ({ navigation, route }) => {
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
               <Text style={styles.modalHeader}>Add Diagnosis</Text>
-
+              <Text style={{ bottom: 3 }}>Doctor Name: </Text>
               <TextInput
                 style={styles.input}
-                placeholder={doctorNameError ? doctorNameError : "Doctor Name"}
+                placeholder={
+                  doctorNameError ? doctorNameError : "First Name & Last Name"
+                }
                 placeholderTextColor={doctorNameError ? "red" : "gray"}
                 value={doctorName}
                 onChangeText={(text) => setDoctorName(text)}
                 maxLength={20}
               />
+              <Text style={{ bottom: 3 }}>Diagnosis Name: </Text>
               <TextInput
                 style={styles.input}
                 placeholder={diagnosisError ? diagnosisError : "Diagnosis Name"}

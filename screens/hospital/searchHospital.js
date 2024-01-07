@@ -130,7 +130,7 @@ export default function SearchHospital({ navigation, route }) {
       }}
     >
       <View style={styles.container}>
-        <Text style={styles.hospitalName}>{hospitalName}</Text>
+        <Text style={styles.hospitalName}>{hospitalName} Hospital</Text>
         <Text style={{ fontWeight: "normal" }}>
           Enter patient ID to Update his record
         </Text>
