@@ -55,7 +55,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
   const addAllergy = async () => {
     if (allergyName === "") {
       setAllergyName("");
-      setAlleryNameError("Please Enter Allergy Name");
+      setAlleryNameError("Required");
       return;
     }
     if (allergyName.length < 6) {
@@ -120,12 +120,11 @@ const PatientAllergiesPage = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={{ bottom: 5, fontWeight: "700" }}>Allergy Name: </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder={
-            allergyNameError ? allergyNameError : "Enter new allergy"
-          }
+          placeholder={allergyNameError ? allergyNameError : "Allergy Name"}
           placeholderTextColor={allergyNameError ? "red" : "gray"}
           value={allergyName.trim()}
           onChangeText={(text) => setAllergyName(text)}

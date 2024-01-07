@@ -54,7 +54,7 @@ const ChronicIllness = ({ route }) => {
   const addChronic = async () => {
     if (newChronic === "") {
       setNewChronic("");
-      setError("Please enter chronic disease name");
+      setError("Required");
       return;
     }
     if (newChronic.length < 6) {
@@ -126,6 +126,9 @@ const ChronicIllness = ({ route }) => {
   };
   return (
     <View style={styles.container}>
+      <Text style={{ bottom: 5, fontWeight: "700" }}>
+        Chronic Diseases Name:{" "}
+      </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}

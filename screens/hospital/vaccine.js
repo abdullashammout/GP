@@ -55,7 +55,7 @@ const Vaccine = ({ route }) => {
   const addVaccine = async () => {
     if (vaccineName === "") {
       setVaccineName("");
-      setVaccineNameError("Please enter vaccine name");
+      setVaccineNameError("Required");
       return;
     }
     if (vaccineName.length < 6) {
@@ -128,6 +128,7 @@ const Vaccine = ({ route }) => {
       }}
     >
       <View style={styles.container}>
+        <Text style={{ bottom: 5, fontWeight: "700" }}>Vaccine Name: </Text>
         <TextInput
           style={styles.input}
           placeholder={vaccineNameError ? vaccineNameError : "Vaccine Name"}

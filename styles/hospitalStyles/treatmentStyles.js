@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10,
-    marginBottom: 12,
+    marginBottom: 8,
     paddingHorizontal: 8,
   },
   listHeader: {

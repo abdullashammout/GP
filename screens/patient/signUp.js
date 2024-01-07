@@ -84,6 +84,11 @@ const SignUPForm = () => {
       setConfirmPasswordError(null);
       setEmailError(null);
     }
+    if (!/^[0-9]+$/.test(id)) {
+      setId("");
+      setIdError("Only numbers allowed");
+      return;
+    }
     if (!isEmailValid(email)) {
       setEmail("");
       setEmailError(
@@ -93,6 +98,17 @@ const SignUPForm = () => {
     }
 
     if (password === confirmPassword) {
+      if (!/^[a-zA-Z0-9!@#$%^&*]+$/.test(password)) {
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError(
+          "Only letters, numbers, and the following special characters are allowed: !@#$%^&*"
+        );
+        setConfirmPasswordError(
+          "Only letters, numbers, and the following special characters are allowed: !@#$%^&*"
+        );
+        return;
+      }
       if (password.length < 6) {
         setPassword("");
         setConfirmPassword("");
@@ -132,6 +148,20 @@ const SignUPForm = () => {
         setConfirmPasswordError("Password must contain at least one number.");
         return;
       }
+      if (
+        !/^[a-zA-Z0-9!@#$%^&*]+$/.test(password) ||
+        !/[!@#$%^&*]/.test(password)
+      ) {
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError(
+          "Password must contain at least one special character (!@#$%^&*)"
+        );
+        setConfirmPasswordError(
+          "Password must contain at least one special character (!@#$%^&*)"
+        );
+        return;
+      }
       setIsPasswordMatching(null);
       try {
         setIsLoading(true);
@@ -169,7 +199,9 @@ const SignUPForm = () => {
               if (error.message === "Firebase: Error (auth/invalid-email).") {
                 setIsLoading(false);
                 setEmail("");
-                setEmailError("invalid email");
+                setEmailError(
+                  "Please enter a valid email address in the format user@example.com."
+                );
               }
               if (
                 error.message === "Firebase: Error (auth/email-already-in-use)."

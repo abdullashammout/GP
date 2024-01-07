@@ -100,14 +100,14 @@ const PresList = ({ route }) => {
       setDiagnosisError("only letters allowed.");
       return;
     }
-    if (!/^[a-zA-Z0-9]+$/.test(dosage)) {
-      setDosage("");
-      setDosageError("Only letters and numbers allowed");
-      return;
-    }
     if (!/^[a-zA-Z0-9]+$/.test(medication)) {
       setMedication("");
       setMedicationError("Only letters and numbers allowed");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(dosage)) {
+      setDosage("");
+      setDosageError("Only letters and numbers allowed");
       return;
     }
 
