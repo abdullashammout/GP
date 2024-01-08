@@ -103,7 +103,7 @@ const TreatmentList = ({ navigation, route }) => {
       setDoctorNameError("only letters allowed.");
       return;
     }
-    if (!/^[a-zA-Z0-9]+$/.test(treatmentName)) {
+    if (!/^[a-zA-Z0-9 ]+$/.test(treatmentName)) {
       setTreatmentName("");
       setTreatNameError("Only letters and numbers allowed");
       return;
@@ -131,6 +131,11 @@ const TreatmentList = ({ navigation, route }) => {
 
       set(newTreatmentRef, newItemData);
       setTreatments((prevData) => [...prevData, newItemData]);
+      navigation.navigate("TreatmentDetails", {
+        itemId: newItemId,
+        currentMedicalUnit: medicalUnitName,
+        patientId: patientId,
+      });
 
       setTreatmentName("");
       setDoctorName("");
@@ -148,7 +153,7 @@ const TreatmentList = ({ navigation, route }) => {
       }}
     >
       <View style={styles.container}>
-        <Text style={{ bottom: 3 }}>Doctor Name: </Text>
+        <Text style={{ bottom: 3, fontWeight: "700" }}>Doctor Name: </Text>
         <TextInput
           style={styles.input}
           placeholder={
@@ -159,7 +164,7 @@ const TreatmentList = ({ navigation, route }) => {
           onChangeText={(text) => setDoctorName(text)}
           maxLength={22}
         />
-        <Text style={{ bottom: 3 }}>Treatment Name: </Text>
+        <Text style={{ bottom: 3, fontWeight: "700" }}>Treatment Name: </Text>
 
         <TextInput
           style={styles.input}

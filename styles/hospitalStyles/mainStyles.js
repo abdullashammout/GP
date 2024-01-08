@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 20,
     height: 130,
+    maxWidth: "46%", // Maximum width for each item (2 items in a row)
   },
   title: {
     fontSize: 12,
@@ -48,6 +49,10 @@ const styles = StyleSheet.create({
   },
   info: {
     color: "#555",
+  },
+  lastItem: {
+    marginRight: "auto", // Set the right margin to auto for centering
+    marginLeft: "auto", // Set the left margin to auto for centering
   },
 });
 export default styles;

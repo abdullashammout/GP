@@ -63,7 +63,7 @@ const Vaccine = ({ route }) => {
       setVaccineNameError("Minimum length 6 letters.");
       return;
     }
-    if (!/^[a-zA-Z\s]*$/.test(vaccineName)) {
+    if (!/^[a-zA-Z!()\s]*$/.test(vaccineName)) {
       setVaccineName("");
       setVaccineNameError("only letters allowed.");
       return;

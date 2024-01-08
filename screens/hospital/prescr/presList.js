@@ -15,13 +15,12 @@ import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
 
 const PresList = ({ route }) => {
-  const { itemId, patientId, currentMedicalUnit } = route.params;
+  const { itemId, patientId, currentMedicalUnit, CreatedBy, Diagnosis } =
+    route.params;
   const [medicalUnitName, setMedicalUnitName] = useState("");
   const [medications, setMedications] = useState([]);
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState(``);
-  const [diagnosis, setDiagnosis] = useState(``);
-  const [diagnosisError, setDiagnosisError] = useState(null);
   const [medicationError, setMedicationError] = useState(null);
   const [dosageError, setDosageError] = useState(null);
 
@@ -53,26 +52,12 @@ const PresList = ({ route }) => {
   getMedicalUnitName();
 
   const handleAddMedication = async () => {
-    if (medication === "" || dosage === "" || diagnosis === "") {
+    if (medication === "" || dosage === "") {
       setMedicationError("Required");
       setDosageError("Required");
-      setDiagnosisError("Required");
       return;
     }
-    if (diagnosis.length < 6 && medication.length < 6) {
-      setDiagnosis("");
-      setMedication("");
-      setDiagnosisError("Minimum length 6 letters.");
-      setMedicationError("Minimum length 6 letters.");
-      return;
-    }
-    if (diagnosis.length < 6 && dosage.length < 6) {
-      setDiagnosis("");
-      setDosage("");
-      setDiagnosisError("Minimum length 6 letters.");
-      setDosageError("Minimum length 6 letters.");
-      return;
-    }
+
     if (medication.length < 6 && dosage.length < 6) {
       setMedication("");
       setDosage("");
@@ -80,11 +65,7 @@ const PresList = ({ route }) => {
       setDosageError("Minimum length 6 letters.");
       return;
     }
-    if (diagnosis.length < 6) {
-      setDiagnosis("");
-      setDiagnosisError("Minimum length 6 letters.");
-      return;
-    }
+
     if (medication.length < 6) {
       setMedication("");
       setMedicationError("Minimum length 6 letters.");
@@ -95,25 +76,21 @@ const PresList = ({ route }) => {
       setDosageError("Minimum length 6 letters.");
       return;
     }
-    if (!/^[a-zA-Z\s]*$/.test(diagnosis)) {
-      setDiagnosis("");
-      setDiagnosisError("only letters allowed.");
-      return;
-    }
-    if (!/^[a-zA-Z0-9]+$/.test(medication)) {
+
+    if (!/^[a-zA-Z0-9 ]+$/.test(medication)) {
       setMedication("");
       setMedicationError("Only letters and numbers allowed");
       return;
     }
-    if (!/^[a-zA-Z0-9]+$/.test(dosage)) {
+    if (!/^[a-zA-Z0-9/ ]+$/.test(dosage)) {
       setDosage("");
       setDosageError("Only letters and numbers allowed");
       return;
     }
 
     try {
-      if (medication && dosage && diagnosis) {
-        const newMedication = { medication, dosage, diagnosis };
+      if (medication && dosage) {
+        const newMedication = { medication, dosage };
         const prescriptionRef = ref(
           db,
           `users/patients/${patientId}/prescription/${itemId}/medications`
@@ -128,8 +105,6 @@ const PresList = ({ route }) => {
 
         setMedication("");
         setDosage(``);
-        setDiagnosis(``);
-        setDiagnosisError(null);
         setDosageError(null);
         setMedicationError(null);
       }
@@ -171,20 +146,6 @@ const PresList = ({ route }) => {
     <View style={styles.medicationItem}>
       <View style={styles.row}>
         <Text style={styles.label}>
-          Diagnosis:{" "}
-          <Text
-            style={{
-              ...styles.value,
-              ...styles.medication,
-              fontWeight: "normal",
-            }}
-          >
-            {item.diagnosis}
-          </Text>
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>
           Medication:{" "}
           <Text style={{ ...styles.value, fontWeight: "normal" }}>
             {item.medication}
@@ -223,31 +184,58 @@ const PresList = ({ route }) => {
             : { ...styles.container, backgroundColor: "white" }
         }
       >
+        <View
+          style={{
+            marginBottom: 25,
+            alignItems: "flex-start",
+            borderRadius: 10,
+            backgroundColor: "#fff",
+            elevation: 3,
+            margin: 10,
+            marginVertical: 2,
+            padding: 15,
+          }}
+        >
+          <Text
+            style={{ fontWeight: "700", fontSize: 15, textAlign: "center" }}
+          >
+            Doctor Name:{" "}
+            <Text style={{ fontWeight: "400", fontStyle: "italic" }}>
+              {CreatedBy}
+            </Text>
+          </Text>
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 15,
+              paddingTop: 5,
+              textAlign: "center",
+            }}
+          >
+            Diagnosis:{" "}
+            <Text
+              style={{
+                fontWeight: "400",
+                fontStyle: "italic",
+              }}
+            >
+              {Diagnosis}
+            </Text>
+          </Text>
+        </View>
+
         {medicalUnitName != currentMedicalUnit && (
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>Medications:</Text>
         )}
         {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
           <>
             <View style={styles.formContainer}>
-              <Text style={styles.label}>Diagnosis:</Text>
-              <TextInput
-                style={styles.input}
-                value={diagnosis}
-                multiline
-                maxLength={16}
-                numberOfLines={2}
-                onChangeText={(text) => setDiagnosis(text)}
-                placeholder={diagnosisError ? diagnosisError : ""}
-                placeholderTextColor={diagnosisError ? "red" : "white"}
-              />
-            </View>
-            <View style={styles.formContainer}>
               <Text style={styles.label}>Medication:</Text>
               <TextInput
                 style={styles.input}
                 value={medication}
                 multiline
-                maxLength={16}
+                maxLength={22}
                 onChangeText={(text) => setMedication(text)}
                 placeholder={medicationError ? medicationError : ""}
                 placeholderTextColor={medicationError ? "red" : "white"}
@@ -258,7 +246,7 @@ const PresList = ({ route }) => {
               <TextInput
                 style={styles.input}
                 value={dosage}
-                maxLength={20}
+                maxLength={25}
                 onChangeText={(text) => setDosage(text)}
                 placeholder={dosageError ? dosageError : ""}
                 placeholderTextColor={dosageError ? "red" : "white"}

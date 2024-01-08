@@ -39,20 +39,6 @@ const PrescriptionDetails = ({ route }) => {
     <View style={styles.medicationItem}>
       <View style={styles.row}>
         <Text style={styles.label}>
-          Diagnosis:{" "}
-          <Text
-            style={{
-              ...styles.value,
-              fontWeight: "normal",
-              ...styles.medication,
-            }}
-          >
-            {item.diagnosis}
-          </Text>
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>
           Medication:{" "}
           <Text
             style={{
