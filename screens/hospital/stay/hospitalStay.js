@@ -122,6 +122,11 @@ export default function HospitalStay({ navigation, route }) {
 
       set(newHospitalStayRef, newItemData);
       setData((prevData) => [...prevData, newItemData]);
+      navigation.navigate("StayList", {
+        itemId: newItemId,
+        patientId: patientId,
+        currentMedicalUnit: medicalUnitName,
+      });
 
       setDoctorNameError(null);
       setDoctorName("");

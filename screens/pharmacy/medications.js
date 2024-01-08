@@ -10,8 +10,7 @@ import {
 } from "react-native";
 import { ref, get, update } from "firebase/database";
 import { db } from "../../firebase";
-import styles from "../../styles/patientStyles/presDetailsStyle";
-
+import styles from "../../styles/pharmacyStyle/medicationsStyle";
 const Medications = ({ route }) => {
   const { itemId, patientId } = route.params;
   const [medications, setMedications] = useState([]);
@@ -75,20 +74,6 @@ const Medications = ({ route }) => {
     <View
       style={[styles.medicationItem, item.isSold && styles.soldItemContainer]}
     >
-      <View style={styles.row}>
-        <Text style={styles.label}>
-          Diagnosis:{" "}
-          <Text
-            style={{
-              ...styles.value,
-              fontWeight: "normal",
-              ...styles.medication,
-            }}
-          >
-            {item.diagnosis}
-          </Text>
-        </Text>
-      </View>
       <View style={styles.row}>
         <Text style={styles.label}>
           Medication:{" "}

@@ -14,11 +14,14 @@ import styles from "../../../styles/hospitalStyles/presStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { set, ref, get, push } from "firebase/database";
 import { db } from "../../../firebase";
+import PresList from "./presList";
 
 const Prescription = ({ navigation, route }) => {
   const { patientId } = route.params;
   const [userName, setUserName] = useState("");
   const [medicalUnitName, setMedicalUnitName] = useState("");
+  const [diagnosis, setDiagnosis] = useState(``);
+  const [diagnosisError, setDiagnosisError] = useState(null);
   const [userNameError, setUserNameError] = useState(null);
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -84,20 +87,29 @@ const Prescription = ({ navigation, route }) => {
   };
 
   const handleAddItem = async () => {
-    if (userName === "") {
+    if (userName === "" || diagnosis === "") {
       setUserNameError(" Required  ");
+      setDiagnosisError("Required");
       return;
     }
     if (userName.length < 6) {
       setUserName("");
       setUserNameError("Minimum length 6 letters.");
       return;
-    } else {
-      setUserNameError(null);
+    }
+    if (diagnosis.length < 6) {
+      setDiagnosis("");
+      setDiagnosisError("Minimum length 6 letters.");
+      return;
     }
     if (!/^[a-zA-Z\s]*$/.test(userName)) {
       setUserName("");
       setUserNameError("only letters allowed.");
+      return;
+    }
+    if (!/^[a-zA-Z 0-9]+$/.test(diagnosis)) {
+      setDiagnosis("");
+      setDiagnosisError("only letters and numbers allowed.");
       return;
     }
     try {
@@ -108,10 +120,11 @@ const Prescription = ({ navigation, route }) => {
       const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
 
       const newItemData = {
-        createdBy: userName,
         medicalUnitName: medicalUnitName,
         date: formattedDate,
         time: formattedTime,
+        createdBy: userName,
+        diagnosis: diagnosis,
       };
 
       const presDataRef = ref(db, `users/patients/${patientId}/prescription`);
@@ -123,10 +136,19 @@ const Prescription = ({ navigation, route }) => {
 
       set(newPrescriptionRef, newItemData);
       setData((prevData) => [...prevData, newItemData]);
+      navigation.navigate("presList", {
+        itemId: newItemId,
+        CreatedBy: userName,
+        Diagnosis: diagnosis,
+        currentMedicalUnit: medicalUnitName,
+        patientId: patientId,
+      });
 
+      setDiagnosis(``);
       setUserName("");
       setMedicalUnitName("");
-      setUserNameError("");
+      setUserNameError(null);
+      setDiagnosisError(null);
 
       setModalVisible(false);
     } catch (error) {
@@ -139,9 +161,9 @@ const Prescription = ({ navigation, route }) => {
       style={styles.itemContainer}
       onPress={() =>
         navigation.navigate("presList", {
-          idd: index + 1,
           itemId: item.id,
-          itemName: item.createdBy,
+          CreatedBy: item.createdBy,
+          Diagnosis: item.diagnosis,
           currentMedicalUnit: item.medicalUnitName,
           patientId: patientId,
         })
@@ -150,7 +172,6 @@ const Prescription = ({ navigation, route }) => {
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>Prescription {index + 1}</Text>
         <Text style={styles.dateText}>Hospital: {item.medicalUnitName}</Text>
-        <Text style={styles.dateText}>Doctor name: {item.createdBy}</Text>
         <Text style={styles.dateText}>Date: {item.date}</Text>
         <Text style={styles.dateText}>Time: {item.time}</Text>
         {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
@@ -208,7 +229,22 @@ const Prescription = ({ navigation, route }) => {
                 placeholderTextColor={userNameError ? "red" : "gray"}
                 value={userName}
                 onChangeText={(text) => setUserName(text)}
-                maxLength={22}
+                maxLength={25}
+              />
+              <Text>Diagnosis:</Text>
+              <TextInput
+                style={styles.input}
+                value={diagnosis}
+                multiline
+                maxLength={80}
+                numberOfLines={3}
+                onChangeText={(text) => setDiagnosis(text)}
+                placeholder={
+                  diagnosisError
+                    ? diagnosisError
+                    : "             Diagnosis           "
+                }
+                placeholderTextColor={diagnosisError ? "red" : "gray"}
               />
               <View>
                 <View style={{ flexDirection: "row" }}>
@@ -231,6 +267,8 @@ const Prescription = ({ navigation, route }) => {
                     onPress={() => {
                       setModalVisible(false);
                       setUserName("");
+                      setDiagnosis("");
+                      setDiagnosisError(null);
                       setUserNameError(null);
                     }}
                   >

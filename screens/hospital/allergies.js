@@ -58,9 +58,9 @@ const PatientAllergiesPage = ({ navigation, route }) => {
       setAlleryNameError("Required");
       return;
     }
-    if (allergyName.length < 6) {
+    if (allergyName.length < 3) {
       setAllergyName("");
-      setAlleryNameError("Minimum length 6 letters.");
+      setAlleryNameError("Minimum length 3 letters.");
       return;
     }
     if (!/^[a-zA-Z\s]*$/.test(allergyName)) {
@@ -126,7 +126,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
           style={styles.input}
           placeholder={allergyNameError ? allergyNameError : "Allergy Name"}
           placeholderTextColor={allergyNameError ? "red" : "gray"}
-          value={allergyName.trim()}
+          value={allergyName}
           onChangeText={(text) => setAllergyName(text)}
           maxLength={20}
         />

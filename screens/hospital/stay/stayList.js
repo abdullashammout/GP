@@ -62,7 +62,7 @@ const StayList = ({ route }) => {
       setEntryError("Minimum length 6 letters.");
       return;
     }
-    if (!/^[a-zA-Z0-9]+$/.test(entryDetails)) {
+    if (!/^[a-zA-Z0-9 ]+$/.test(entryDetails)) {
       setEntryDetails("");
       setEntryError("Only letters and numbers allowed");
       return;
@@ -172,7 +172,7 @@ const StayList = ({ route }) => {
                 onChangeText={(text) => setEntryDetails(text)}
                 placeholder={entryError ? entryError : ""}
                 placeholderTextColor={entryError ? "red" : "white"}
-                maxLength={50}
+                maxLength={100}
               />
             </View>
 

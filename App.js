@@ -36,8 +36,6 @@ import PatientAllergies from "./screens/patient/patientAllergies";
 import PrescriptionDetails from "./screens/patient/prescriptions/prescriptionDetails";
 import PatientTreatments from "./screens/patient/Treatments/pTreatments";
 import PatientTreatDetails from "./screens/patient/Treatments/treatmentDetails";
-import DiagnosisList from "./screens/hospital/diagnosis";
-import PatientDiagnosis from "./screens/patient/patientDiagnosis";
 import PatientStay from "./screens/patient/HospitalStay/hospitalStay";
 import ChronicIllness from "./screens/hospital/chronicIllness";
 import PatientChronic from "./screens/patient/patientChronic";
@@ -77,6 +75,10 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const navigationRef = useRef(null);
 
+  // useEffect hook to check if the user is already logged in.
+  // fetch the current user from Firebase authentication,
+  // updates the state to reflect the user's login status, and
+  // navigates to the appropriate screen based on the user's role.
   useEffect(() => {
     const checkUserLoggedIn = async () => {
       const user = auth.currentUser;
@@ -351,16 +353,7 @@ export default function App() {
             title: "Prescriptions",
           }}
         />
-        <Stack.Screen
-          name="diagnosis"
-          component={DiagnosisList}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-            title: "Patient Diagnosis",
-          }}
-        />
+
         <Stack.Screen
           name="treatments"
           component={Treatments}
@@ -591,16 +584,7 @@ export default function App() {
             title: "Treatment Details",
           }}
         />
-        <Stack.Screen
-          name="pDiagnosis"
-          component={PatientDiagnosis}
-          options={{
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            statusBarStyle: "dark",
-            title: "Diagnosis History",
-          }}
-        />
+
         <Stack.Screen
           name="pStay"
           component={PatientStay}

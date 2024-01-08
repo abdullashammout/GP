@@ -6,11 +6,14 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import styles from "../../styles/hospitalStyles/bloodDonationStyles";
 import { ref, set, get, push } from "firebase/database";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Picker } from "@react-native-picker/picker";
 
 const BloodDonation = ({ navigation, route }) => {
   const { patientId } = route.params;
@@ -59,19 +62,10 @@ const BloodDonation = ({ navigation, route }) => {
   const addBloodDonation = async () => {
     if (donationType === "") {
       setDonationType("");
-      setDonationTypeError("Required");
+      setDonationTypeError("Please select donation type");
       return;
     }
-    if (donationType.length < 6) {
-      setDonationType("");
-      setDonationTypeError("Minimum length 6 letters.");
-      return;
-    }
-    if (!/^[a-zA-Z\s]*$/.test(donationType)) {
-      setDonationType("");
-      setDonationTypeError("Only letters allowed");
-      return;
-    }
+
     try {
       // const testDate = new Date();
       // testDate.setDate(currentDate.getDate() - 50); // Set date 60 days ago
@@ -162,98 +156,124 @@ const BloodDonation = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={{ bottom: 5, fontWeight: "700" }}>
-          Blood Donation Type:{" "}
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder={
-            donationTypeError ? donationTypeError : "Enter Dontaion Type"
-          }
-          placeholderTextColor={donationTypeError ? "red" : "gray"}
-          value={donationType}
-          onChangeText={(text) => setDonationType(text)}
-          maxLength={20}
-        />
-        <TouchableOpacity
-          style={styles.checkEligibilityButton}
-          onPress={addBloodDonation}
-        >
-          <Text style={styles.checkEligibilityButtonText}>Add Donation</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ marginTop: 15 }}>
-        {eligible !== null && (
-          <Text
-            style={{
-              padding: 10,
-              textAlign: "center",
-              backgroundColor: eligible ? "#4CAF50" : "#f44336",
-              color: "#fff",
-              borderRadius: 8,
-              marginBottom: 10,
-            }}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <View>
+          <Text style={{ bottom: 5, fontWeight: "700" }}>
+            Blood Donation Type:{" "}
+          </Text>
+          <Picker
+            style={styles.input}
+            selectedValue={donationType}
+            onValueChange={(itemValue) => setDonationType(itemValue)}
           >
-            {eligible
-              ? "The Patient is eligible to donate blood."
-              : "The Patient is not eligible to donate blood yet."}
-          </Text>
-        )}
-        <TouchableOpacity
-          style={styles.checkEligibilityButton}
-          onPress={checkEligibility}
-        >
-          <Text style={styles.checkEligibilityButtonText}>
-            Check Eligibility
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.historyHeader}>Blood Donation History</Text>
-      {donationData.length === 0 ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>No Donations recorded for this patient.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={donationData}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.bloodDonationItem}>
-              <Text style={{ fontWeight: "bold" }}>
-                Dontaion Type:{" "}
-                <Text style={{ fontWeight: "normal" }}>
-                  {item.donationType}
-                </Text>
-              </Text>
-              <Text style={{ fontWeight: "bold" }}>
-                Location:{" "}
-                <Text style={{ fontWeight: "normal" }}>
-                  {item.medicalUnitName}
-                </Text>
-              </Text>
-              <Text style={{ fontWeight: "bold" }}>
-                Date:{" "}
-                <Text style={{ fontWeight: "normal" }}>
-                  {item.formattedDate}
-                </Text>
-              </Text>
-              {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => deleteDonation(item.id)}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
-              )}
-            </View>
+            <Picker.Item label="Select Donation Type" value="" />
+            <Picker.Item label="Whole Blood" value="Whole Blood" />
+            <Picker.Item label="Platelets" value="Platelets" />
+            <Picker.Item label="Red Blood Cells" value="Red Blood Cells" />
+            <Picker.Item label="Plasma" value="Plasma" />
+          </Picker>
+
+          {donationTypeError && (
+            <Text
+              style={{ color: "red", marginVertical: 7, textAlign: "center" }}
+            >
+              {donationTypeError}
+            </Text>
           )}
-        />
-      )}
-    </View>
+
+          {/* <TextInput
+            style={styles.input}
+            placeholder={
+              donationTypeError ? donationTypeError : "Enter Dontaion Type"
+            }
+            placeholderTextColor={donationTypeError ? "red" : "gray"}
+            value={donationType}
+            onChangeText={(text) => setDonationType(text)}
+            maxLength={20}
+          /> */}
+          <TouchableOpacity
+            style={{ ...styles.checkEligibilityButton, marginTop: 5 }}
+            onPress={addBloodDonation}
+          >
+            <Text style={styles.checkEligibilityButtonText}>Add Donation</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginTop: 15 }}>
+          {eligible !== null && (
+            <Text
+              style={{
+                padding: 10,
+                textAlign: "center",
+                backgroundColor: eligible ? "#4CAF50" : "#f44336",
+                color: "#fff",
+                borderRadius: 8,
+                marginTop: 10,
+              }}
+            >
+              {eligible
+                ? "The Patient is eligible to donate blood."
+                : "The Patient is not eligible to donate blood yet."}
+            </Text>
+          )}
+          <TouchableOpacity
+            style={{ ...styles.checkEligibilityButton, marginTop: 10 }}
+            onPress={checkEligibility}
+          >
+            <Text style={styles.checkEligibilityButtonText}>
+              Check Eligibility
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.historyHeader}>Blood Donation History</Text>
+        {donationData.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No Donations recorded for this patient.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={donationData}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.bloodDonationItem}>
+                <Text style={{ fontWeight: "bold" }}>
+                  Dontaion Type:{" "}
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.donationType}
+                  </Text>
+                </Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  Location:{" "}
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.medicalUnitName}
+                  </Text>
+                </Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  Date:{" "}
+                  <Text style={{ fontWeight: "normal" }}>
+                    {item.formattedDate}
+                  </Text>
+                </Text>
+                {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => deleteDonation(item.id)}
+                  >
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

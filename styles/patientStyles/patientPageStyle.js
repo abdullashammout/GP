@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     width: 10,
     borderWidth: 1,
     borderColor: "#ddd",
+    maxWidth: "45%",
   },
   title: {
     fontSize: 14,
@@ -77,6 +78,10 @@ const styles = StyleSheet.create({
   },
   container: {
     top: 110,
+  },
+  lastItem: {
+    marginRight: "auto", // Set the right margin to auto for centering
+    marginLeft: "auto", // Set the left margin to auto for centering
   },
 });
 export default styles;

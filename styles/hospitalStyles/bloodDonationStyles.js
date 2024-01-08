@@ -12,11 +12,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    borderRadius: 10,
+    borderRadius: 30,
     height: 40,
-    borderColor: "gray",
+    backgroundColor: "#f2f2f2",
+    borderColor: "blue",
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 6,
     paddingHorizontal: 8,
   },
   historyHeader: {

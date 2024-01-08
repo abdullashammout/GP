@@ -139,17 +139,13 @@ export default function PatientPage({ navigation, route }) {
       title: "Prescriptions",
       image: require("../../pics/pres.png"),
     },
-    {
-      index: "2",
-      title: "Diagnosis",
-      image: require("../../pics/diagnosis.png"),
-    },
+
     { index: "3", title: "Treatments", image: require("../../pics/treat.png") },
     { index: "4", title: "Vaccines", image: require("../../pics/vaccine.png") },
     {
       index: "5",
-      title: "Hospital Entries",
-      image: require("../../pics/stay.png"),
+      title: "Allergies",
+      image: require("../../pics/allergy.png"),
     },
     {
       index: "6",
@@ -163,17 +159,15 @@ export default function PatientPage({ navigation, route }) {
     },
     {
       index: "8",
-      title: "Allergies",
-      image: require("../../pics/allergy.png"),
+      title: "Hospital Entries",
+      image: require("../../pics/stay.png"),
     },
   ];
   const toPresc = (index) => {
     if (index === "1") {
       navigation.navigate("patientPres", { userId });
     }
-    if (index === "2") {
-      navigation.navigate("pDiagnosis", { userId });
-    }
+
     if (index === "3") {
       navigation.navigate("pTreat", { userId });
     }
@@ -181,7 +175,7 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientVaccines", { userId });
     }
     if (index === "5") {
-      navigation.navigate("pStay", { userId });
+      navigation.navigate("patientAllergies", { userId });
     }
     if (index === "6") {
       navigation.navigate("pChronic", { userId });
@@ -190,15 +184,23 @@ export default function PatientPage({ navigation, route }) {
       navigation.navigate("patientBloodDonations", { userId });
     }
     if (index === "8") {
-      navigation.navigate("patientAllergies", { userId });
+      navigation.navigate("pStay", { userId });
     }
   };
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={() => toPresc(item.index)}>
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.title}>{item.title}</Text>
-    </TouchableOpacity>
-  );
+
+  const renderItem = ({ item, index }) => {
+    const isLastItem = index === data.length - 1; // Check if the item is the last one
+
+    // Apply different styles for the last item to center it
+    const itemStyle = isLastItem ? [styles.item, styles.lastItem] : styles.item;
+
+    return (
+      <TouchableOpacity style={itemStyle} onPress={() => toPresc(item.index)}>
+        <Image source={item.image} style={styles.image} />
+        <Text style={styles.title}>{item.title}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View

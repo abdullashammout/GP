@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../../../firebase";
 
 const TreatmentDetails = ({ route }) => {
-  const { name, itemId, patientId, currentMedicalUnit } = route.params;
+  const { itemId, patientId, currentMedicalUnit } = route.params;
   const [details, setDetails] = useState([]);
   const [treatmentDetails, setTreatmentDetails] = useState(``);
   const [treatmentDetailsError, setTreatmentDetailsError] = useState(null);
@@ -63,7 +63,7 @@ const TreatmentDetails = ({ route }) => {
       setTreatmentDetailsError("Minimum length 6 letters.");
       return;
     }
-    if (!/^[a-zA-Z0-9]+$/.test(treatmentDetails)) {
+    if (!/^[a-zA-Z0-9 ]+$/.test(treatmentDetails)) {
       setTreatmentDetails("");
       setTreatmentDetailsError("Only letters and numbers allowed");
       return;
@@ -169,15 +169,17 @@ const TreatmentDetails = ({ route }) => {
         {medicalUnitName === currentMedicalUnit && ( // Check if logged-in medical unit matches the prescription's medical unit
           <>
             <View style={styles.formContainer}>
-              <Text style={styles.label}>Details:</Text>
+              <Text style={styles.label}>Add Details:</Text>
               <TextInput
                 style={styles.input}
                 value={treatmentDetails}
                 multiline
                 onChangeText={(text) => setTreatmentDetails(text)}
-                placeholder={treatmentDetailsError ? treatmentDetailsError : ""}
-                placeholderTextColor={treatmentDetailsError ? "red" : "white"}
-                maxLength={50}
+                placeholder={
+                  treatmentDetailsError ? treatmentDetailsError : "Details"
+                }
+                placeholderTextColor={treatmentDetailsError ? "red" : "gray"}
+                maxLength={150}
               />
             </View>
 
