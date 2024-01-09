@@ -50,6 +50,7 @@ const ResetPasswordScreen = () => {
     return emailPattern.test(email);
   };
 
+  // reset password function
   const handleResetPassword = async () => {
     if (email === "") {
       setEmail("");

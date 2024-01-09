@@ -75,11 +75,11 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const navigationRef = useRef(null);
 
-  // useEffect hook to check if the user is already logged in.
   // fetch the current user from Firebase authentication,
   // updates the state to reflect the user's login status, and
-  // navigates to the appropriate screen based on the user's role.
   useEffect(() => {
+    // useEffect hook to check if the user is already logged in.
+    // navigates to the appropriate screen based on the user's role.
     const checkUserLoggedIn = async () => {
       const user = auth.currentUser;
       setUserLoggedIn(!!user);

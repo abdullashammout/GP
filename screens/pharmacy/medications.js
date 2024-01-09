@@ -37,13 +37,13 @@ const Medications = ({ route }) => {
   }, [itemId, patientId]);
 
   const handleSellMedication = async (medicationId) => {
-    Alert.alert("Sell Confirmation", "Are you sure you sold the medication", [
+    Alert.alert("Sell Confirmation", "Are you sure you sold this medication", [
       {
-        text: "Cancel",
+        text: "No",
         style: "cancel",
       },
       {
-        text: "OK",
+        text: "Yes",
         onPress: async () => {
           try {
             // Update the local state to mark the medication as sold

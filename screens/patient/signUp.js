@@ -65,7 +65,7 @@ const SignUPForm = () => {
 
     return true;
   };
-
+  //sign up validations
   const handleSignUp = async () => {
     if (
       id === "" ||
@@ -78,11 +78,6 @@ const SignUPForm = () => {
       setConfirmPasswordError("This Field Is Required");
       setEmailError("This Field Is Required");
       return;
-    } else {
-      setIdError(null);
-      setPasswordError(null);
-      setConfirmPasswordError(null);
-      setEmailError(null);
     }
     if (!/^[0-9]+$/.test(id)) {
       setId("");
@@ -163,6 +158,7 @@ const SignUPForm = () => {
         return;
       }
       setIsPasswordMatching(null);
+      //sign up function
       try {
         setIsLoading(true);
         const idRef = ref(db, "users/" + "patients/" + id);

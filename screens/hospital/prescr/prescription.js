@@ -56,6 +56,7 @@ const Prescription = ({ navigation, route }) => {
   };
   getMedicalUnitName();
 
+  // delete item to the patient record
   const handleDeleteItem = async (id) => {
     Alert.alert(
       "Confirm Deletion",
@@ -85,7 +86,7 @@ const Prescription = ({ navigation, route }) => {
       ]
     );
   };
-
+  // add item to the patient record
   const handleAddItem = async () => {
     if (userName === "" || diagnosis === "") {
       setUserNameError(" Required  ");
