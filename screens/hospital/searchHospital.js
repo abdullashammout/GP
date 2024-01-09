@@ -56,7 +56,7 @@ export default function SearchHospital({ navigation, route }) {
       },
     ]);
   };
-
+  // navigate to the user medical record based on the entered id
   const handleSearch = async () => {
     setLoading(true);
     if (id === "") {

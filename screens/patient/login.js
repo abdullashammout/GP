@@ -29,14 +29,13 @@ const LoginForm = ({ navigation }) => {
     navigation.navigate("SignUp");
   };
 
+  //sign in function that fetch user id and navigate based on his role
+  //get the email for the entered id and sign in
   const signIn = async () => {
     if (id === null || password === "") {
       setIdError("This Field Is Required");
       setPasswordError("This Field Is Required");
       return;
-    } else {
-      setIdError(null);
-      setPasswordError(null);
     }
     setIsLoading(true);
 
@@ -80,6 +79,21 @@ const LoginForm = ({ navigation }) => {
                 }
               } catch (error) {
                 console.error("Error fetching hospital data:", error);
+              }
+            }
+            if (role === "medical_units/pharmacy") {
+              try {
+                const userRef = ref(db, `users/medical_units/pharmacy/${id}`);
+                const snapshot = await get(userRef);
+
+                if (snapshot.exists()) {
+                  const { name } = snapshot.val();
+                  await AsyncStorage.setItem("PharmacyName", name);
+                } else {
+                  console.log("PharmacyName not found");
+                }
+              } catch (error) {
+                console.error("Error fetching PharmacyName:", error);
               }
             }
             setId(null);

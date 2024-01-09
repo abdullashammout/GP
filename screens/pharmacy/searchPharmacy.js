@@ -22,28 +22,11 @@ export default function SearchPh({ route, navigation }) {
   const [loading, setLoading] = useState(false); // Add loading state
 
   useEffect(() => {
-    const fetchPharmacyName = async () => {
-      try {
-        const userRef = ref(db, `users/medical_units/pharmacy/${userId}`);
-        const snapshot = await get(userRef);
-
-        if (snapshot.exists()) {
-          const { name } = snapshot.val();
-          await AsyncStorage.setItem("PharmacyName", name);
-        } else {
-          console.log("Pharmacy not found");
-        }
-      } catch (error) {
-        console.error("Error fetching Pharmacy data:", error);
-      } finally {
-      }
-    };
     const getPharmacyName = async () => {
       const hosName = await AsyncStorage.getItem("PharmacyName");
       setPahrmacyName(hosName);
     };
 
-    fetchPharmacyName();
     getPharmacyName();
   }, [userId]);
 
@@ -148,7 +131,7 @@ export default function SearchPh({ route, navigation }) {
       }}
     >
       <View style={styles.container}>
-        <Text style={styles.hospitalName}>{pahrmacyName}</Text>
+        <Text style={styles.hospitalName}>{pahrmacyName} pharmacy</Text>
         <Text style={{ fontWeight: "normal" }}>
           Enter patient ID to view his prescription record
         </Text>
