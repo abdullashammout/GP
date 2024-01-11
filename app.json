@@ -4,10 +4,10 @@
     "slug": "E_HEALTH",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/LOGO.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/LOGO.jpeg",
+      "image": "./assets/LOGOO.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/LOGOO.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.abdulla_sh.E_HEALTH"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "19b9997a-02ce-43cd-80ac-8abff2017e24"
+      }
     }
   }
 }
