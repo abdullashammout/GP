@@ -39,9 +39,7 @@ const Vaccine = ({ route }) => {
         });
         setVaccines(loadedData);
       }
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     loadData();
@@ -85,9 +83,7 @@ const Vaccine = ({ route }) => {
         setVaccineName("");
         setVaccineNameError(null);
       }
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    } catch (error) {}
   };
 
   const deleteVaccine = async (id) => {
@@ -112,9 +108,7 @@ const Vaccine = ({ route }) => {
               await set(presDataRef, null);
 
               setVaccines(newVaccines);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

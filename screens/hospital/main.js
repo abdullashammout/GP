@@ -38,12 +38,9 @@ export default function MainScreen({ route, navigation }) {
           const { bloodType } = snapshot.val();
           setPatientBloodType(bloodType);
         } else {
-          console.log("Patient not found");
         }
       })
-      .catch((error) => {
-        console.error("Error fetching patient data: ", error);
-      });
+      .catch((error) => {});
   }, [patientId]);
 
   const data = [

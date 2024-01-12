@@ -43,7 +43,6 @@ export default function SearchPh({ route, navigation }) {
             await auth.signOut();
             await AsyncStorage.removeItem("userRole");
           } catch (error) {
-            console.error("Error during logout:", error.message);
             // Show an error alert if there is an issue during logout
             Alert.alert(
               "Logout Error",
@@ -106,7 +105,6 @@ export default function SearchPh({ route, navigation }) {
       const idSnapshot = await get(idQuery);
       return idSnapshot.exists();
     } catch (error) {
-      alert("Error checking ID in database:", error);
       return false;
     }
   };

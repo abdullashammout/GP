@@ -22,9 +22,7 @@ const PatientAllergies = ({ route }) => {
         });
         setAllergies(loadedData);
       }
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

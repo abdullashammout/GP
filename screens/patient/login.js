@@ -75,11 +75,8 @@ const LoginForm = ({ navigation }) => {
                   const { name } = snapshot.val();
                   await AsyncStorage.setItem("HospitalName", name);
                 } else {
-                  console.log("Hospital not found");
                 }
-              } catch (error) {
-                console.error("Error fetching hospital data:", error);
-              }
+              } catch (error) {}
             }
             if (role === "medical_units/pharmacy") {
               try {
@@ -90,11 +87,8 @@ const LoginForm = ({ navigation }) => {
                   const { name } = snapshot.val();
                   await AsyncStorage.setItem("PharmacyName", name);
                 } else {
-                  console.log("PharmacyName not found");
                 }
-              } catch (error) {
-                console.error("Error fetching PharmacyName:", error);
-              }
+              } catch (error) {}
             }
             setId(null);
             setPassword("");

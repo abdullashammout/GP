@@ -38,9 +38,7 @@ const TreatmentDetails = ({ route }) => {
         const detailsArray = Object.values(snapshot.val());
         setDetails(detailsArray);
       }
-    } catch (error) {
-      console.error("Error loading details:", error);
-    }
+    } catch (error) {}
   };
   const getMedicalUnitName = async () => {
     const Name = await AsyncStorage.getItem("HospitalName");
@@ -89,9 +87,7 @@ const TreatmentDetails = ({ route }) => {
 
       setTreatmentDetails(``);
       setTreatmentDetailsError("");
-    } catch (error) {
-      console.error("Error adding medication:", error);
-    }
+    } catch (error) {}
   };
   const handleDeleteTreatmentDetails = async (id) => {
     Alert.alert(
@@ -115,9 +111,7 @@ const TreatmentDetails = ({ route }) => {
               );
               await set(detailsDataRef, null);
               setDetails(newTreatmentDetails);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

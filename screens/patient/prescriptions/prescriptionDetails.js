@@ -26,9 +26,7 @@ const PrescriptionDetails = ({ route }) => {
         const medicationsArray = Object.values(snapshot.val());
         setMedications(medicationsArray);
       }
-    } catch (error) {
-      console.error("Error loading medications:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

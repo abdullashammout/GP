@@ -36,9 +36,7 @@ const PresList = ({ route }) => {
         const medicationsArray = Object.values(snapshot.val());
         setMedications(medicationsArray);
       }
-    } catch (error) {
-      console.error("Error loading medications:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -108,9 +106,7 @@ const PresList = ({ route }) => {
         setDosageError(null);
         setMedicationError(null);
       }
-    } catch (error) {
-      console.error("Error adding medication:", error);
-    }
+    } catch (error) {}
   };
 
   const handleDeleteMedication = async (id) => {
@@ -133,9 +129,7 @@ const PresList = ({ route }) => {
               );
               await set(medDataRef, null);
               setMedications(newMedications);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

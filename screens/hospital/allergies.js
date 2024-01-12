@@ -37,9 +37,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
         });
         setAllergies(loadedData);
       }
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -83,9 +81,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
 
       setAllergyName("");
       setAlleryNameError("");
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    } catch (error) {}
   };
 
   const deleteAllergy = async (id) => {
@@ -109,9 +105,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
               );
               await set(AllergyDataRef, null);
               setAllergies(newAllergies);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

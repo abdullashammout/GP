@@ -24,9 +24,7 @@ export default function PatientStay({ navigation, route }) {
 
           setData(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
 
     loadData();

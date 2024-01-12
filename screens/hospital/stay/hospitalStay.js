@@ -39,9 +39,7 @@ export default function HospitalStay({ navigation, route }) {
 
           setData(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
 
     loadData();
@@ -74,9 +72,7 @@ export default function HospitalStay({ navigation, route }) {
               );
               await set(stayDataRef, null);
               setData(newData);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]
@@ -131,9 +127,7 @@ export default function HospitalStay({ navigation, route }) {
       setDoctorNameError(null);
       setDoctorName("");
       setModalVisibile(false);
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    } catch (error) {}
   };
 
   const renderItem = ({ item, index }) => (
