@@ -190,7 +190,6 @@ const SignUPForm = () => {
                 "Thank you for registering!"
               );
             } catch (error) {
-              alert(error.message);
               setIsLoading(false);
               if (error.message === "Firebase: Error (auth/invalid-email).") {
                 setIsLoading(false);
@@ -225,9 +224,7 @@ const SignUPForm = () => {
           );
         }
       } catch (error) {
-        console.log(error.message);
         setIsLoading(false);
-        alert(error.message);
       }
     } else {
       setPassword("");

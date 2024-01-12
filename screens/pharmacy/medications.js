@@ -27,9 +27,7 @@ const Medications = ({ route }) => {
         const medicationsArray = Object.values(snapshot.val());
         setMedications(medicationsArray);
       }
-    } catch (error) {
-      console.error("Error loading medications:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -62,9 +60,7 @@ const Medications = ({ route }) => {
             await update(medicationRef, {
               isSold: !medications.find((m) => m.id === medicationId)?.isSold,
             });
-          } catch (error) {
-            console.error("Error selling medication:", error);
-          }
+          } catch (error) {}
         },
       },
     ]);

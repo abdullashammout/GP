@@ -47,12 +47,9 @@ export default function PatientPage({ navigation, route }) {
           if (picture) {
             setPatientImage(picture);
           } else {
-            console.log("No image URL found in Firebase.");
           }
         }
-      } catch (error) {
-        console.error("Error fetching Patient data:", error);
-      }
+      } catch (error) {}
     };
 
     fetchPatientInfo();
@@ -69,7 +66,6 @@ export default function PatientPage({ navigation, route }) {
           await AsyncStorage.setItem("PatientName", name);
         }
       } catch (error) {
-        console.error("Error fetching Patient data:", error);
       } finally {
         // Set loading to false when data is fetched or an error occurs
       }
@@ -120,14 +116,7 @@ export default function PatientPage({ navigation, route }) {
           try {
             await auth.signOut(); // Sign out the user
             await AsyncStorage.removeItem("userRole");
-          } catch (error) {
-            console.error("Error during logout:", error.message);
-            // Show an error alert if there is an issue during logout
-            Alert.alert(
-              "Logout Error",
-              "An error occurred during logout. Please try again."
-            );
-          }
+          } catch (error) {}
         },
       },
     ]);

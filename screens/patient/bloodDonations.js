@@ -31,9 +31,7 @@ const BloodDonations = ({ route }) => {
         });
         setDonationData(loadedData);
       }
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    } catch (error) {}
   };
 
   const checkEligibility = () => {

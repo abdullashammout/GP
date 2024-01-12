@@ -39,9 +39,7 @@ const TreatmentList = ({ navigation, route }) => {
 
           setTreatments(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
 
     loadData();
@@ -74,9 +72,7 @@ const TreatmentList = ({ navigation, route }) => {
               );
               await set(treatidRef, null);
               setTreatments(newData);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]
@@ -141,9 +137,7 @@ const TreatmentList = ({ navigation, route }) => {
       setDoctorName("");
       setDoctorNameError(null);
       setTreatNameError(null);
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    } catch (error) {}
   };
 
   return (

@@ -42,9 +42,7 @@ const Prescription = ({ navigation, route }) => {
 
           setData(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
 
     loadData();
@@ -78,9 +76,7 @@ const Prescription = ({ navigation, route }) => {
               );
               await set(presDataRef, null);
               setData(newData);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]
@@ -152,9 +148,7 @@ const Prescription = ({ navigation, route }) => {
       setDiagnosisError(null);
 
       setModalVisible(false);
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    } catch (error) {}
   };
 
   const renderItem = ({ item, index }) => (

@@ -23,9 +23,7 @@ const PatientChronic = ({ route }) => {
           });
           setChronicIllnesses(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
     loadData();
   }, [userId]);

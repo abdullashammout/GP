@@ -38,9 +38,7 @@ const StayList = ({ route }) => {
         const EntryDetailsArray = Object.values(snapshot.val());
         setDetails(EntryDetailsArray);
       }
-    } catch (error) {
-      console.error("Error loading EntryDetails:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -84,9 +82,7 @@ const StayList = ({ route }) => {
 
       setEntryDetails("");
       setEntryError(null);
-    } catch (error) {
-      console.error("Error adding Entry Details:", error);
-    }
+    } catch (error) {}
   };
 
   const handleDeleteEntryDetails = async (id) => {
@@ -109,9 +105,7 @@ const StayList = ({ route }) => {
               );
               await set(EntryDataRef, null);
               setDetails(newDetails);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

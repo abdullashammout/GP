@@ -109,7 +109,6 @@ export default function ChangeEmailScreen({ navigation, route }) {
       setCurrentEmail("");
       setNewEmail("");
     } catch (error) {
-      console.log(error.code);
       // Handle errors here
       if (
         error.code === "auth/user-not-found" ||

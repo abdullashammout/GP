@@ -90,11 +90,8 @@ const ResetPasswordScreen = () => {
           );
         }
       } else {
-        Alert.alert("Error", "Unable to retrieve data from the database.");
       }
-    } catch (error) {
-      Alert.alert("Error", error.message);
-    }
+    } catch (error) {}
   };
 
   return (

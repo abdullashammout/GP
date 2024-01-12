@@ -25,14 +25,10 @@ const Vaccines = ({ navigation, route }) => {
           if (loadedPrescriptions.length > 0) {
             setVaccines(loadedPrescriptions);
           } else {
-            console.log("No prescriptions found.");
           }
         } else {
-          console.log("No data found in snapshot.");
         }
-      } catch (error) {
-        console.error("Error loading prescriptions:", error);
-      }
+      } catch (error) {}
     };
 
     loadPrescriptions();

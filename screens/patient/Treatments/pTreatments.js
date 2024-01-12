@@ -24,9 +24,7 @@ const PatientTreatments = ({ navigation, route }) => {
 
           setTreatments(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
 
     loadData();

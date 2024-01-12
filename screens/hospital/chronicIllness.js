@@ -38,9 +38,7 @@ const ChronicIllness = ({ route }) => {
           });
           setChronicIllnesses(loadedData);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+      } catch (error) {}
     };
     loadData();
   }, [patientId]);
@@ -87,9 +85,7 @@ const ChronicIllness = ({ route }) => {
 
         setNewChronic("");
       }
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    } catch (error) {}
   };
 
   const deleteChronic = async (id) => {
@@ -116,9 +112,7 @@ const ChronicIllness = ({ route }) => {
               await set(presDataRef, null);
 
               setChronicIllnesses(newChronicIllnesss);
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

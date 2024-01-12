@@ -26,9 +26,7 @@ const PatientStayDetails = ({ route }) => {
         const EntryDetailsArray = Object.values(snapshot.val());
         setDetails(EntryDetailsArray);
       }
-    } catch (error) {
-      console.error("Error loading EntryDetails:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

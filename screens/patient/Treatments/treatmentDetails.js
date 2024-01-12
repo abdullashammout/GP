@@ -26,9 +26,7 @@ const PatientTreatDetails = ({ route }) => {
         const detailsArray = Object.values(snapshot.val());
         setDetails(detailsArray);
       }
-    } catch (error) {
-      console.error("Error loading details:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

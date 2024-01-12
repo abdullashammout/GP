@@ -48,9 +48,7 @@ const BloodDonation = ({ navigation, route }) => {
         });
         setDonationData(loadedData);
       }
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    } catch (error) {}
   };
 
   const getMedicalUnitName = async () => {
@@ -91,9 +89,7 @@ const BloodDonation = ({ navigation, route }) => {
       setDonationData((prevData) => [...prevData, newDonation]);
       setDonationType("");
       setDonationTypeError(null);
-    } catch (error) {
-      console.error("Error saving donation:", error);
-    }
+    } catch (error) {}
   };
   const deleteDonation = async (id) => {
     Alert.alert(
@@ -119,9 +115,7 @@ const BloodDonation = ({ navigation, route }) => {
 
               await set(donationDataRef, null);
               setDonationData(newDonations);
-            } catch (error) {
-              console.error("Error deleting donation:", error);
-            }
+            } catch (error) {}
           },
         },
       ]

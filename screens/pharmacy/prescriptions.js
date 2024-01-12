@@ -30,12 +30,9 @@ const PharPrescription = ({ navigation, route }) => {
           const { id } = snapshot.val();
           setPId(id);
         } else {
-          console.log("Patient not found");
         }
       })
-      .catch((error) => {
-        console.error("Error fetching patient data: ", error);
-      });
+      .catch((error) => {});
   }, [patientId]);
 
   useEffect(() => {
@@ -58,14 +55,10 @@ const PharPrescription = ({ navigation, route }) => {
           if (loadedPrescriptions.length > 0) {
             setPrescriptions(loadedPrescriptions);
           } else {
-            console.log("No prescriptions found.");
           }
         } else {
-          console.log("No data found in snapshot.");
         }
-      } catch (error) {
-        console.error("Error loading prescriptions:", error);
-      }
+      } catch (error) {}
     };
 
     loadPrescriptions();
