@@ -45,7 +45,6 @@ export default function PatientPage({ navigation, route }) {
           await AsyncStorage.setItem("PatientName", name);
           await AsyncStorage.setItem("PatientBloodType", bloodType);
           if (picture) {
-            console.log("Image URL:", picture); // Add this console log
             setPatientImage(picture);
           } else {
             console.log("No image URL found in Firebase.");

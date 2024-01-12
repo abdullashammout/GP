@@ -164,7 +164,7 @@ const Vaccine = ({ route }) => {
                   </Text>
                 </Text>
                 <Text style={{ fontWeight: "bold" }}>
-                  hospital:{" "}
+                  Hospital Name:{" "}
                   <Text style={{ fontWeight: "normal" }}>
                     {item.medicalUnitName}
                   </Text>

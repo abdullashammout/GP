@@ -150,11 +150,11 @@ export default function HospitalStay({ navigation, route }) {
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>hospital admission {index + 1}</Text>
         <Text style={styles.dateText}>
-          hospital name: {item.medicalUnitName}
+          Hospital Name: {item.medicalUnitName}
         </Text>
-        <Text style={styles.dateText}>Doctor name:{item.createdBy}</Text>
-        <Text style={styles.dateText}>entry date:{item.date}</Text>
-        <Text style={styles.dateText}>entry time:{item.time}</Text>
+        <Text style={styles.dateText}>Doctor Name: {item.createdBy}</Text>
+        <Text style={styles.dateText}>entry date: {item.date}</Text>
+        <Text style={styles.dateText}>entry time: {item.time}</Text>
         {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit
           <TouchableOpacity
             style={styles.button}

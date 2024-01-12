@@ -148,7 +148,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.allergyItem}>
               <View style={styles.row}>
-                <Text style={styles.label}>Name:</Text>
+                <Text style={styles.label}>Allergy Name:</Text>
                 <Text style={{ fontWeight: "bold" }}>
                   <Text style={{ fontWeight: "normal" }}>
                     {item.allergyName}
@@ -156,7 +156,7 @@ const PatientAllergiesPage = ({ navigation, route }) => {
                 </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Hospital:</Text>
+                <Text style={styles.label}>Hospital Name:</Text>
                 <Text>{item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>

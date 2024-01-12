@@ -102,7 +102,6 @@ export default function App() {
               ],
             });
           } else {
-            console.log("No stored role found, navigating to home");
           }
         } catch (error) {
           console.error("Error during fetching user role:", error.message);
