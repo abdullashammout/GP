@@ -249,7 +249,7 @@ const BloodDonation = ({ navigation, route }) => {
                   </Text>
                 </Text>
                 <Text style={{ fontWeight: "bold" }}>
-                  Location:{" "}
+                  Hospital Name:{" "}
                   <Text style={{ fontWeight: "normal" }}>
                     {item.medicalUnitName}
                   </Text>

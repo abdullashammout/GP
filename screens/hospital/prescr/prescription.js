@@ -172,7 +172,9 @@ const Prescription = ({ navigation, route }) => {
     >
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>Prescription {index + 1}</Text>
-        <Text style={styles.dateText}>Hospital: {item.medicalUnitName}</Text>
+        <Text style={styles.dateText}>
+          Hospital Name: {item.medicalUnitName}
+        </Text>
         <Text style={styles.dateText}>Date: {item.date}</Text>
         <Text style={styles.dateText}>Time: {item.time}</Text>
         {item.medicalUnitName === medicalUnitName && ( // Check if created by the current medical unit

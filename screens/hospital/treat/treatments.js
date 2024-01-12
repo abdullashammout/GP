@@ -218,9 +218,11 @@ const TreatmentList = ({ navigation, route }) => {
                   </Text>
                 </View>
                 <Text style={styles.dateText}>
-                  Medical Unit: {item.medicalUnitName}
+                  Hospital Name: {item.medicalUnitName}
                 </Text>
-                <Text style={styles.dateText}>Doctor: {item.createdBy}</Text>
+                <Text style={styles.dateText}>
+                  Doctor Name: {item.createdBy}
+                </Text>
                 <Text style={styles.dateText}>Date: {item.date} </Text>
                 {item.medicalUnitName === medicalUnitName && (
                   <View style={styles.buttonContainer}>

@@ -98,6 +98,8 @@ const LoginForm = ({ navigation }) => {
             }
             setId(null);
             setPassword("");
+            setIdError(null);
+            setPasswordError(null);
 
             const rolePage = getRolePage(role);
             navigation.navigate(rolePage, { userId: id });
@@ -105,7 +107,6 @@ const LoginForm = ({ navigation }) => {
 
             return;
           } catch (error) {
-            alert(error.code);
             handleSignInError();
             setIsLoading(false);
           }

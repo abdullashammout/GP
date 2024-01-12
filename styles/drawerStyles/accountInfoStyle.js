@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 3,
     justifyContent: "flex-start",
-    paddingLeft: 50,
+    paddingLeft: 15,
     paddingVertical: 20,
     width: "80%", // Alternatively, you can use flex: 1 for equal width
   },
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     color: "#3498db", // Blue label color
   },
   valueContainer: {
-    marginLeft: 20,
+    marginLeft: 10,
   },
   value: {
     fontStyle: "italic",
