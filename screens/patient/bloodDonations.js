@@ -99,13 +99,13 @@ const BloodDonations = ({ route }) => {
             <View style={styles.bloodDonationItem}>
               <View style={styles.row}>
                 <Text style={{ ...styles.bold, marginBottom: 5 }}>
-                  Dontaion Type:{" "}
+                  Dontaion type:{" "}
                 </Text>
                 <Text>{item.donationType}</Text>
               </View>
               <View style={styles.row}>
                 <Text style={{ ...styles.bold, marginBottom: 5 }}>
-                  Medical Unit:{" "}
+                  Hospital name:{" "}
                 </Text>
                 <Text>{item.medicalUnitName}</Text>
               </View>

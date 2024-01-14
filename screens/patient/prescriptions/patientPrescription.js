@@ -52,8 +52,7 @@ const PatientPrescription = ({ navigation, route }) => {
       <Text style={styles.itemHeaderText}>{`Prescription ${index + 1}`}</Text>
       <Text
         style={styles.itemText}
-      >{`Medical Unit: ${item.medicalUnitName}`}</Text>
-      <Text style={styles.itemText}>{`Doctor: ${item.createdBy}`}</Text>
+      >{`Hospital name: ${item.medicalUnitName}`}</Text>
       <Text style={styles.itemText}>{`Date: ${item.date}`}</Text>
       <Text style={styles.itemText}>{`Time: ${item.time}`}</Text>
     </TouchableOpacity>

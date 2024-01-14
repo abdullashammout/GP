@@ -237,13 +237,13 @@ const BloodDonation = ({ navigation, route }) => {
             renderItem={({ item }) => (
               <View style={styles.bloodDonationItem}>
                 <Text style={{ fontWeight: "bold" }}>
-                  Dontaion Type:{" "}
+                  Dontaion type:{" "}
                   <Text style={{ fontWeight: "normal" }}>
                     {item.donationType}
                   </Text>
                 </Text>
                 <Text style={{ fontWeight: "bold" }}>
-                  Hospital Name:{" "}
+                  Hospital name:{" "}
                   <Text style={{ fontWeight: "normal" }}>
                     {item.medicalUnitName}
                   </Text>

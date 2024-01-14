@@ -167,7 +167,7 @@ const Prescription = ({ navigation, route }) => {
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>Prescription {index + 1}</Text>
         <Text style={styles.dateText}>
-          Hospital Name: {item.medicalUnitName}
+          Hospital name: {item.medicalUnitName}
         </Text>
         <Text style={styles.dateText}>Date: {item.date}</Text>
         <Text style={styles.dateText}>Time: {item.time}</Text>

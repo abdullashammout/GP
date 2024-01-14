@@ -42,11 +42,11 @@ const PatientAllergies = ({ route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.allergyItem}>
               <View style={styles.row}>
-                <Text style={styles.label}>Name:</Text>
+                <Text style={styles.label}>Allergy name:</Text>
                 <Text>{item.allergyName}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Hospital:</Text>
+                <Text style={styles.label}>Hospital name:</Text>
                 <Text>{item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>

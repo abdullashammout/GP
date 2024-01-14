@@ -43,11 +43,11 @@ export default function PatientStay({ navigation, route }) {
       <View style={styles.itemInfo}>
         <Text style={styles.itemText}>hospital admission {index + 1}</Text>
         <Text style={styles.dateText}>
-          hospital name: {item.medicalUnitName}
+          Hospital name: {item.medicalUnitName}
         </Text>
         <Text style={styles.dateText}>Doctor name:{item.createdBy}</Text>
-        <Text style={styles.dateText}>entry date:{item.date}</Text>
-        <Text style={styles.dateText}>entry time:{item.time}</Text>
+        <Text style={styles.dateText}>Entry date:{item.date}</Text>
+        <Text style={styles.dateText}>Entry time:{item.time}</Text>
       </View>
     </TouchableOpacity>
   );
