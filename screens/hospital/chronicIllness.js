@@ -154,11 +154,11 @@ const ChronicIllness = ({ route }) => {
           renderItem={({ item, index }) => (
             <View style={styles.chronicItem}>
               <View style={styles.row}>
-                <Text style={styles.label}>Chronic Diseases Name:</Text>
+                <Text style={styles.label}>Chronic disease name:</Text>
                 <Text style={styles.textin}>{item.newChronic}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Hospital Name:</Text>
+                <Text style={styles.label}>Hospital name:</Text>
                 <Text style={styles.textin}>{item.medicalUnitName}</Text>
               </View>
               <View style={styles.row}>

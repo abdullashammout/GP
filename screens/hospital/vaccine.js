@@ -152,13 +152,13 @@ const Vaccine = ({ route }) => {
             renderItem={({ item }) => (
               <View style={styles.vaccineItem}>
                 <Text style={{ fontWeight: "bold" }}>
-                  Vaccine Name:{" "}
+                  Vaccine name:{" "}
                   <Text style={{ fontWeight: "normal" }}>
                     {item.vaccineName}
                   </Text>
                 </Text>
                 <Text style={{ fontWeight: "bold" }}>
-                  Hospital Name:{" "}
+                  Hospital name:{" "}
                   <Text style={{ fontWeight: "normal" }}>
                     {item.medicalUnitName}
                   </Text>

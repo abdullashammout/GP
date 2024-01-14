@@ -44,13 +44,13 @@ const Vaccines = ({ navigation, route }) => {
             <View style={styles.vaccineItem}>
               <View style={styles.row}>
                 <Text style={{ ...styles.bold, marginBottom: 5 }}>
-                  Vaccine Name:{" "}
+                  Vaccine name:{" "}
                 </Text>
                 <Text>{item.vaccineName}</Text>
               </View>
               <View style={styles.row}>
                 <Text style={{ ...styles.bold, marginBottom: 5 }}>
-                  Medical Unit:{" "}
+                  Hospital name:{" "}
                 </Text>
                 <Text>{item.medicalUnitName}</Text>
               </View>

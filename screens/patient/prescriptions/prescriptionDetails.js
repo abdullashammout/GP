@@ -12,6 +12,8 @@ import styles from "../../../styles/patientStyles/presDetailsStyle";
 
 const PrescriptionDetails = ({ route }) => {
   const { itemId, itemName, medicalUnitName, patientId } = route.params;
+  const [Diagnosis, setDiagnosis] = useState("");
+  const [createdBy, setCreatedBy] = useState("");
   const [medications, setMedications] = useState([]);
 
   const fetchMedications = async () => {
@@ -23,14 +25,35 @@ const PrescriptionDetails = ({ route }) => {
       const snapshot = await get(medicationsRef);
 
       if (snapshot.exists()) {
+        const { diagnosis } = snapshot.val();
+        const { createdBy } = snapshot.val();
+        setDiagnosis(diagnosis);
+        setCreatedBy(createdBy);
         const medicationsArray = Object.values(snapshot.val());
         setMedications(medicationsArray);
+      }
+    } catch (error) {}
+  };
+  const fetchDiagnosis = async () => {
+    try {
+      const medicationsRef = ref(
+        db,
+        `users/patients/${patientId}/prescription/${itemId}`
+      );
+      const snapshot = await get(medicationsRef);
+
+      if (snapshot.exists()) {
+        const { diagnosis } = snapshot.val();
+        const { createdBy } = snapshot.val();
+        setDiagnosis(diagnosis);
+        setCreatedBy(createdBy);
       }
     } catch (error) {}
   };
 
   useEffect(() => {
     fetchMedications();
+    fetchDiagnosis();
   }, [itemId, patientId]);
 
   const renderMedicationItem = ({ item }) => (
@@ -71,6 +94,46 @@ const PrescriptionDetails = ({ route }) => {
       }}
     >
       <View style={styles.container}>
+        <View
+          style={{
+            marginBottom: 25,
+            alignItems: "flex-start",
+            borderRadius: 10,
+            backgroundColor: "#fff",
+            elevation: 3,
+            margin: 10,
+            marginVertical: 2,
+            padding: 15,
+          }}
+        >
+          <Text
+            style={{ fontWeight: "700", fontSize: 15, textAlign: "center" }}
+          >
+            Doctor Name:{" "}
+            <Text style={{ fontWeight: "400", fontStyle: "italic" }}>
+              {createdBy}
+            </Text>
+          </Text>
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 15,
+              paddingTop: 5,
+              textAlign: "center",
+            }}
+          >
+            Diagnosis:{" "}
+            <Text
+              style={{
+                fontWeight: "400",
+                fontStyle: "italic",
+              }}
+            >
+              {Diagnosis}
+            </Text>
+          </Text>
+        </View>
+
         <Text style={styles.sectionHeader}>Medications :</Text>
 
         {medications.length > 0 ? (

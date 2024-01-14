@@ -193,7 +193,7 @@ const PresList = ({ route }) => {
           <Text
             style={{ fontWeight: "700", fontSize: 15, textAlign: "center" }}
           >
-            Doctor Name:{" "}
+            Doctor name:{" "}
             <Text style={{ fontWeight: "400", fontStyle: "italic" }}>
               {CreatedBy}
             </Text>
